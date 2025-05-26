@@ -8,4 +8,8 @@ interface UserService {
     suspend fun pairDeviceByPassword(
         request: PairByPasswordDomainModel
     ): AccessTokenApiModel
+
+    suspend fun signUp(
+        request: PairByPasswordDomainModel
+    ): AccessTokenApiModel
 }

@@ -1,5 +1,6 @@
 package com.kosciukw.services.data.user.service.user.impl
 
+import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
 import com.kosciukw.services.data.user.model.domain.PairByPasswordDomainModel
 import com.kosciukw.services.data.user.repository.UserRepository
 import com.kosciukw.services.data.user.service.user.UserService
@@ -12,4 +13,8 @@ class UserServiceImpl @Inject constructor(
     override suspend fun pairDeviceByPassword(
         request: PairByPasswordDomainModel
     ) = userRepository.pairDeviceByPassword(request)
+
+    override suspend fun signUp(request: PairByPasswordDomainModel): AccessTokenApiModel {
+        TODO("Not yet implemented")
+    }
 }

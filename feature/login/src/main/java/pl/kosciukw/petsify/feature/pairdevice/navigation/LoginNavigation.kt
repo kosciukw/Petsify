@@ -19,9 +19,10 @@ fun NavGraphBuilder.loginScreen(
         val loginViewModel: LoginViewModel = hiltViewModel()
         val state = loginViewModel.state.value
         val action = loginViewModel.action
+        val errors = loginViewModel.errors
 
         LoginScreen(
-            errors = loginViewModel.errors,
+            errors = errors,
             state = state,
             onNavigateToMain = onNavigateToMain,
             onNavigateToSignUp = onNavigateToSignUp,

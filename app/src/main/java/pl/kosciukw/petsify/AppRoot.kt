@@ -11,8 +11,8 @@ import pl.kosciukw.petsify.feature.pairdevice.navigation.LoginDestination
 import pl.kosciukw.petsify.feature.pairdevice.navigation.loginScreen
 import pl.kosciukw.petsify.feature.main.mainScreen
 import pl.kosciukw.petsify.feature.main.navigateToMain
-import pl.kosciukw.petsify.feature.signup.navigateToSignUp
-import pl.kosciukw.petsify.feature.signup.signUpScreen
+import pl.kosciukw.petsify.feature.signup.navigation.navigateToSignUp
+import pl.kosciukw.petsify.feature.signup.navigation.signUpScreen
 
 @Composable
 fun AppRoot() {

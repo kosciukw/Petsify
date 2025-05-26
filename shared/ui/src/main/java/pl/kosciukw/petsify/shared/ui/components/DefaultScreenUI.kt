@@ -25,6 +25,7 @@ import pl.kosciukw.petsify.shared.ui.components.toolbar.ToolbarCustom
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DefaultScreenUI(
+    modifier: Modifier = Modifier,
     errors: Flow<UIComponent>,
     progressBarState: ProgressBarState = ProgressBarState.Idle,
     networkState: NetworkState = NetworkState.Established,
@@ -41,12 +42,22 @@ fun DefaultScreenUI(
     }
 
     Scaffold(
-        topBar = { toolbarConfig?.let { config -> ToolbarCustom(config) } }
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                color = MaterialTheme.colorScheme.background
+            ),
+        topBar = {
+            toolbarConfig?.let { config ->
+                ToolbarCustom(
+                    toolbarConfig = config
+                )
+            }
+        }
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             content()

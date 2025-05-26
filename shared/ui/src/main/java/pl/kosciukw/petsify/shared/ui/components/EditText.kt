@@ -1,6 +1,5 @@
 package pl.kosciukw.petsify.shared.ui.components
 
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -8,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import pl.kosciukw.petsify.shared.ui.theme.TextRegularS
 import pl.kosciukw.petsify.shared.ui.theme.TextS
 import pl.kosciukw.petsify.shared.ui.theme.TextSecondary
@@ -24,7 +22,7 @@ fun EditText(
     text: String,
     onTextChange: (String) -> Unit,
     label: String,
-    trailingIcon: ImageVector,
+    trailingIcon: ImageVector? = null,
     iconDescription: String = String.empty(),
     labelTextStyle: TextStyle = TextSecondary.copy(
         fontSize = TextS,
@@ -52,10 +50,12 @@ fun EditText(
         ),
         textStyle = inputTextStyle,
         trailingIcon = {
-            Icon(
-                imageVector = trailingIcon,
-                contentDescription = iconDescription
-            )
+            trailingIcon?.let {
+                Icon(
+                    imageVector = trailingIcon,
+                    contentDescription = iconDescription
+                )
+            }
         },
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedTextColor = MaterialTheme.colorScheme.secondary,

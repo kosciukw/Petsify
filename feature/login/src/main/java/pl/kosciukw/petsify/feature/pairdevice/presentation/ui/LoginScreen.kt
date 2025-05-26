@@ -194,7 +194,7 @@ private fun LoginForm(
             text = state.inputEmail,
             onTextChange = { email -> onEmailTextChanged(email) },
             isErrorMessageEnabled = state.isEmailValidationErrorEnabled,
-            errorMessage = stringResource(id = SharedR.string.login_screen_email_validation_error),
+            errorMessage = stringResource(id = SharedR.string.email_validation_error),
         )
 
         PasswordInput(
@@ -206,7 +206,7 @@ private fun LoginForm(
             label = stringResource(id = SharedR.string.login_screen_password_field),
             text = state.inputPassword,
             onTextChange = { password -> onPasswordTextChanged(password) },
-            errorMessage = stringResource(id = SharedR.string.login_screen_password_validation_error),
+            errorMessage = stringResource(id = SharedR.string.password_validation_error),
             isErrorMessageEnabled = state.isPasswordValidationErrorEnabled
         )
 

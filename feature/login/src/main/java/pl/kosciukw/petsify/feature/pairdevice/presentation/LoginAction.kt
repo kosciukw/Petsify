@@ -8,6 +8,6 @@ sealed class LoginAction : ViewSingleAction {
 
         data object NavigateToMain : Navigation()
 
-        data object NavigateToLogin : Navigation()
+        data object NavigateToSignup : Navigation()
     }
 }

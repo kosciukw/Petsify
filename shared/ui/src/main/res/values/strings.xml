@@ -6,9 +6,7 @@
     <!-- Login Screen -->
     <string name="login_screen_welcomd_our_community_today">Welcome to our pet community!</string>
     <string name="login_screen_email_field">Email*</string>
-    <string name="login_screen_email_validation_error">Please enter a valid email address</string>
     <string name="login_screen_password_field">Password*</string>
-    <string name="login_screen_password_validation_error">Please enter a valid password</string>
     <string name="login_screen_login_button">Login</string>
     <string name="login_screen_login_new_to_petsify">New to Petsify?</string>
     <string name="login_screen_signup">Sign up</string>
@@ -18,9 +16,23 @@
 
     <!-- Sign up Screen -->
     <string name="sign_up_screen_header">Sign up</string>
+    <string name="sign_up_screen_name">Name</string>
+    <string name="sign_up_screen_email">Email*</string>
+    <string name="sign_up_screen_password">Password*</string>
+    <string name="sign_up_screen_confirm_password">Confirm Password*</string>
+    <string name="sign_up_screen_confirm_accept_terms_and_conditions">I accept the Terms and Conditions and Privacy Policy</string>
+    <string name="sign_up_screen_have_an_account">Have an account?</string>
+    <string name="sign_up_screen_login">Log in</string>
+    <string name="sign_up_screen_sign_up">Sign up</string>
+    <string name="sign_up_screen_please_enter_data">Please enter required data to complete registration</string>
 
     <!-- Error messages -->
     <string name="error_no_internet_connection">No internet connection</string>
     <string name="error_something_went_wrong">Oops… Something went wrong… Please try again</string>
     <string name="error_authentication">Invalid email or password</string>
+
+    <!-- Validation messages -->
+    <string name="email_validation_error">Please enter a valid email address</string>
+    <string name="password_validation_error">Please enter a valid password</string>
+    <string name="name_validation_error">Please enter a valid name</string>
 </resources>
