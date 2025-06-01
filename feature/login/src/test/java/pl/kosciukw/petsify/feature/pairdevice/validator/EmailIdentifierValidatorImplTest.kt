@@ -6,8 +6,8 @@ import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import pl.kosciukw.petsify.feature.pairdevice.domain.EmailIdentifierValidator
-import pl.kosciukw.petsify.feature.pairdevice.domain.EmailIdentifierValidatorImpl
+import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator
+import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidatorImpl
 import pl.kosciukw.petsify.shared.validator.EmailIdentifier
 import pl.kosciukw.petsify.shared.validator.IdentifierState
 import pl.kosciukw.petsify.shared.validator.email.EmailValidator

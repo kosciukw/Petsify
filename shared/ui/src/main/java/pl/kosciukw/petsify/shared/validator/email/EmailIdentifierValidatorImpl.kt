@@ -1,8 +1,7 @@
-package pl.kosciukw.petsify.feature.pairdevice.domain
+package pl.kosciukw.petsify.shared.validator.email
 
 import pl.kosciukw.petsify.shared.validator.EmailIdentifier
 import pl.kosciukw.petsify.shared.validator.IdentifierState
-import pl.kosciukw.petsify.shared.validator.email.EmailValidator
 import pl.kosciukw.petsify.shared.validator.notempty.NotEmptyValidator
 
 class EmailIdentifierValidatorImpl(

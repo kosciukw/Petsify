@@ -10,8 +10,7 @@ class UserApiToDomainErrorMapperImpl : UserApiToDomainErrorMapper {
     override fun map(exception: Throwable) = when (exception) {
         is UserApiError -> wrapException(error = exception)
         else -> UserDomainError.UnknownError(
-            message = exception.message
-                ?: "Unknown error occurred"
+            message = exception.message ?: "Unknown error occurred"
         )
     }
 

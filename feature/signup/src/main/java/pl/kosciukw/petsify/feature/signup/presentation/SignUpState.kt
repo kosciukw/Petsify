@@ -12,10 +12,12 @@ data class SignUpState(
 
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
     val isTermsAccepted: Boolean = false,
+    val isMarketingAccepted: Boolean = false,
     val isSignUpButtonStateEnabled: Boolean = false,
     val isNameValidationErrorEnabled: Boolean = false,
     val isEmailValidationErrorEnabled: Boolean = false,
     val isPasswordValidationErrorEnabled: Boolean = false,
     val isConfirmPasswordValidationErrorEnabled: Boolean = false,
-    val isTermsErrorEnabled: Boolean = false
+    val isTermsErrorEnabled: Boolean = false,
+    val isMarketingErrorEnabled: Boolean = false
 ) : ViewState

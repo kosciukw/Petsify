@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.shared.components
+package pl.kosciukw.petsify.shared.ui.components.progress
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

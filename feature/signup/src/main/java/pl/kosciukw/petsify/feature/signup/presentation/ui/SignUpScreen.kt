@@ -1,25 +1,19 @@
 package pl.kosciukw.petsify.feature.signup.presentation.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -31,16 +25,18 @@ import kotlinx.coroutines.flow.Flow
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpEvent
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpAction
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpState
-import pl.kosciukw.petsify.shared.components.Spacer16dp
-import pl.kosciukw.petsify.shared.components.Spacer32dp
-import pl.kosciukw.petsify.shared.components.Spacer8dp
-import pl.kosciukw.petsify.shared.components.Spacer96dp
-import pl.kosciukw.petsify.shared.ui.components.ButtonRegular
-import pl.kosciukw.petsify.shared.ui.components.DefaultScreenUI
-import pl.kosciukw.petsify.shared.ui.components.EditText
-import pl.kosciukw.petsify.shared.ui.components.UIComponent
+import pl.kosciukw.petsify.shared.ui.components.spacer.Spacer16dp
+import pl.kosciukw.petsify.shared.ui.components.spacer.Spacer32dp
+import pl.kosciukw.petsify.shared.ui.components.spacer.Spacer8dp
+import pl.kosciukw.petsify.shared.ui.components.spacer.Spacer96dp
+import pl.kosciukw.petsify.shared.ui.components.button.ButtonRegular
+import pl.kosciukw.petsify.shared.ui.components.base.BaseScreen
+import pl.kosciukw.petsify.shared.ui.components.input.EditText
+import pl.kosciukw.petsify.shared.ui.UIComponent
+import pl.kosciukw.petsify.shared.ui.components.checkbox.CheckBoxText
 import pl.kosciukw.petsify.shared.ui.components.toolbar.ToolbarConfig
 import pl.kosciukw.petsify.shared.ui.theme.BlackLiquorice
+import pl.kosciukw.petsify.shared.ui.theme.MidnightBlue
 import pl.kosciukw.petsify.shared.ui.theme.PetsifyTheme
 import pl.kosciukw.petsify.shared.ui.theme.PureWhite
 import pl.kosciukw.petsify.shared.ui.theme.TextBoldS
@@ -48,7 +44,6 @@ import pl.kosciukw.petsify.shared.ui.theme.paddingM
 import pl.kosciukw.petsify.shared.ui.theme.paddingXXL
 import pl.kosciukw.petsify.shared.ui.R as SharedR
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SignUpScreen(
     state: SignUpState,
@@ -58,7 +53,7 @@ internal fun SignUpScreen(
     events: (SignUpEvent) -> Unit,
     action: Flow<SignUpAction>
 ) {
-    DefaultScreenUI(
+    BaseScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
@@ -86,7 +81,7 @@ internal fun SignUpScreen(
                     textAlign = TextAlign.Center
                 )
 
-                Spacer16dp()
+                Spacer32dp()
 
                 EditText(
                     modifier = Modifier.fillMaxWidth(),
@@ -112,9 +107,9 @@ internal fun SignUpScreen(
                     modifier = Modifier.fillMaxWidth(),
                     label = stringResource(id = SharedR.string.sign_up_screen_password),
                     text = state.inputPassword,
-                    onTextChange = { password -> events(SignUpEvent.OnPasswordTextChanged(password)) },
+                    onTextChange = { password -> events(SignUpEvent.OnPasswordChanged(password)) },
                     isErrorMessageEnabled = state.isPasswordValidationErrorEnabled,
-                    errorMessage = stringResource(id = SharedR.string.password_validation_error)
+                    errorMessage = stringResource(id = SharedR.string.create_password_validation_error)
                 )
 
                 EditText(
@@ -122,23 +117,28 @@ internal fun SignUpScreen(
                     label = stringResource(id = SharedR.string.sign_up_screen_confirm_password),
                     text = state.inputConfirmPassword,
                     onTextChange = { confirmPassword ->
-                        events(SignUpEvent.OnConfirmPasswordTextChanged(confirmPassword))
+                        events(SignUpEvent.OnConfirmPasswordChanged(confirmPassword))
                     },
                     isErrorMessageEnabled = state.isConfirmPasswordValidationErrorEnabled,
-                    errorMessage = stringResource(id = SharedR.string.password_validation_error)
+                    errorMessage = stringResource(id = SharedR.string.confirm_password_validation_error)
                 )
 
                 Spacer16dp()
 
-                Row {
-                    TermsAndConditionsCheckbox(isChecked = false) {
+                CheckBoxText(
+                    isChecked = state.isTermsAccepted,
+                    text = stringResource(id = SharedR.string.sign_up_screen_confirm_accept_terms_and_conditions),
+                ) { stateChanged ->
+                    events(SignUpEvent.OnTermsAcceptedChanged(stateChanged))
+                }
 
-                    }
-                    Spacer8dp()
-                    Text(
-                        text = stringResource(id = SharedR.string.sign_up_screen_confirm_accept_terms_and_conditions),
-                        style = MaterialTheme.typography.labelLarge
-                    )
+                Spacer16dp()
+
+                CheckBoxText(
+                    isChecked = state.isMarketingAccepted,
+                    text = stringResource(id = SharedR.string.sign_up_screen_confirm_accept_marketing),
+                ) { stateChanged ->
+                    events(SignUpEvent.OnMarketingAcceptedChanged(stateChanged))
                 }
 
                 Spacer32dp()
@@ -164,40 +164,20 @@ internal fun SignUpScreen(
                 ) {
                     Text(
                         text = stringResource(id = SharedR.string.sign_up_screen_have_an_account),
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleSmall
                     )
+
                     Spacer8dp()
+
                     Text(
                         text = stringResource(id = SharedR.string.sign_up_screen_login),
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MidnightBlue
                     )
                 }
             }
         }
     )
-}
-
-@Composable
-fun TermsAndConditionsCheckbox(
-    modifier: Modifier = Modifier,
-    isChecked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.clickable { onCheckedChange(!isChecked) }
-    ) {
-        Checkbox(
-            checked = isChecked,
-            onCheckedChange = null
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-//        TextWithLinks(
-//            text = "Akceptuję Regulamin i Politykę Prywatności",
-//            onClickTerms = { /* TODO: Open Terms screen */ },
-//            onClickPrivacy = { /* TODO: Open Privacy screen */ }
-//        )
-    }
 }
 
 @Preview

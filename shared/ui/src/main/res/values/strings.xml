@@ -21,6 +21,7 @@
     <string name="sign_up_screen_password">Password*</string>
     <string name="sign_up_screen_confirm_password">Confirm Password*</string>
     <string name="sign_up_screen_confirm_accept_terms_and_conditions">I accept the Terms and Conditions and Privacy Policy</string>
+    <string name="sign_up_screen_confirm_accept_marketing">I agree to receive marketing and promotional emails from Petsify to the email address I provided. I understand that I can cancel at any time</string>
     <string name="sign_up_screen_have_an_account">Have an account?</string>
     <string name="sign_up_screen_login">Log in</string>
     <string name="sign_up_screen_sign_up">Sign up</string>
@@ -34,5 +35,7 @@
     <!-- Validation messages -->
     <string name="email_validation_error">Please enter a valid email address</string>
     <string name="password_validation_error">Please enter a valid password</string>
+    <string name="create_password_validation_error">Password should contain at least 9 characters, including one uppercase letter, one lowercase letter, and one digit</string>
+    <string name="confirm_password_validation_error">Passwords do not match</string>
     <string name="name_validation_error">Please enter a valid name</string>
 </resources>

@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.shared.ui.components
+package pl.kosciukw.petsify.shared.ui.components.input
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*

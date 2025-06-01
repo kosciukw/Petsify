@@ -44,16 +44,16 @@ import pl.kosciukw.petsify.feature.login.R
 import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginAction
 import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginEvent
 import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginState
-import pl.kosciukw.petsify.shared.components.Spacer8dp
-import pl.kosciukw.petsify.shared.components.Spacer32dp
+import pl.kosciukw.petsify.shared.ui.components.spacer.Spacer8dp
+import pl.kosciukw.petsify.shared.ui.components.spacer.Spacer32dp
 import pl.kosciukw.petsify.shared.data.network.NetworkState
 import pl.kosciukw.petsify.shared.extensions.makeToast
-import pl.kosciukw.petsify.shared.ui.components.BackgroundImage
-import pl.kosciukw.petsify.shared.ui.components.ButtonRegular
-import pl.kosciukw.petsify.shared.ui.components.ButtonText
-import pl.kosciukw.petsify.shared.ui.components.DefaultScreenUI
-import pl.kosciukw.petsify.shared.ui.components.EditText
-import pl.kosciukw.petsify.shared.ui.components.UIComponent
+import pl.kosciukw.petsify.shared.ui.components.image.BackgroundImage
+import pl.kosciukw.petsify.shared.ui.components.button.ButtonRegular
+import pl.kosciukw.petsify.shared.ui.components.button.ButtonText
+import pl.kosciukw.petsify.shared.ui.components.base.BaseScreen
+import pl.kosciukw.petsify.shared.ui.components.input.EditText
+import pl.kosciukw.petsify.shared.ui.UIComponent
 import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.ui.components.secure.PasswordInput
 import pl.kosciukw.petsify.shared.ui.theme.BlackLiquorice
@@ -98,7 +98,7 @@ internal fun LoginScreen(
         }
     }
 
-    DefaultScreenUI(
+    BaseScreen(
         errors = errors,
         progressBarState = state.progressBarState,
         content = {

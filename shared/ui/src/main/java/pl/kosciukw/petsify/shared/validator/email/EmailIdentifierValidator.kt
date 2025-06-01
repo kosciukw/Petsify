@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.feature.pairdevice.domain
+package pl.kosciukw.petsify.shared.validator.email
 
 import pl.kosciukw.petsify.shared.validator.EmailIdentifier
 import pl.kosciukw.petsify.shared.validator.IdentifierValidator

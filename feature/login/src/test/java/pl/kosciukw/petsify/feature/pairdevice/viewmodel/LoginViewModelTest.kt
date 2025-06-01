@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import pl.kosciukw.petsify.feature.pairdevice.domain.EmailIdentifierValidator
+import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator
 import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginEvent
 import pl.kosciukw.petsify.feature.pairdevice.presentation.ui.LoginViewModel
 import pl.kosciukw.petsify.feature.pairdevice.usecase.PairDeviceUseCase

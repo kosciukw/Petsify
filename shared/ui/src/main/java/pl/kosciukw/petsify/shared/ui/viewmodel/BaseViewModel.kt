@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.shared.ui.components.viewmodel
+package pl.kosciukw.petsify.shared.ui.viewmodel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import pl.kosciukw.petsify.shared.error.AppError
 import pl.kosciukw.petsify.shared.error.DomainError
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
-import pl.kosciukw.petsify.shared.ui.components.UIComponent
+import pl.kosciukw.petsify.shared.ui.UIComponent
 import pl.kosciukw.petsify.shared.ui.components.view.ViewEvent
 import pl.kosciukw.petsify.shared.ui.components.view.ViewSingleAction
 import pl.kosciukw.petsify.shared.ui.components.view.ViewState

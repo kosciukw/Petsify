@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.shared.ui.components
+package pl.kosciukw.petsify.shared.ui.components.base
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -14,9 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.flow.Flow
-import pl.kosciukw.petsify.shared.components.LoadingScreen
 import pl.kosciukw.petsify.shared.data.network.NetworkState
+import pl.kosciukw.petsify.shared.ui.UIComponent
 import pl.kosciukw.petsify.shared.ui.components.dialog.CreateUIComponentDialog
+import pl.kosciukw.petsify.shared.ui.components.progress.LoadingScreen
 import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.ui.components.snackbar.AppSnackbar
 import pl.kosciukw.petsify.shared.ui.components.toolbar.ToolbarConfig
@@ -24,7 +25,7 @@ import pl.kosciukw.petsify.shared.ui.components.toolbar.ToolbarCustom
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun DefaultScreenUI(
+fun BaseScreen(
     modifier: Modifier = Modifier,
     errors: Flow<UIComponent>,
     progressBarState: ProgressBarState = ProgressBarState.Idle,
@@ -44,20 +45,13 @@ fun DefaultScreenUI(
     Scaffold(
         modifier = modifier
             .fillMaxSize()
-            .background(
-                color = MaterialTheme.colorScheme.background
-            ),
+            .background(color = MaterialTheme.colorScheme.background),
         topBar = {
-            toolbarConfig?.let { config ->
-                ToolbarCustom(
-                    toolbarConfig = config
-                )
-            }
+            toolbarConfig?.let { config -> ToolbarCustom(toolbarConfig = config) }
         }
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             content()

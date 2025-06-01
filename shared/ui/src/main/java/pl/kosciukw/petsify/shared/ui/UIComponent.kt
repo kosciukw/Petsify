@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.shared.ui.components
+package pl.kosciukw.petsify.shared.ui
 
 sealed class UIComponent {
     data class ToastSimple(val title: String) : UIComponent()

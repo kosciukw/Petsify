@@ -12,9 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import pl.kosciukw.petsify.shared.ui.components.CircleButton
+import pl.kosciukw.petsify.shared.ui.components.button.CircleButton
 import pl.kosciukw.petsify.shared.ui.theme.BodyM
-import pl.kosciukw.petsify.shared.ui.theme.paddingGapM
+import pl.kosciukw.petsify.shared.ui.theme.paddingGapL
 import pl.kosciukw.petsify.shared.utils.empty
 
 @Composable
@@ -24,7 +24,7 @@ fun ToolbarCustom(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = paddingGapM),
+            .padding(top = paddingGapL),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.shared.components
+package pl.kosciukw.petsify.shared.ui.components.spacer
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size

@@ -2,6 +2,7 @@ package com.kosciukw.services.user.repository
 
 import com.kosciukw.services.data.user.api.controller.UserApiController
 import com.kosciukw.services.data.user.mapper.PairByPasswordDomainToRequestModelMapper
+import com.kosciukw.services.data.user.mapper.SignUpDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.UserApiToDomainErrorMapper
 import com.kosciukw.services.data.user.model.api.request.PairByPasswordRequest
 import com.kosciukw.services.data.user.model.domain.PairByPasswordDomainModel
@@ -20,11 +21,11 @@ import pl.kosciukw.petsify.shared.network.NetworkStateProvider
 internal class UserRepositoryRemoteImplTest {
 
     private lateinit var repository: UserRepository
-    private val networkStateProvider: NetworkStateProvider = mockk(relaxed = true)
-    private val errorMapper: UserApiToDomainErrorMapper = mockk(relaxed = true)
-    private val pairByPasswordDomainToRequestModelMapper: PairByPasswordDomainToRequestModelMapper =
-        mockk(relaxed = true)
     private val userApiController: UserApiController = mockk(relaxed = true)
+    private val errorMapper: UserApiToDomainErrorMapper = mockk(relaxed = true)
+    private val networkStateProvider: NetworkStateProvider = mockk(relaxed = true)
+    private val pairByPasswordDomainToRequestModelMapper: PairByPasswordDomainToRequestModelMapper = mockk(relaxed = true)
+    private val signUpDomainToRequestModelMapper: SignUpDomainToRequestModelMapper = mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
@@ -32,7 +33,8 @@ internal class UserRepositoryRemoteImplTest {
             networkStateProvider = networkStateProvider,
             errorMapper = errorMapper,
             userApiController = userApiController,
-            pairByPasswordDomainToRequestModelMapper = pairByPasswordDomainToRequestModelMapper
+            pairByPasswordDomainToRequestModelMapper = pairByPasswordDomainToRequestModelMapper,
+            signUpDomainToRequestModelMapper = signUpDomainToRequestModelMapper
         )
     }
 

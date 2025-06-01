@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.shared.ui.components
+package pl.kosciukw.petsify.shared.ui.components.image
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable

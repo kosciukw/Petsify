@@ -3,7 +3,7 @@ package pl.kosciukw.petsify.feature.pairdevice.presentation.ui
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import pl.kosciukw.petsify.feature.pairdevice.domain.EmailIdentifierValidator
+import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator
 import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginAction
 import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginEvent
 import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginState
@@ -12,7 +12,7 @@ import pl.kosciukw.petsify.shared.data.network.NetworkState
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
-import pl.kosciukw.petsify.shared.ui.components.viewmodel.BaseViewModel
+import pl.kosciukw.petsify.shared.ui.viewmodel.BaseViewModel
 import pl.kosciukw.petsify.shared.utils.clear
 import pl.kosciukw.petsify.shared.validator.EmailIdentifier
 import pl.kosciukw.petsify.shared.validator.IdentifierState

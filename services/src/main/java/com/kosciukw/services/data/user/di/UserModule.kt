@@ -12,6 +12,7 @@ import com.kosciukw.services.data.user.error.mapper.impl.ErrorResponseToUserApiE
 import com.kosciukw.services.data.user.error.mapper.impl.HttpToUserApiExceptionMapperImpl
 import com.kosciukw.services.data.user.error.mapper.impl.UserExceptionMapperImpl
 import com.kosciukw.services.data.user.mapper.PairByPasswordDomainToRequestModelMapper
+import com.kosciukw.services.data.user.mapper.SignUpDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.UserApiToDomainErrorMapper
 import com.kosciukw.services.data.user.repository.UserRepository
 import com.kosciukw.services.data.user.repository.error.UserApiToDomainErrorMapperImpl
@@ -43,12 +44,14 @@ object UserModule {
         errorMapper: UserApiToDomainErrorMapper,
         networkStateProvider: NetworkStateProvider,
         userApiController: UserApiController,
-        pairByPasswordDomainToRequestModelMapper: PairByPasswordDomainToRequestModelMapper
+        pairByPasswordDomainToRequestModelMapper: PairByPasswordDomainToRequestModelMapper,
+        signUpDomainToRequestModelMapper: SignUpDomainToRequestModelMapper
     ): UserRepository = UserRepositoryRemoteImpl(
         errorMapper = errorMapper,
         networkStateProvider = networkStateProvider,
         userApiController = userApiController,
-        pairByPasswordDomainToRequestModelMapper = pairByPasswordDomainToRequestModelMapper
+        pairByPasswordDomainToRequestModelMapper = pairByPasswordDomainToRequestModelMapper,
+        signUpDomainToRequestModelMapper = signUpDomainToRequestModelMapper
     )
 
     @Provides
@@ -69,9 +72,7 @@ object UserModule {
     @Singleton
     fun provideUserApi(
         @Named("UserApiRetrofit") retrofit: Retrofit
-    ): UserApi {
-        return retrofit.create(UserApi::class.java)
-    }
+    ): UserApi = retrofit.create(UserApi::class.java)
 
     @Provides
     fun provideUserApiController(
@@ -120,12 +121,10 @@ object UserModule {
     @Provides
     fun provideErrorResponseConverter(
         @Named("UserApiRetrofit") retrofit: Retrofit
-    ): Converter<ResponseBody, ErrorResponse> {
-        return retrofit.responseBodyConverter(
-            ErrorResponse::class.java,
-            emptyArray()
-        )
-    }
+    ): Converter<ResponseBody, ErrorResponse> = retrofit.responseBodyConverter(
+        ErrorResponse::class.java,
+        emptyArray()
+    )
 
     @Provides
     fun provideErrorResponseToUserApiExceptionMapper(): ErrorResponseToUserApiExceptionMapper =
