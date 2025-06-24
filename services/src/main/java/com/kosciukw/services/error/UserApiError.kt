@@ -32,6 +32,12 @@ sealed class UserApiError : Throwable() {
         override fun toString() = String.empty()
     }
 
+    data class EmailAlreadyRegistered(
+        override val message: String
+    ) : UserApiError() {
+        override fun toString() = String.empty()
+    }
+
     data class HttpError(
         override val message: String? = null,
         val code: Int?

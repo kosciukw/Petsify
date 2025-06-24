@@ -4,24 +4,12 @@ import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,8 +32,7 @@ import pl.kosciukw.petsify.feature.login.R
 import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginAction
 import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginEvent
 import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginState
-import pl.kosciukw.petsify.shared.ui.components.spacer.Spacer8dp
-import pl.kosciukw.petsify.shared.ui.components.spacer.Spacer32dp
+import pl.kosciukw.petsify.shared.ui.components.spacer.*
 import pl.kosciukw.petsify.shared.data.network.NetworkState
 import pl.kosciukw.petsify.shared.extensions.makeToast
 import pl.kosciukw.petsify.shared.ui.components.image.BackgroundImage
@@ -56,21 +43,7 @@ import pl.kosciukw.petsify.shared.ui.components.input.EditText
 import pl.kosciukw.petsify.shared.ui.UIComponent
 import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.ui.components.secure.PasswordInput
-import pl.kosciukw.petsify.shared.ui.theme.BlackLiquorice
-import pl.kosciukw.petsify.shared.ui.theme.GoshawkGrey
-import pl.kosciukw.petsify.shared.ui.theme.PetsifyTheme
-import pl.kosciukw.petsify.shared.ui.theme.PureWhite
-import pl.kosciukw.petsify.shared.ui.theme.TextBoldS
-import pl.kosciukw.petsify.shared.ui.theme.TextBoldXL
-import pl.kosciukw.petsify.shared.ui.theme.TextPrimary
-import pl.kosciukw.petsify.shared.ui.theme.TextRegularS
-import pl.kosciukw.petsify.shared.ui.theme.TextS
-import pl.kosciukw.petsify.shared.ui.theme.paddingGapM
-import pl.kosciukw.petsify.shared.ui.theme.paddingL
-import pl.kosciukw.petsify.shared.ui.theme.paddingM
-import pl.kosciukw.petsify.shared.ui.theme.paddingS
-import pl.kosciukw.petsify.shared.ui.theme.paddingXL
-import pl.kosciukw.petsify.shared.ui.theme.paddingXXL
+import pl.kosciukw.petsify.shared.ui.theme.*
 import pl.kosciukw.petsify.shared.utils.empty
 import pl.kosciukw.petsify.shared.ui.R as SharedR
 
@@ -84,16 +57,14 @@ internal fun LoginScreen(
     action: Flow<LoginAction>,
     context: Context
 ) {
-    LaunchedEffect(action) {
-        action.collect { action ->
-            when (action) {
-                is LoginAction.Navigation.NavigateToMain -> {
-                    onNavigateToMain()
-                }
+    val currentActionFlow by rememberUpdatedState(action)
 
-                else -> {
-                    //no-op
-                }
+    LaunchedEffect(Unit) {
+        currentActionFlow.collect { action ->
+            when (action) {
+                is LoginAction.Navigation.NavigateToMain -> onNavigateToMain()
+                is LoginAction.Navigation.NavigateToSignup -> onNavigateToSignUp()
+                else -> Unit
             }
         }
     }
@@ -110,7 +81,12 @@ internal fun LoginScreen(
                 Header(modifier = Modifier.fillMaxWidth())
                 Spacer32dp()
                 LoginForm(
-                    onLoginButtonClicked = {
+                    inputEmail = state.inputEmail,
+                    inputPassword = state.inputPassword,
+                    isEmailError = state.isEmailValidationErrorEnabled,
+                    isPasswordError = state.isPasswordValidationErrorEnabled,
+                    isLoginEnabled = state.isLoginButtonEnabled,
+                    onLoginClick = {
                         events(
                             LoginEvent.Login(
                                 state.inputEmail,
@@ -118,20 +94,129 @@ internal fun LoginScreen(
                             )
                         )
                     },
-                    onNavigateToSignUp = onNavigateToSignUp,
-                    modifier = Modifier.fillMaxWidth(),
-                    onEmailTextChanged = { email ->
+                    onEmailChange = { email ->
                         events(LoginEvent.OnEmailTextChanged(email))
                     },
-                    onPasswordTextChanged = { password ->
-                        events(LoginEvent.OnPasswordTextChanged(password))
-                    },
-                    state = state,
+                    onPasswordChange = { events(LoginEvent.OnPasswordTextChanged(it)) },
+                    onNavigateToSignUpClick = { events(LoginEvent.OnNavigateToSignUpClicked) },
                     context = context
                 )
+                Spacer32dp()
             }
         }
     )
+}
+
+@Composable
+private fun LoginForm(
+    context: Context,
+    inputEmail: String,
+    inputPassword: String,
+    isEmailError: Boolean,
+    isPasswordError: Boolean,
+    isLoginEnabled: Boolean,
+    onLoginClick: () -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onNavigateToSignUpClick: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(horizontal = paddingL)
+    ) {
+        Text(
+            text = stringResource(id = SharedR.string.login_screen_welcomd_our_community_today),
+            style = TextBoldXL,
+            color = GoshawkGrey,
+            modifier = Modifier.padding(paddingM)
+        )
+
+        EditText(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = paddingS),
+            trailingIcon = ImageVector.vectorResource(id = R.drawable.ic_paw),
+            label = stringResource(id = SharedR.string.login_screen_email_field),
+            text = inputEmail,
+            onTextChange = onEmailChange,
+            isErrorMessageEnabled = isEmailError,
+            errorMessage = stringResource(id = SharedR.string.email_validation_error),
+        )
+
+        PasswordInput(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = paddingS),
+            inputType = KeyboardType.Password,
+            trailingIcon = ImageVector.vectorResource(id = R.drawable.ic_bone),
+            label = stringResource(id = SharedR.string.login_screen_password_field),
+            text = inputPassword,
+            onTextChange = onPasswordChange,
+            errorMessage = stringResource(id = SharedR.string.password_validation_error),
+            isErrorMessageEnabled = isPasswordError
+        )
+
+        Text(
+            text = stringResource(id = SharedR.string.login_screen_forgot_password),
+            style = TextRegularS.copy(textAlign = TextAlign.End, fontSize = TextS),
+            modifier = Modifier
+                .padding(vertical = paddingM)
+                .fillMaxWidth()
+        )
+
+        ButtonRegular(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .padding(top = paddingM),
+            style = TextBoldS,
+            buttonColors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer
+            ),
+            onClick = onLoginClick,
+            label = stringResource(id = SharedR.string.login_screen_login_button),
+            textColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            isButtonEnabled = isLoginEnabled
+        )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = paddingXL)
+        ) {
+            Text(
+                text = stringResource(id = SharedR.string.login_screen_login_new_to_petsify),
+                style = TextRegularS
+            )
+
+            ButtonText(
+                modifier = Modifier.padding(start = paddingS),
+                onClick = onNavigateToSignUpClick,
+                label = stringResource(id = SharedR.string.login_screen_signup),
+                style = TextBoldS,
+                textColor = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+        }
+
+        Text(
+            text = stringResource(id = SharedR.string.login_screen_or),
+            style = TextRegularS,
+            modifier = Modifier.padding(vertical = paddingL)
+        )
+
+        LoginWithGoogleButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .padding(top = paddingM),
+            style = TextBoldS,
+            onClick = {
+                context.makeToast("Login with google button clicked")
+            },
+            label = stringResource(id = SharedR.string.login_screen_google_login_button),
+            isButtonEnabled = true,
+            painter = painterResource(id = R.drawable.ic_google)
+        )
+    }
 }
 
 @Composable
@@ -161,118 +246,6 @@ private fun Header(modifier: Modifier) {
             )
             Spacer8dp()
         }
-    }
-}
-
-@Composable
-private fun LoginForm(
-    modifier: Modifier = Modifier,
-    onLoginButtonClicked: () -> Unit,
-    onNavigateToSignUp: () -> Unit,
-    onEmailTextChanged: (String) -> Unit,
-    onPasswordTextChanged: (String) -> Unit,
-    state: LoginState,
-    context: Context
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.padding(horizontal = paddingL)
-    ) {
-        Text(
-            text = stringResource(id = SharedR.string.login_screen_welcomd_our_community_today),
-            style = TextBoldXL,
-            color = GoshawkGrey,
-            modifier = Modifier.padding(paddingM)
-        )
-
-        EditText(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = paddingS),
-            trailingIcon = ImageVector.vectorResource(id = R.drawable.ic_paw),
-            label = stringResource(id = SharedR.string.login_screen_email_field),
-            text = state.inputEmail,
-            onTextChange = { email -> onEmailTextChanged(email) },
-            isErrorMessageEnabled = state.isEmailValidationErrorEnabled,
-            errorMessage = stringResource(id = SharedR.string.email_validation_error),
-        )
-
-        PasswordInput(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = paddingS),
-            inputType = KeyboardType.Password,
-            trailingIcon = ImageVector.vectorResource(id = R.drawable.ic_bone),
-            label = stringResource(id = SharedR.string.login_screen_password_field),
-            text = state.inputPassword,
-            onTextChange = { password -> onPasswordTextChanged(password) },
-            errorMessage = stringResource(id = SharedR.string.password_validation_error),
-            isErrorMessageEnabled = state.isPasswordValidationErrorEnabled
-        )
-
-        Text(
-            text = stringResource(id = SharedR.string.login_screen_forgot_password),
-            style = TextRegularS.copy(textAlign = TextAlign.End, fontSize = TextS),
-            modifier = Modifier
-                .padding(vertical = paddingM)
-                .fillMaxWidth()
-        )
-
-        // Login Button
-        ButtonRegular(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .padding(top = paddingM),
-            style = TextBoldS,
-            buttonColors = ButtonDefaults.buttonColors(
-                containerColor = BlackLiquorice
-            ),
-            onClick = onLoginButtonClicked,
-            label = stringResource(id = SharedR.string.login_screen_login_button),
-            textColor = PureWhite,
-            isButtonEnabled = state.isLoginButtonEnabled
-        )
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = paddingXL)
-        ) {
-            Text(
-                text = stringResource(id = SharedR.string.login_screen_login_new_to_petsify),
-                style = TextRegularS
-            )
-
-            ButtonText(
-                modifier = Modifier.padding(start = paddingS),
-                onClick = onNavigateToSignUp,
-                label = stringResource(id = SharedR.string.login_screen_signup),
-                style = TextBoldS,
-                textColor = GoshawkGrey
-            )
-        }
-
-        Text(
-            text = stringResource(id = SharedR.string.login_screen_or),
-            style = TextRegularS,
-            modifier = Modifier.padding(vertical = paddingL)
-        )
-
-        LoginWithGoogleButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .padding(top = paddingM),
-            style = TextBoldS,
-            onClick = {
-                context.makeToast(message = "Login with google button clicked")
-            },
-            label = stringResource(id = SharedR.string.login_screen_google_login_button),
-            isButtonEnabled = true,
-            painter = painterResource(id = R.drawable.ic_google)
-        )
-
-        Spacer32dp()
     }
 }
 

@@ -6,26 +6,27 @@ import kotlinx.coroutines.launch
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpAction
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpEvent
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpState
-import pl.kosciukw.petsify.feature.signup.usecase.SignUpUseCase
+import pl.kosciukw.petsify.feature.signup.usecase.StartOtpRegistrationUseCase
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.ui.viewmodel.BaseViewModel
-import pl.kosciukw.petsify.shared.utils.clear
 import pl.kosciukw.petsify.shared.validator.EmailIdentifier
 import pl.kosciukw.petsify.shared.validator.IdentifierState
 import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator
 import pl.kosciukw.petsify.shared.validator.notempty.NotEmptyValidator
+import pl.kosciukw.petsify.shared.validator.password.PasswordMatchState
+import pl.kosciukw.petsify.shared.validator.password.PasswordMatchValidator
 import pl.kosciukw.petsify.shared.validator.password.PasswordValidator
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase,
+    private val startOtpRegistrationUseCase: StartOtpRegistrationUseCase,
     private val emailIdentifierValidator: EmailIdentifierValidator,
     private val notEmptyValidator: NotEmptyValidator<CharArray>,
     private val passwordValidator: PasswordValidator,
-//    private val passwordMatchValidator: PasswordMatchValidator,
+    private val passwordMatchValidator: PasswordMatchValidator,
     integrationErrorMapper: IntegrationErrorMapper
 ) : BaseViewModel<SignUpEvent, SignUpState, SignUpAction>(
     integrationErrorMapper = integrationErrorMapper
@@ -48,13 +49,8 @@ class SignUpViewModel @Inject constructor(
             is SignUpEvent.OnConfirmPasswordChanged -> onConfirmPasswordChanged(event.value.toCharArray())
             is SignUpEvent.OnTermsAcceptedChanged -> onTermsAcceptedChanged(event.accepted)
             is SignUpEvent.OnMarketingAcceptedChanged -> onMarketingAccepted(event.accepted)
-////            is SignUpEvent.Register -> register(
-////                name = event.name,
-////                email = event.email,
-////                password = event.password,
-////                repeatPassword = event.repeatPassword,
-////                termsAccepted = event.termsAccepted
-////            )
+            is SignUpEvent.OnConfirmButtonClicked -> onConfirmButtonClicked()
+            is SignUpEvent.OnLoginButtonClicked -> { setAction { SignUpAction.Navigation.NavigateToLogin } }
         }
     }
 
@@ -79,36 +75,78 @@ class SignUpViewModel @Inject constructor(
                 isEmailValidationErrorEnabled = !isEmailValid
             )
         }
-        email.clear()
         handleButtonState()
     }
 
     private fun onPasswordChanged(password: CharArray) {
         isPasswordValid = passwordValidator.isValid(password)
+
+        val matchState = passwordMatchValidator.isValid(
+            password = password,
+            confirmPassword = _state.value.inputConfirmPassword.toCharArray()
+        )
+
         setState {
             copy(
                 inputPassword = password.concatToString(),
                 isPasswordValidationErrorEnabled = !isPasswordValid
             )
         }
-//        password.clear()
+
+        when (matchState) {
+            is PasswordMatchState.Match -> {
+                setState {
+                    copy(isConfirmPasswordValidationErrorEnabled = false)
+                }
+            }
+
+            is PasswordMatchState.Mismatch -> {
+                setState {
+                    copy(isConfirmPasswordValidationErrorEnabled = true)
+                }
+
+            }
+
+            is PasswordMatchState.Empty -> {
+                //no-op
+            }
+        }
+
         handleButtonState()
     }
 
     private fun onConfirmPasswordChanged(confirmPassword: CharArray) {
-        isRepeatPasswordValid =
-            confirmPassword.contentEquals(_state.value.inputPassword.toCharArray())
-//        isRepeatPasswordValid = passwordMatchValidator.areEqual(
-//            _state.value.inputPassword.toCharArray(),
-//            confirmPassword
-//        )
+        val matchState = passwordMatchValidator.isValid(
+            password = _state.value.inputPassword.toCharArray(),
+            confirmPassword = confirmPassword
+        )
+
         setState {
             copy(
                 inputConfirmPassword = confirmPassword.concatToString(),
-                isConfirmPasswordValidationErrorEnabled = !isRepeatPasswordValid
             )
         }
-//        confirmPassword.clear()
+
+        when (matchState) {
+            is PasswordMatchState.Match -> {
+                setState {
+                    copy(isConfirmPasswordValidationErrorEnabled = false)
+                }
+            }
+
+            is PasswordMatchState.Mismatch -> {
+                setState {
+                    copy(isConfirmPasswordValidationErrorEnabled = true)
+                }
+            }
+
+            is PasswordMatchState.Empty -> {
+                setState {
+                    copy(inputConfirmPassword = confirmPassword.concatToString())
+                }
+            }
+        }
+
         handleButtonState()
     }
 
@@ -134,22 +172,16 @@ class SignUpViewModel @Inject constructor(
         handleButtonState()
     }
 
+    private fun onConfirmButtonClicked() {
+        startOtpRegistration(_state.value.inputEmail)
+    }
 
-    private fun signUp(
-        name: String,
-        email: String,
-        password: String,
-        termsAccepted: Boolean
+    private fun startOtpRegistration(
+        email: String
     ) {
         viewModelScope.launch {
-            signUpUseCase.action(
-                SignUpUseCase.Params(
-                    name = name,
-                    email = email,
-                    password = password,
-                    termsAccepted = termsAccepted,
-                    marketingAccepted = isMarketingAccepted
-                )
+            startOtpRegistrationUseCase.action(
+                StartOtpRegistrationUseCase.Params(email = email)
             ).collect { result ->
                 when (result) {
                     is ResultOrFailure.Loading -> {
@@ -158,7 +190,8 @@ class SignUpViewModel @Inject constructor(
 
                     is ResultOrFailure.Success -> {
                         setState { copy(progressBarState = ProgressBarState.Idle) }
-                        setAction { SignUpAction.Navigation.NavigateToMain }
+
+                        // TODO 26.06.2025 handle finalize registration process
                     }
 
                     is ResultOrFailure.Failure -> {
@@ -176,6 +209,7 @@ class SignUpViewModel @Inject constructor(
                 && isPasswordValid
                 && isRepeatPasswordValid
                 && isTermsAccepted
+                && isMarketingAccepted
         setState { copy(isSignUpButtonStateEnabled = enabled) }
     }
 }

@@ -27,6 +27,10 @@ class UserApiToDomainErrorMapperImpl : UserApiToDomainErrorMapper {
             message = error.message
         )
 
+        is UserApiError.EmailAlreadyRegistered -> UserDomainError.EmailAlreadyRegistered(
+            message = error.message
+        )
+
         is UserApiError.AuthError -> UserDomainError.AuthenticationError(
             message = error.message
         )

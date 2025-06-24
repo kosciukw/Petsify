@@ -12,5 +12,5 @@ data class LoginState(
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
     val isEmailValidationErrorEnabled: Boolean = false,
     val isPasswordValidationErrorEnabled: Boolean = false,
-    val networkState: NetworkState = NetworkState.Established,
+    val networkState: NetworkState = NetworkState.Established
 ) : ViewState

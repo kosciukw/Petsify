@@ -6,6 +6,7 @@ import com.kosciukw.services.data.user.api.provider.UserUrlProvider
 import com.kosciukw.services.data.user.error.mapper.UserExceptionMapper
 import com.kosciukw.services.data.user.model.api.request.PairByPasswordRequest
 import com.kosciukw.services.data.user.model.api.request.SignUpRequest
+import com.kosciukw.services.data.user.model.api.request.StartOtpRegistrationRequest
 
 class UserApiControllerImpl(
     private val userApi: UserApi,
@@ -20,6 +21,15 @@ class UserApiControllerImpl(
                 url = userUrlProvider.getPairByPasswordUrl()
             )
         }
+
+    override suspend fun startOtpRegistrationRequest(request: StartOtpRegistrationRequest) {
+        userExceptionMapper.mapException {
+            userApi.startOtpRegistration(
+                startOtpRegistrationRequest = request,
+                url = userUrlProvider.getStartOtpRegistrationUrl()
+            )
+        }
+    }
 
     override suspend fun signUp(request: SignUpRequest) {
         userExceptionMapper.mapException {

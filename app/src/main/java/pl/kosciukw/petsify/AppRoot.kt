@@ -11,6 +11,7 @@ import pl.kosciukw.petsify.feature.pairdevice.navigation.LoginDestination
 import pl.kosciukw.petsify.feature.pairdevice.navigation.loginScreen
 import pl.kosciukw.petsify.feature.main.mainScreen
 import pl.kosciukw.petsify.feature.main.navigateToMain
+import pl.kosciukw.petsify.feature.pairdevice.navigation.navigateToLogin
 import pl.kosciukw.petsify.feature.signup.navigation.navigateToSignUp
 import pl.kosciukw.petsify.feature.signup.navigation.signUpScreen
 
@@ -28,8 +29,11 @@ fun AppRoot() {
         )
 
         signUpScreen(
-            onNavigateToMain = { navController.navigateToMain() },
-            onNavigateUp = { navController.navigateUp() }
+            onNavigateToOtp = {
+               //  todo finalize otp registration
+            },
+            onNavigateUp = { navController.navigateUp() },
+            onNavigateToLogin = { navController.navigateToLogin() }
         )
 
         mainScreen(
@@ -42,8 +46,8 @@ fun AppRoot() {
             onNavigateUp = { navController.navigateUp() }
         )
 
-    composerScreenRoot(
-      onNavigateUp = { navController.navigateUp() }
-    )
-  }
+        composerScreenRoot(
+            onNavigateUp = { navController.navigateUp() }
+        )
+    }
 }

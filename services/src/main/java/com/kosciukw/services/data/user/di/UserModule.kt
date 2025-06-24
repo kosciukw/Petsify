@@ -13,6 +13,7 @@ import com.kosciukw.services.data.user.error.mapper.impl.HttpToUserApiExceptionM
 import com.kosciukw.services.data.user.error.mapper.impl.UserExceptionMapperImpl
 import com.kosciukw.services.data.user.mapper.PairByPasswordDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.SignUpDomainToRequestModelMapper
+import com.kosciukw.services.data.user.mapper.StartOtpRegistrationDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.UserApiToDomainErrorMapper
 import com.kosciukw.services.data.user.repository.UserRepository
 import com.kosciukw.services.data.user.repository.error.UserApiToDomainErrorMapperImpl
@@ -45,13 +46,15 @@ object UserModule {
         networkStateProvider: NetworkStateProvider,
         userApiController: UserApiController,
         pairByPasswordDomainToRequestModelMapper: PairByPasswordDomainToRequestModelMapper,
-        signUpDomainToRequestModelMapper: SignUpDomainToRequestModelMapper
+        signUpDomainToRequestModelMapper: SignUpDomainToRequestModelMapper,
+        startOtpRegistrationDomainToRequestModelMapper: StartOtpRegistrationDomainToRequestModelMapper
     ): UserRepository = UserRepositoryRemoteImpl(
         errorMapper = errorMapper,
         networkStateProvider = networkStateProvider,
         userApiController = userApiController,
         pairByPasswordDomainToRequestModelMapper = pairByPasswordDomainToRequestModelMapper,
-        signUpDomainToRequestModelMapper = signUpDomainToRequestModelMapper
+        signUpDomainToRequestModelMapper = signUpDomainToRequestModelMapper,
+        startOtpRegistrationDomainToRequestModelMapper = startOtpRegistrationDomainToRequestModelMapper
     )
 
     @Provides

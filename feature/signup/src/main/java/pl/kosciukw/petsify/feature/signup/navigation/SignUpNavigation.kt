@@ -12,7 +12,8 @@ import pl.kosciukw.petsify.feature.signup.presentation.ui.SignUpViewModel
 private data object SignUpDestination
 
 fun NavGraphBuilder.signUpScreen(
-    onNavigateToMain: () -> Unit,
+    onNavigateToOtp: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     onNavigateUp: () -> Unit
 ) {
     composable<SignUpDestination> {
@@ -23,12 +24,14 @@ fun NavGraphBuilder.signUpScreen(
         val errors = signUpViewModel.errors
 
         SignUpScreen(
-            onNavigateToMain = onNavigateToMain,
+            onNavigateToOtp = onNavigateToOtp,
             onNavigateUp = onNavigateUp,
+            onNavigateToLogin = onNavigateToLogin,
             state = state,
             action = action,
             errors = errors,
-            events = { event -> signUpViewModel.setEvent(event) })
+            events = { event -> signUpViewModel.setEvent(event) }
+        )
     }
 }
 

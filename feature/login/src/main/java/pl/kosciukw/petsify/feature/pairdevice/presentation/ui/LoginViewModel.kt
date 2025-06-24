@@ -51,6 +51,12 @@ class LoginViewModel @Inject constructor(
                 onPasswordTextChanged(event.value.toCharArray())
             }
 
+            is LoginEvent.OnNavigateToSignUpClicked -> {
+                setAction {
+                    LoginAction.Navigation.NavigateToSignup
+                }
+            }
+
             else -> {
                 //no-op
             }

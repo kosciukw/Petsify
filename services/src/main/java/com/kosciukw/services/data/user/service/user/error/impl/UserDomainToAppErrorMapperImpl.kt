@@ -23,8 +23,13 @@ class UserDomainToAppErrorMapperImpl @Inject constructor(
             uiMessage = context.getString(SharedR.string.error_authentication)
         )
 
+        is UserDomainError.EmailAlreadyRegistered -> AppError.InfoError(
+            technicalMessage = error.message,
+            uiMessage = context.getString(SharedR.string.error_authentication)
+        )
+
         else -> AppError.InfoError(
-            technicalMessage =  error.message,
+            technicalMessage = error.message,
             uiMessage = context.getString(SharedR.string.error_something_went_wrong)
         )
     }

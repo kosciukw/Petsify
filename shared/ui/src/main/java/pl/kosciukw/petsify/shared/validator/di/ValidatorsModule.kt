@@ -11,6 +11,8 @@ import pl.kosciukw.petsify.shared.validator.email.EmailValidatorImpl
 import pl.kosciukw.petsify.shared.validator.notempty.NotEmptyValidator
 import pl.kosciukw.petsify.shared.validator.password.PasswordIdentifierValidator
 import pl.kosciukw.petsify.shared.validator.password.PasswordIdentifierValidatorImpl
+import pl.kosciukw.petsify.shared.validator.password.PasswordMatchValidator
+import pl.kosciukw.petsify.shared.validator.password.PasswordMatchValidatorImpl
 import pl.kosciukw.petsify.shared.validator.password.PasswordValidator
 import pl.kosciukw.petsify.shared.validator.password.PasswordValidatorImpl
 
@@ -44,4 +46,7 @@ object ValidatorsModule {
         passwordValidator = passwordValidator,
         notEmptyValidator = notEmptyValidator
     )
+
+    @Provides
+    fun providePasswordMatchValidator(): PasswordMatchValidator = PasswordMatchValidatorImpl()
 }

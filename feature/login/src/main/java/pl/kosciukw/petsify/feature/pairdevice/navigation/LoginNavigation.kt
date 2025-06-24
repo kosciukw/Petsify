@@ -2,6 +2,7 @@ package pl.kosciukw.petsify.feature.pairdevice.navigation
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
@@ -31,4 +32,8 @@ fun NavGraphBuilder.loginScreen(
             context = LocalContext.current
         )
     }
+}
+
+fun NavController.navigateToLogin() {
+    navigate(LoginDestination)
 }

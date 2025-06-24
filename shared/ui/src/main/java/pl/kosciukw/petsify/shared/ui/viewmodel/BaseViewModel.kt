@@ -100,6 +100,7 @@ abstract class BaseViewModel<Event : ViewEvent, UiState : ViewState, SingleActio
         showMessage: Boolean = true
     ) {
         integrationErrorMapper.map(error = error).let { appError ->
+            println("TEST_TAG ERROR ${appError.message}")
             when (appError) {
                 is AppError.InfoError -> setError {
                     UIComponent.ToastSimple(title = appError.uiMessage)

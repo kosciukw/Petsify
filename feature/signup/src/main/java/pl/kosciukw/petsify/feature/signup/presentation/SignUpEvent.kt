@@ -9,4 +9,6 @@ sealed class SignUpEvent : ViewEvent {
     data class OnConfirmPasswordChanged(val value: String) : SignUpEvent()
     data class OnTermsAcceptedChanged(val accepted: Boolean) : SignUpEvent()
     data class OnMarketingAcceptedChanged(val accepted: Boolean) : SignUpEvent()
+    data object OnConfirmButtonClicked : SignUpEvent()
+    data object OnLoginButtonClicked : SignUpEvent()
 }

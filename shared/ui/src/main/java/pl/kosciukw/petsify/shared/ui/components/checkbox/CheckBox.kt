@@ -11,18 +11,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import pl.kosciukw.petsify.shared.ui.components.spacer.Spacer8dp
 import pl.kosciukw.petsify.shared.ui.theme.BodyXS
-import pl.kosciukw.petsify.shared.ui.theme.MidnightBlue
-import pl.kosciukw.petsify.shared.ui.theme.PureWhite
 import pl.kosciukw.petsify.shared.ui.R as SharedR
 
 @Composable
 fun CheckBoxText(
     modifier: Modifier = Modifier,
     isChecked: Boolean,
+    checkBoxColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    checkMarkColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
     text: String,
+    textStyle: TextStyle,
     onCheckedChange: (Boolean) -> Unit
 ) {
     Row(
@@ -32,8 +35,8 @@ fun CheckBoxText(
         Checkbox(
             checked = isChecked,
             colors = CheckboxDefaults.colors(
-                checkedColor = MidnightBlue,
-                checkmarkColor = PureWhite
+                checkedColor = checkBoxColor,
+                checkmarkColor = checkMarkColor
             ),
             onCheckedChange = {
                 onCheckedChange(!isChecked)
@@ -44,14 +47,8 @@ fun CheckBoxText(
 
         Text(
             text = text,
-            style = MaterialTheme.typography.labelMedium
+            style = textStyle
         )
-
-//        TextWithLinks(
-//            text = "Akceptuję Regulamin i Politykę Prywatności",
-//            onClickTerms = { /* TODO: Open Terms screen */ },
-//            onClickPrivacy = { /* TODO: Open Privacy screen */ }
-//        )
     }
 
 }
@@ -77,10 +74,5 @@ private fun TermsAndConditionsCheckbox(
             text = stringResource(id = SharedR.string.sign_up_screen_confirm_accept_terms_and_conditions),
             style = MaterialTheme.typography.labelLarge
         )
-//        TextWithLinks(
-//            text = "Akceptuję Regulamin i Politykę Prywatności",
-//            onClickTerms = { /* TODO: Open Terms screen */ },
-//            onClickPrivacy = { /* TODO: Open Privacy screen */ }
-//        )
     }
 }

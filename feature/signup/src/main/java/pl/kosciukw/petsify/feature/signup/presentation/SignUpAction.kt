@@ -6,7 +6,7 @@ sealed class SignUpAction : ViewSingleAction {
 
     sealed class Navigation : SignUpAction() {
 
-        data object NavigateToMain : Navigation()
+        data object NavigateToOtp : Navigation()
 
         data object NavigateToLogin : Navigation()
     }

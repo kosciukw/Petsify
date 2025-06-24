@@ -31,6 +31,9 @@
     <string name="error_no_internet_connection">No internet connection</string>
     <string name="error_something_went_wrong">Oops… Something went wrong… Please try again</string>
     <string name="error_authentication">Invalid email or password</string>
+    <string name="error_email_already_registered">
+    An account with this email address already exists. Please sign in or use a different email address to register.
+</string>
 
     <!-- Validation messages -->
     <string name="email_validation_error">Please enter a valid email address</string>
