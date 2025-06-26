@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.feature.pairdevice.presentation.ui
+package pl.kosciukw.petsify.feature.login.presentation.ui
 
 import android.content.Context
 import androidx.compose.foundation.Image
@@ -29,9 +29,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import pl.kosciukw.petsify.feature.login.R
-import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginAction
-import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginEvent
-import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginState
+import pl.kosciukw.petsify.feature.login.presentation.LoginAction
+import pl.kosciukw.petsify.feature.login.presentation.LoginEvent
+import pl.kosciukw.petsify.feature.login.presentation.LoginState
 import pl.kosciukw.petsify.shared.ui.components.spacer.*
 import pl.kosciukw.petsify.shared.data.network.NetworkState
 import pl.kosciukw.petsify.shared.extensions.makeToast

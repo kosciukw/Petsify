@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.feature.pairdevice.presentation
+package pl.kosciukw.petsify.feature.login.presentation
 
 import pl.kosciukw.petsify.shared.data.network.NetworkState
 import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState

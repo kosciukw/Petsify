@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.feature.pairdevice.validator
+package pl.kosciukw.petsify.feature.login.validator
 
 import io.mockk.every
 import io.mockk.mockk

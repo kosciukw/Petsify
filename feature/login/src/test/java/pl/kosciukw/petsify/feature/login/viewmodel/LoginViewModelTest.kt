@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.feature.pairdevice.viewmodel
+package pl.kosciukw.petsify.feature.login.viewmodel
 
 import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
 import io.mockk.coEvery
@@ -15,9 +15,9 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator
-import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginEvent
-import pl.kosciukw.petsify.feature.pairdevice.presentation.ui.LoginViewModel
-import pl.kosciukw.petsify.feature.pairdevice.usecase.PairDeviceUseCase
+import pl.kosciukw.petsify.feature.login.presentation.LoginEvent
+import pl.kosciukw.petsify.feature.login.presentation.ui.LoginViewModel
+import pl.kosciukw.petsify.feature.login.usecase.LoginDeviceUseCase
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.AfterEach
 @ExperimentalCoroutinesApi
 class LoginViewModelTest {
 
-    private val pairDeviceUseCase: PairDeviceUseCase = mockk()
+    private val loginDeviceUseCase: LoginDeviceUseCase = mockk()
     private val emailValidator: EmailIdentifierValidator = mockk()
     private val notEmptyValidator: NotEmptyValidator<CharArray> = mockk()
     private val errorMapper: IntegrationErrorMapper = mockk()
@@ -44,7 +44,7 @@ class LoginViewModelTest {
         Dispatchers.setMain(testDispatcher)
 
         viewModel = LoginViewModel(
-            pairDeviceUseCase = pairDeviceUseCase,
+            loginDeviceUseCase = loginDeviceUseCase,
             emailIdentifierValidator = emailValidator,
             notEmptyValidator = notEmptyValidator,
             integrationErrorMapper = errorMapper
@@ -79,7 +79,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `When pair device called And result is success Then  should navigate to main`() = runTest {
+    fun `When login device called And result is success Then  should navigate to main`() = runTest {
         //Given
         val givenEmail = "test@example.com"
         val givenPassword = "password"
@@ -90,8 +90,8 @@ class LoginViewModelTest {
         )
 
         coEvery {
-            pairDeviceUseCase.action(
-                PairDeviceUseCase.Params(
+            loginDeviceUseCase.action(
+                LoginDeviceUseCase.Params(
                     email = givenEmail,
                     password = givenPassword
                 )

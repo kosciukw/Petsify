@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.feature.pairdevice.navigation
+package pl.kosciukw.petsify.feature.login.navigation
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -6,8 +6,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
-import pl.kosciukw.petsify.feature.pairdevice.presentation.ui.LoginScreen
-import pl.kosciukw.petsify.feature.pairdevice.presentation.ui.LoginViewModel
+import pl.kosciukw.petsify.feature.login.presentation.ui.LoginScreen
+import pl.kosciukw.petsify.feature.login.presentation.ui.LoginViewModel
 
 @Serializable
 data object LoginDestination

@@ -1,13 +1,13 @@
-package pl.kosciukw.petsify.feature.pairdevice.presentation.ui
+package pl.kosciukw.petsify.feature.login.presentation.ui
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator
-import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginAction
-import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginEvent
-import pl.kosciukw.petsify.feature.pairdevice.presentation.LoginState
-import pl.kosciukw.petsify.feature.pairdevice.usecase.PairDeviceUseCase
+import pl.kosciukw.petsify.feature.login.presentation.LoginAction
+import pl.kosciukw.petsify.feature.login.presentation.LoginEvent
+import pl.kosciukw.petsify.feature.login.presentation.LoginState
+import pl.kosciukw.petsify.feature.login.usecase.LoginDeviceUseCase
 import pl.kosciukw.petsify.shared.data.network.NetworkState
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val pairDeviceUseCase: PairDeviceUseCase,
+    private val loginDeviceUseCase: LoginDeviceUseCase,
     private val emailIdentifierValidator: EmailIdentifierValidator,
     private val notEmptyValidator: NotEmptyValidator<CharArray>,
     integrationErrorMapper: IntegrationErrorMapper
@@ -68,8 +68,8 @@ class LoginViewModel @Inject constructor(
         password: String
     ) {
         viewModelScope.launch {
-            pairDeviceUseCase.action(
-                PairDeviceUseCase.Params(
+            loginDeviceUseCase.action(
+                LoginDeviceUseCase.Params(
                     email,
                     password
                 )

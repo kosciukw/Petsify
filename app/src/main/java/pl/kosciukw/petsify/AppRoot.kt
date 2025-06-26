@@ -7,11 +7,11 @@ import pl.kosciukw.petsify.feature.composer.composerScreenRoot
 import pl.kosciukw.petsify.feature.composer.navigateToComposer
 import pl.kosciukw.petsify.feature.emaildetails.emailDetailsScreen
 import pl.kosciukw.petsify.feature.emaildetails.navigateToEmailDetails
-import pl.kosciukw.petsify.feature.pairdevice.navigation.LoginDestination
-import pl.kosciukw.petsify.feature.pairdevice.navigation.loginScreen
+import pl.kosciukw.petsify.feature.login.navigation.LoginDestination
+import pl.kosciukw.petsify.feature.login.navigation.loginScreen
 import pl.kosciukw.petsify.feature.main.mainScreen
 import pl.kosciukw.petsify.feature.main.navigateToMain
-import pl.kosciukw.petsify.feature.pairdevice.navigation.navigateToLogin
+import pl.kosciukw.petsify.feature.login.navigation.navigateToLogin
 import pl.kosciukw.petsify.feature.signup.navigation.navigateToSignUp
 import pl.kosciukw.petsify.feature.signup.navigation.signUpScreen
 

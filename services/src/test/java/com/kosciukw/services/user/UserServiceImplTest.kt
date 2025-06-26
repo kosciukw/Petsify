@@ -1,6 +1,6 @@
 package com.kosciukw.services.user
 
-import com.kosciukw.services.data.user.model.domain.PairByPasswordDomainModel
+import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
 import com.kosciukw.services.data.user.repository.UserRepository
 import com.kosciukw.services.data.user.service.user.UserService
 import com.kosciukw.services.data.user.service.user.impl.UserServiceImpl
@@ -24,17 +24,17 @@ internal class UserServiceImplTest {
     }
 
     @Test
-    fun `When pair device called Then should call proper method in repository`() = runTest {
+    fun `When login device called Then should call proper method in repository`() = runTest {
         //Given
-        val givenPairByPasswordDomainModel = PairByPasswordDomainModel(
+        val givenLoginByPasswordDomainModel = LoginByPasswordDomainModel(
             email = "email",
             password = "password"
         )
 
         //When
-        userRepository.pairDeviceByPassword(givenPairByPasswordDomainModel)
+        userRepository.loginDeviceByPassword(givenLoginByPasswordDomainModel)
 
         //Then
-        coVerify { userRepository.pairDeviceByPassword(givenPairByPasswordDomainModel) }
+        coVerify { userRepository.loginDeviceByPassword(givenLoginByPasswordDomainModel) }
     }
 }
