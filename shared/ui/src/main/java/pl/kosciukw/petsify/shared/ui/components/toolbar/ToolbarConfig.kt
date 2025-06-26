@@ -4,11 +4,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import pl.kosciukw.petsify.shared.utils.empty
 
 data class ToolbarConfig(
-    val startIconToolbar: ImageVector?,
-    val onClickStartIconToolbar: () -> Unit,
     val titleToolbar: String,
-    val endIconToolbar: ImageVector?,
-    val onClickEndIconToolbar: () -> Unit
+    val startIconToolbar: ImageVector? = null,
+    val onClickStartIconToolbar: () -> Unit = {},
+    val endIconToolbar: ImageVector? = null,
+    val onClickEndIconToolbar: () -> Unit = {}
 ) {
     override fun toString() = String.empty()
 }

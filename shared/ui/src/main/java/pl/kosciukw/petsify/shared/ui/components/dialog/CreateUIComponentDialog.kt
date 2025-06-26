@@ -21,7 +21,6 @@ fun CreateUIComponentDialog(
     description: String,
     onRemoveHeadFromQueue: () -> Unit
 ) {
-
     GenericDialog(
         modifier = Modifier.fillMaxWidth(0.9f),
         title = title,

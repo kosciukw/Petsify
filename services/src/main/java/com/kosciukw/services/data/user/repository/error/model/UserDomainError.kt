@@ -13,6 +13,8 @@ sealed class UserDomainError(message: String) : DomainError(message = HEADER + m
 
     class ValidationError(message: String) : UserDomainError(message)
 
+    class EmailAlreadyRegistered(message: String) : UserDomainError(message)
+
     class InvalidOtpCode(message: String) : UserDomainError(message)
 
     class InvalidOtpCodeLimitReached(message: String) : UserDomainError(message)

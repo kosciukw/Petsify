@@ -9,13 +9,6 @@ abstract class UseCase<out Type, in Params> where Type : Any? {
 
     abstract fun action(params: Params): Flow<Type>
 
-    fun execute(
-        params: Params,
-        dispatcher: CoroutineDispatcher = Dispatchers.IO
-    ): Flow<Type> = flow {
-        emitAll(action(params))
-    }.flowOn(dispatcher)
-
     operator fun invoke(
         params: Params,
         viewModelScope: CoroutineScope,
@@ -26,4 +19,11 @@ abstract class UseCase<out Type, in Params> where Type : Any? {
             .catch { e -> onResult(Result.failure(e)) }
             .collect { data -> onResult(Result.success(data)) }
     }
+
+    private fun execute(
+        params: Params,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ): Flow<Type> = flow {
+        emitAll(action(params))
+    }.flowOn(dispatcher)
 }

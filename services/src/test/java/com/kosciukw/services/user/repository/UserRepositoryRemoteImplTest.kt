@@ -1,10 +1,12 @@
 package com.kosciukw.services.user.repository
 
 import com.kosciukw.services.data.user.api.controller.UserApiController
-import com.kosciukw.services.data.user.mapper.PairByPasswordDomainToRequestModelMapper
+import com.kosciukw.services.data.user.mapper.LoginByPasswordDomainToRequestModelMapper
+import com.kosciukw.services.data.user.mapper.SignUpDomainToRequestModelMapper
+import com.kosciukw.services.data.user.mapper.StartOtpRegistrationDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.UserApiToDomainErrorMapper
-import com.kosciukw.services.data.user.model.api.request.PairByPasswordRequest
-import com.kosciukw.services.data.user.model.domain.PairByPasswordDomainModel
+import com.kosciukw.services.data.user.model.api.request.LoginByPasswordRequest
+import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
 import com.kosciukw.services.data.user.repository.UserRepository
 import com.kosciukw.services.data.user.repository.impl.UserRepositoryRemoteImpl
 import io.mockk.coVerify
@@ -20,11 +22,12 @@ import pl.kosciukw.petsify.shared.network.NetworkStateProvider
 internal class UserRepositoryRemoteImplTest {
 
     private lateinit var repository: UserRepository
-    private val networkStateProvider: NetworkStateProvider = mockk(relaxed = true)
-    private val errorMapper: UserApiToDomainErrorMapper = mockk(relaxed = true)
-    private val pairByPasswordDomainToRequestModelMapper: PairByPasswordDomainToRequestModelMapper =
-        mockk(relaxed = true)
     private val userApiController: UserApiController = mockk(relaxed = true)
+    private val errorMapper: UserApiToDomainErrorMapper = mockk(relaxed = true)
+    private val networkStateProvider: NetworkStateProvider = mockk(relaxed = true)
+    private val loginByPasswordDomainToRequestModelMapper: LoginByPasswordDomainToRequestModelMapper = mockk(relaxed = true)
+    private val signUpDomainToRequestModelMapper: SignUpDomainToRequestModelMapper = mockk(relaxed = true)
+    private val startOtpRegistrationDomainToRequestModelMapper: StartOtpRegistrationDomainToRequestModelMapper = mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
@@ -32,19 +35,21 @@ internal class UserRepositoryRemoteImplTest {
             networkStateProvider = networkStateProvider,
             errorMapper = errorMapper,
             userApiController = userApiController,
-            pairByPasswordDomainToRequestModelMapper = pairByPasswordDomainToRequestModelMapper
+            loginByPasswordDomainToRequestModelMapper = loginByPasswordDomainToRequestModelMapper,
+            signUpDomainToRequestModelMapper = signUpDomainToRequestModelMapper,
+            startOtpRegistrationDomainToRequestModelMapper = startOtpRegistrationDomainToRequestModelMapper
         )
     }
 
     @Test
-    fun `When pair device called Then should call proper method in controller`() {
+    fun `When login device called Then should call proper method in controller`() {
         //Given
-        val givenPairByPasswordDomainModel = PairByPasswordDomainModel(
+        val givenLoginByPasswordDomainModel = LoginByPasswordDomainModel(
             email = "email",
             password = "password"
         )
 
-        val givenPairDeviceByPasswordRequest = PairByPasswordRequest(
+        val givenLoginDeviceByPasswordRequest = LoginByPasswordRequest(
             email = "email",
             password = "password"
         )
@@ -53,22 +58,22 @@ internal class UserRepositoryRemoteImplTest {
             networkStateProvider.isInternetConnectionAvailable()
         } returns true
         every {
-            pairByPasswordDomainToRequestModelMapper.map(givenPairByPasswordDomainModel)
-        } returns givenPairDeviceByPasswordRequest
+            loginByPasswordDomainToRequestModelMapper.map(givenLoginByPasswordDomainModel)
+        } returns givenLoginDeviceByPasswordRequest
 
         //When
         runBlocking {
-            repository.pairDeviceByPassword(givenPairByPasswordDomainModel)
+            repository.loginDeviceByPassword(givenLoginByPasswordDomainModel)
         }
 
         //Then
-        coVerify { userApiController.pairByPassword(givenPairDeviceByPasswordRequest) }
+        coVerify { userApiController.loginByPassword(givenLoginDeviceByPasswordRequest) }
     }
 
     @Test
-    fun `When pair device called And no internet connection Then should throw proper exception`() {
+    fun `When login device called And no internet connection Then should throw proper exception`() {
         // Given
-        val givenPairByPasswordDomainModel = PairByPasswordDomainModel(
+        val givenLoginByPasswordDomainModel = LoginByPasswordDomainModel(
             email = "email",
             password = "password"
         )
@@ -78,10 +83,10 @@ internal class UserRepositoryRemoteImplTest {
         // When & Then
         assertThrows<CoreDomainError.NoInternetConnection> {
             runBlocking {
-                repository.pairDeviceByPassword(givenPairByPasswordDomainModel)
+                repository.loginDeviceByPassword(givenLoginByPasswordDomainModel)
             }
         }
 
-        coVerify(exactly = 0) { userApiController.pairByPassword(any()) }
+        coVerify(exactly = 0) { userApiController.loginByPassword(any()) }
     }
 }

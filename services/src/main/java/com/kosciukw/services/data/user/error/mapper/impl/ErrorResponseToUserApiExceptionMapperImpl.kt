@@ -12,6 +12,7 @@ class ErrorResponseToUserApiExceptionMapperImpl : ErrorResponseToUserApiExceptio
             ErrorReasonDto.AUTH_ERROR -> UserApiError.AuthError(message = input.reason)
             ErrorReasonDto.VALIDATION_ERROR -> UserApiError.ValidationError(message = input.reason)
             ErrorReasonDto.NOT_FOUND -> UserApiError.NotFoundError(message = input.reason)
+            ErrorReasonDto.EMAIL_ALREADY_REGISTERED -> UserApiError.EmailAlreadyRegistered(message = input.reason)
             ErrorReasonDto.UNKNOWN_ERROR -> UserApiError.UnknownError(message = input.reason)
         }
 }
