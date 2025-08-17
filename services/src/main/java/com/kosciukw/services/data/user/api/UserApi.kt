@@ -1,5 +1,6 @@
 package com.kosciukw.services.data.user.api
 
+import com.kosciukw.services.data.user.model.api.request.FinalizeOtpRegistrationRequest
 import com.kosciukw.services.data.user.model.api.request.LoginByPasswordRequest
 import com.kosciukw.services.data.user.model.api.request.SignUpRequest
 import com.kosciukw.services.data.user.model.api.request.StartOtpRegistrationRequest
@@ -20,6 +21,12 @@ interface UserApi {
     suspend fun startOtpRegistration(
         @Url url: String,
         @Body startOtpRegistrationRequest: StartOtpRegistrationRequest
+    )
+
+    @POST
+    suspend fun finalizeOtpRegistration(
+        @Url url: String,
+        @Body finalizeOtpRegistrationRequest: FinalizeOtpRegistrationRequest
     )
 
     @POST

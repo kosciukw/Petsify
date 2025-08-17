@@ -3,6 +3,7 @@ package pl.kosciukw.petsify.feature.signup.presentation.ui
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import pl.kosciukw.petsify.feature.otp.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpAction
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpEvent
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpState
@@ -50,7 +51,9 @@ class SignUpViewModel @Inject constructor(
             is SignUpEvent.OnTermsAcceptedChanged -> onTermsAcceptedChanged(event.accepted)
             is SignUpEvent.OnMarketingAcceptedChanged -> onMarketingAccepted(event.accepted)
             is SignUpEvent.OnConfirmButtonClicked -> onConfirmButtonClicked()
-            is SignUpEvent.OnLoginButtonClicked -> { setAction { SignUpAction.Navigation.NavigateToLogin } }
+            is SignUpEvent.OnLoginButtonClicked -> {
+                setAction { SignUpAction.Navigation.NavigateToLogin }
+            }
         }
     }
 
@@ -191,7 +194,17 @@ class SignUpViewModel @Inject constructor(
                     is ResultOrFailure.Success -> {
                         setState { copy(progressBarState = ProgressBarState.Idle) }
 
-                        // TODO 26.06.2025 handle finalize registration process
+                        setAction {
+                            SignUpAction.Navigation.NavigateToOtp(
+                                SignUpByOtpNavArgs(
+                                    email = _state.value.inputEmail,
+                                    name = _state.value.inputName,
+                                    password = _state.value.inputPassword,
+                                    termsAccepted = _state.value.isTermsAccepted,
+                                    marketingAccepted = _state.value.isMarketingAccepted
+                                )
+                            )
+                        }
                     }
 
                     is ResultOrFailure.Failure -> {
@@ -204,12 +217,13 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun handleButtonState() {
-        val enabled = isNameValid
-                && isEmailValid
-                && isPasswordValid
-                && isRepeatPasswordValid
-                && isTermsAccepted
-                && isMarketingAccepted
+        val enabled =true
+//        isNameValid
+//                && isEmailValid
+//                && isPasswordValid
+//                && isRepeatPasswordValid
+//                && isTermsAccepted
+//                && isMarketingAccepted
         setState { copy(isSignUpButtonStateEnabled = enabled) }
     }
 }

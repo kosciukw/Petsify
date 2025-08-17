@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.collectLatest
+import pl.kosciukw.petsify.feature.otp.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.feature.signup.presentation.*
 import pl.kosciukw.petsify.shared.ui.UIComponent
 import pl.kosciukw.petsify.shared.ui.components.base.BaseScreen
@@ -32,7 +33,7 @@ import pl.kosciukw.petsify.shared.ui.R as SharedR
 @Composable
 internal fun SignUpScreen(
     state: SignUpState,
-    onNavigateToOtp: () -> Unit,
+    onNavigateToOtp: (SignUpByOtpNavArgs) -> Unit,
     onNavigateToLogin: () -> Unit,
     onNavigateUp: () -> Unit,
     errors: Flow<UIComponent>,
@@ -44,7 +45,7 @@ internal fun SignUpScreen(
     LaunchedEffect(Unit) {
         currentAction.collectLatest { act ->
             when (act) {
-                is SignUpAction.Navigation.NavigateToOtp -> onNavigateToOtp()
+                is SignUpAction.Navigation.NavigateToOtp -> onNavigateToOtp(act.navArgs)
                 is SignUpAction.Navigation.NavigateToLogin -> onNavigateToLogin()
             }
         }

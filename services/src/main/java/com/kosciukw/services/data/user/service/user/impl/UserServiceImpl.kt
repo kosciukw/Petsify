@@ -1,5 +1,6 @@
 package com.kosciukw.services.data.user.service.user.impl
 
+import com.kosciukw.services.data.user.model.domain.FinalizeOtpRegistrationDomainModel
 import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
 import com.kosciukw.services.data.user.model.domain.SignUpDomainModel
 import com.kosciukw.services.data.user.model.domain.StartOtpRegistrationDomainModel
@@ -19,6 +20,12 @@ class UserServiceImpl @Inject constructor(
         request: StartOtpRegistrationDomainModel
     ) {
         userRepository.startOtpRegistration(request)
+    }
+
+    override suspend fun finalizeOtpRegistration(
+        request: FinalizeOtpRegistrationDomainModel
+    ) {
+        userRepository.finalizeOtpRegistration(request)
     }
 
     override suspend fun signUp(

@@ -2,13 +2,13 @@ package com.kosciukw.services.data.user.model.domain
 
 import pl.kosciukw.petsify.shared.utils.empty
 
-@Deprecated("Use Start + FinalizeRegistration")
-data class SignUpDomainModel(
+data class FinalizeOtpRegistrationDomainModel(
     val email: String,
     val password: String,
     val name: String,
     val termsAccepted: Boolean,
-    val marketingAccepted: Boolean
+    val marketingAccepted: Boolean,
+    val otp: String
 ) {
     override fun toString() = String.empty()
 }

@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
+import pl.kosciukw.petsify.feature.otp.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.feature.signup.presentation.ui.SignUpScreen
 import pl.kosciukw.petsify.feature.signup.presentation.ui.SignUpViewModel
 
@@ -12,7 +13,7 @@ import pl.kosciukw.petsify.feature.signup.presentation.ui.SignUpViewModel
 private data object SignUpDestination
 
 fun NavGraphBuilder.signUpScreen(
-    onNavigateToOtp: () -> Unit,
+    onNavigateToOtp: (SignUpByOtpNavArgs) -> Unit,
     onNavigateToLogin: () -> Unit,
     onNavigateUp: () -> Unit
 ) {
