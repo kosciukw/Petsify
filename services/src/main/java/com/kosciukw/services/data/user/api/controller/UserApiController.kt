@@ -12,7 +12,8 @@ interface UserApiController {
 
     suspend fun startOtpRegistrationRequest(request: StartOtpRegistrationRequest)
 
-    suspend fun finalizeOtpRegistrationRequest(request: FinalizeOtpRegistrationRequest)
+    suspend fun finalizeOtpRegistrationRequest(request: FinalizeOtpRegistrationRequest): AccessTokenApiModel
 
+    @Deprecated("Use Start + FinalizeRegistration")
     suspend fun signUp(request: SignUpRequest)
 }

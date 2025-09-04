@@ -1,5 +1,6 @@
 package com.kosciukw.services.data.user.repository.impl
 
+import com.kosciukw.services.data.auth.store.impl.TokenStore
 import com.kosciukw.services.data.user.api.controller.UserApiController
 import com.kosciukw.services.data.user.mapper.FinalizeOtpRegistrationDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.LoginByPasswordDomainToRequestModelMapper
@@ -14,6 +15,7 @@ import com.kosciukw.services.data.user.model.domain.StartOtpRegistrationDomainMo
 import pl.kosciukw.petsify.shared.callback.mapResult
 import pl.kosciukw.petsify.shared.network.NetworkStateProvider
 import pl.kosciukw.petsify.shared.network.suspendNetworkRequest
+import pl.kosciukw.petsify.shared.utils.empty
 import javax.inject.Inject
 
 class UserRepositoryRemoteImpl @Inject constructor(
@@ -23,7 +25,8 @@ class UserRepositoryRemoteImpl @Inject constructor(
     private val finalizeOtpRegistrationDomainToRequestModelMapper: FinalizeOtpRegistrationDomainToRequestModelMapper,
     private val networkStateProvider: NetworkStateProvider,
     private val errorMapper: UserApiToDomainErrorMapper,
-    private val userApiController: UserApiController
+    private val userApiController: UserApiController,
+    private val tokenStore: TokenStore
 ) : UserRepository {
 
     override suspend fun loginDeviceByPassword(
@@ -34,7 +37,28 @@ class UserRepositoryRemoteImpl @Inject constructor(
                 request = loginByPasswordDomainToRequestModelMapper.map(loginByPasswordDomainModel)
             )
         }
+    }.also { response ->
+        tokenStore.saveTokens(
+            accessToken = response.accessToken,
+            refreshToken = response.refreshToken ?: String.empty()
+        )
     }
+
+    override suspend fun finalizeOtpRegistration(finalizeOtpRegistrationDomainModel: FinalizeOtpRegistrationDomainModel) =
+        suspendNetworkRequest(networkStateProvider) {
+            mapResult(errorMapper = errorMapper) {
+                userApiController.finalizeOtpRegistrationRequest(
+                    request = finalizeOtpRegistrationDomainToRequestModelMapper.map(
+                        finalizeOtpRegistrationDomainModel
+                    )
+                )
+            }
+        }.also { response ->
+            tokenStore.saveTokens(
+                accessToken = response.accessToken,
+                refreshToken = response.refreshToken ?: String.empty()
+            )
+        }
 
     override suspend fun startOtpRegistration(startOtpRegistrationDomainModel: StartOtpRegistrationDomainModel) {
         suspendNetworkRequest(networkStateProvider) {
@@ -48,18 +72,7 @@ class UserRepositoryRemoteImpl @Inject constructor(
         }
     }
 
-    override suspend fun finalizeOtpRegistration(finalizeOtpRegistrationDomainModel: FinalizeOtpRegistrationDomainModel) {
-        suspendNetworkRequest(networkStateProvider) {
-            mapResult(errorMapper = errorMapper) {
-                userApiController.finalizeOtpRegistrationRequest(
-                    request = finalizeOtpRegistrationDomainToRequestModelMapper.map(
-                        finalizeOtpRegistrationDomainModel
-                    )
-                )
-            }
-        }
-    }
-
+    @Deprecated("Use Start + FinalizeRegistration")
     override suspend fun signUp(signUpDomainModel: SignUpDomainModel) {
         suspendNetworkRequest(networkStateProvider) {
             mapResult(errorMapper = errorMapper) {

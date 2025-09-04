@@ -24,9 +24,7 @@ class UserServiceImpl @Inject constructor(
 
     override suspend fun finalizeOtpRegistration(
         request: FinalizeOtpRegistrationDomainModel
-    ) {
-        userRepository.finalizeOtpRegistration(request)
-    }
+    ) = userRepository.finalizeOtpRegistration(request)
 
     override suspend fun signUp(
         request: SignUpDomainModel

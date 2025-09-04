@@ -217,7 +217,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun handleButtonState() {
-        val enabled =true
+        val enabled = true
 //        isNameValid
 //                && isEmailValid
 //                && isPasswordValid

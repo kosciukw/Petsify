@@ -3,6 +3,7 @@ package pl.kosciukw.petsify.shared.navigation
 import android.net.Uri
 import android.os.Bundle
 import androidx.navigation.NavType
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf

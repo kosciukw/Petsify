@@ -1,5 +1,6 @@
 package com.kosciukw.services.data.user.di
 
+import com.kosciukw.services.data.auth.store.impl.TokenStore
 import com.kosciukw.services.data.user.api.UserApi
 import com.kosciukw.services.data.user.api.controller.UserApiController
 import com.kosciukw.services.data.user.api.controller.impl.UserApiControllerImpl
@@ -50,7 +51,8 @@ object UserModule {
         loginByPasswordDomainToRequestModelMapper: LoginByPasswordDomainToRequestModelMapper,
         signUpDomainToRequestModelMapper: SignUpDomainToRequestModelMapper,
         startOtpRegistrationDomainToRequestModelMapper: StartOtpRegistrationDomainToRequestModelMapper,
-        finalizeOtpRegistrationDomainToRequestModelMapper: FinalizeOtpRegistrationDomainToRequestModelMapper
+        finalizeOtpRegistrationDomainToRequestModelMapper: FinalizeOtpRegistrationDomainToRequestModelMapper,
+        tokenStore: TokenStore
     ): UserRepository = UserRepositoryRemoteImpl(
         errorMapper = errorMapper,
         networkStateProvider = networkStateProvider,
@@ -58,7 +60,8 @@ object UserModule {
         loginByPasswordDomainToRequestModelMapper = loginByPasswordDomainToRequestModelMapper,
         signUpDomainToRequestModelMapper = signUpDomainToRequestModelMapper,
         startOtpRegistrationDomainToRequestModelMapper = startOtpRegistrationDomainToRequestModelMapper,
-        finalizeOtpRegistrationDomainToRequestModelMapper = finalizeOtpRegistrationDomainToRequestModelMapper
+        finalizeOtpRegistrationDomainToRequestModelMapper = finalizeOtpRegistrationDomainToRequestModelMapper,
+        tokenStore = tokenStore
     )
 
     @Provides

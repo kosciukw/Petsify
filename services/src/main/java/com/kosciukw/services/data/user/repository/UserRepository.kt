@@ -18,8 +18,9 @@ interface UserRepository {
 
     suspend fun finalizeOtpRegistration(
         finalizeOtpRegistrationDomainModel: FinalizeOtpRegistrationDomainModel
-    )
+    ): AccessTokenApiModel
 
+    @Deprecated("Use Start + FinalizeRegistration")
     suspend fun signUp(
         signUpDomainModel: SignUpDomainModel
     )

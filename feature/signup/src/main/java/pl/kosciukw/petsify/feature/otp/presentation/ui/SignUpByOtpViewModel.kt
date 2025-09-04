@@ -27,28 +27,39 @@ class SignUpByOtpViewModel @Inject constructor(
     override fun setInitialState() = SignUpByOtpState()
 
     private var isOptValid = false
+    private var navArgs: SignUpByOtpNavArgs? = null
 
     override fun onTriggerEvent(event: SignUpByOtpEvent) {
         when (event) {
-            is SignUpByOtpEvent.OnOtpProvided -> onOtpTextChanged(event.value)
+            is SignUpByOtpEvent.OnOtpProvided -> onOtpTextProvided(event.value)
         }
     }
 
     fun onNavArgsProvided(navArgs: SignUpByOtpNavArgs) {
-        println("TEST_TAG SignUpByOtpViewModel onNavArgsProvided ${navArgs.email}")
+        this.navArgs = navArgs
     }
 
-    private fun onOtpTextChanged(otp: String) {
+    // TODO verify if validation is needed or make it make sense
+    private fun onOtpTextProvided(otp: String) {
         isOptValid = otp.isNotBlank()
-//        setState {
-//            copy(
-//                inputName = name,
-//                isNameValidationErrorEnabled = !isNameValid
-//            )
-//        }
-        handleButtonState()
-    }
+        setState {
+            copy(
+                isOtpValidErrorEnabled = !isOptValid,
+                inputOtp = otp
+            )
+        }
 
+        navArgs?.let {
+            finalizeOtpRegistration(
+                otp = otp,
+                email = it.email,
+                termsAccepted = it.termsAccepted,
+                name = it.name,
+                password = it.password,
+                marketingAccepted = it.marketingAccepted
+            )
+        } ?: onFailure(error = IllegalStateException("Nav args is null"))
+    }
 
     private fun finalizeOtpRegistration(
         email: String,
@@ -77,7 +88,9 @@ class SignUpByOtpViewModel @Inject constructor(
                     is ResultOrFailure.Success -> {
                         setState { copy(progressBarState = ProgressBarState.Idle) }
 
-                        // TODO 26.06.2025 handle finalize registration process
+                        setAction {
+                            SignUpByOtpAction.Navigation.NavigateToMain
+                        }
                     }
 
                     is ResultOrFailure.Failure -> {

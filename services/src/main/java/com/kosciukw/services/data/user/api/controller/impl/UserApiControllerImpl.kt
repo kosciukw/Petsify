@@ -32,15 +32,15 @@ class UserApiControllerImpl(
         }
     }
 
-    override suspend fun finalizeOtpRegistrationRequest(request: FinalizeOtpRegistrationRequest) {
+    override suspend fun finalizeOtpRegistrationRequest(request: FinalizeOtpRegistrationRequest) =
         userExceptionMapper.mapException {
             userApi.finalizeOtpRegistration(
                 finalizeOtpRegistrationRequest = request,
                 url = userUrlProvider.getFinalizeOtpRegistrationUrl()
             )
         }
-    }
 
+    @Deprecated("Use Start + FinalizeRegistration")
     override suspend fun signUp(request: SignUpRequest) {
         userExceptionMapper.mapException {
             userApi.signUp(

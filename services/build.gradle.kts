@@ -55,6 +55,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
+    implementation(libs.androidx.datastore.core.android)
+    implementation(libs.androidx.datastore.preferences)
+
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinxCoroutinesTest)

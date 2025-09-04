@@ -27,7 +27,7 @@ interface UserApi {
     suspend fun finalizeOtpRegistration(
         @Url url: String,
         @Body finalizeOtpRegistrationRequest: FinalizeOtpRegistrationRequest
-    )
+    ): AccessTokenApiModel
 
     @POST
     suspend fun signUp(
