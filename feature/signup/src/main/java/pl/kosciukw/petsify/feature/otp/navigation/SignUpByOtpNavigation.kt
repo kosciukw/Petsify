@@ -16,7 +16,7 @@ data class SignUpByOtpDestination(
 )
 
 fun NavGraphBuilder.signUpByOtpScreen(
-    onNavigateToHome: () -> Unit,
+    onNavigateToMain: () -> Unit,
     onNavigateUp: () -> Unit
 ) {
     composable<SignUpByOtpDestination>(
@@ -38,7 +38,7 @@ fun NavGraphBuilder.signUpByOtpScreen(
             action = action,
             errors = errors,
             events = { event -> signUpViewModel.setEvent(event) },
-            onNavigateToHome = onNavigateToHome
+            onNavigateToMain = onNavigateToMain
         )
     }
 }

@@ -19,7 +19,7 @@ interface UserRepository {
 
     suspend fun finalizeOtpRegistration(
         finalizeOtpRegistrationDomainModel: FinalizeOtpRegistrationDomainModel
-    )
+    ): AccessTokenApiModel
 
     suspend fun refreshToken(
         refreshTokenDomainModel: RefreshTokenDomainModel

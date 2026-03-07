@@ -45,7 +45,7 @@ import pl.kosciukw.petsify.shared.ui.theme.paddingXXL
 @Composable
 internal fun SignUpByOtpScreen(
     state: SignUpByOtpState,
-    onNavigateToHome: () -> Unit,
+    onNavigateToMain: () -> Unit,
     onNavigateUp: () -> Unit,
     errors: Flow<UIComponent>,
     events: (SignUpByOtpEvent) -> Unit,
@@ -56,7 +56,7 @@ internal fun SignUpByOtpScreen(
     LaunchedEffect(Unit) {
         currentAction.collectLatest { act ->
             when (act) {
-                is SignUpByOtpAction.Navigation.NavigateToHome -> onNavigateToHome()
+                is SignUpByOtpAction.Navigation.NavigateToMain -> onNavigateToMain()
             }
         }
     }

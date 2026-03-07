@@ -19,7 +19,7 @@ interface UserService {
 
     suspend fun finalizeOtpRegistration(
         request: FinalizeOtpRegistrationDomainModel
-    )
+    ): AccessTokenApiModel
 
     suspend fun refreshToken(
         request: RefreshTokenDomainModel

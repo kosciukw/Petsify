@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-  namespace = "pl.kosciukw.petsify.feature.home"
+  namespace = "pl.kosciukw.petsify.feature.settings"
   compileSdk = libs.versions.compileSdkVersion.get().toInt()
 
   defaultConfig {

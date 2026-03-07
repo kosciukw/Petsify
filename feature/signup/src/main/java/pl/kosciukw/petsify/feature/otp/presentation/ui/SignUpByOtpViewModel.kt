@@ -96,7 +96,7 @@ class SignUpByOtpViewModel @Inject constructor(
                         setState { copy(progressBarState = ProgressBarState.Idle) }
 
                         setAction {
-                            SignUpByOtpAction.Navigation.NavigateToHome
+                            SignUpByOtpAction.Navigation.NavigateToMain
                         }
                     }
 

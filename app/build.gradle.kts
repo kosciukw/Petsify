@@ -54,7 +54,7 @@ dependencies {
   implementation(projects.feature.splash)
   implementation(projects.feature.login)
   implementation(projects.feature.signup)
-  implementation(projects.feature.home)
+  implementation(projects.feature.settings)
   implementation(projects.feature.main)
   implementation(projects.feature.emaildetails)
   implementation(projects.feature.composer)

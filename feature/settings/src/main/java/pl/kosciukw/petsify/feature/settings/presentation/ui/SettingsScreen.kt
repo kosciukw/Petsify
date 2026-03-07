@@ -1,4 +1,4 @@
-package pl.kosciukw.petsify.feature.home.presentation.ui
+package pl.kosciukw.petsify.feature.settings.presentation.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -13,9 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.flow.Flow
-import pl.kosciukw.petsify.feature.home.presentation.HomeAction
-import pl.kosciukw.petsify.feature.home.presentation.HomeEvent
-import pl.kosciukw.petsify.feature.home.presentation.HomeState
+import kotlinx.coroutines.flow.collect
+import pl.kosciukw.petsify.feature.settings.presentation.SettingsAction
+import pl.kosciukw.petsify.feature.settings.presentation.SettingsEvent
+import pl.kosciukw.petsify.feature.settings.presentation.SettingsState
 import pl.kosciukw.petsify.shared.ui.R
 import pl.kosciukw.petsify.shared.ui.UIComponent
 import pl.kosciukw.petsify.shared.ui.components.base.BaseScreen
@@ -25,14 +26,14 @@ import pl.kosciukw.petsify.shared.ui.theme.TextRegularS
 import pl.kosciukw.petsify.shared.ui.theme.paddingXXL
 
 @Composable
-internal fun HomeScreen(
-    state: HomeState,
+internal fun SettingsScreen(
+    state: SettingsState,
     errors: Flow<UIComponent>,
-    events: (HomeEvent) -> Unit,
-    action: Flow<HomeAction>
+    events: (SettingsEvent) -> Unit,
+    action: Flow<SettingsAction>
 ) {
     LaunchedEffect(Unit) {
-        events(HomeEvent.OnStart)
+        events(SettingsEvent.OnStart)
     }
     LaunchedEffect(action) {
         action.collect {
@@ -46,7 +47,7 @@ internal fun HomeScreen(
             .background(MaterialTheme.colorScheme.background),
         errors = errors,
         progressBarState = state.progressBarState,
-        toolbarConfig = ToolbarConfig(titleToolbar = stringResource(R.string.home_screen_header)),
+        toolbarConfig = ToolbarConfig(titleToolbar = stringResource(R.string.settings_screen_header)),
         content = {
             Column(
                 modifier = Modifier
@@ -57,7 +58,7 @@ internal fun HomeScreen(
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.home_screen_title),
+                    text = stringResource(id = R.string.settings_screen_title),
                     style = TextRegularS,
                     textAlign = TextAlign.Center
                 )
