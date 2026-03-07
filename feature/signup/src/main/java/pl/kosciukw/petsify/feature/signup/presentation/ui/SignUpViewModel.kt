@@ -52,6 +52,7 @@ class SignUpViewModel @Inject constructor(
             is SignUpEvent.OnMarketingAcceptedChanged -> onMarketingAccepted(event.accepted)
             is SignUpEvent.OnConfirmButtonClicked -> onConfirmButtonClicked()
             is SignUpEvent.OnLoginButtonClicked -> setAction { SignUpAction.Navigation.NavigateToLogin }
+            is SignUpEvent.OnScreenDisposed -> clearForm()
         }
     }
 
@@ -228,5 +229,15 @@ class SignUpViewModel @Inject constructor(
             isTermsAccepted &&
             isMarketingAccepted
         setState { copy(isSignUpButtonStateEnabled = enabled) }
+    }
+
+    private fun clearForm() {
+        isNameValid = false
+        isEmailValid = false
+        isPasswordValid = false
+        isRepeatPasswordValid = false
+        isTermsAccepted = false
+        isMarketingAccepted = false
+        setState { setInitialState() }
     }
 }

@@ -37,19 +37,15 @@ class UserServiceImpl @Inject constructor(
 
     override suspend fun finalizeOtpRegistration(
         request: FinalizeOtpRegistrationDomainModel
-    ) = userRepository.finalizeOtpRegistration(request).also { response ->
-        authTokenService.storeTokens(
-            tokens = AuthTokens(
-                accessToken = response.accessToken,
-                refreshToken = response.refreshToken ?: String.empty()
-            )
-        )
+    ) {
+        userRepository.finalizeOtpRegistration(request)
     }
 
     override suspend fun refreshToken(
         request: RefreshTokenDomainModel
     ) = userRepository.refreshToken(request)
 
+    @Deprecated("Use Start + FinalizeRegistration")
     override suspend fun signUp(
         request: SignUpDomainModel
     ) {

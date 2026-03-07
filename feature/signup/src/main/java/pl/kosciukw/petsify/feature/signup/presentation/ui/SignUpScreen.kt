@@ -42,6 +42,10 @@ internal fun SignUpScreen(
 ) {
     val currentAction by rememberUpdatedState(action)
 
+    DisposableEffect(Unit) {
+        onDispose { events(SignUpEvent.OnScreenDisposed) }
+    }
+
     LaunchedEffect(Unit) {
         currentAction.collectLatest { act ->
             when (act) {

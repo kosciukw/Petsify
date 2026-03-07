@@ -1,6 +1,5 @@
 package pl.kosciukw.petsify.feature.otp.usecase
 
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
 import com.kosciukw.services.data.user.model.domain.FinalizeOtpRegistrationDomainModel
 import com.kosciukw.services.data.user.service.user.UserService
 import kotlinx.coroutines.flow.flow
@@ -11,7 +10,7 @@ import javax.inject.Inject
 
 class FinalizeOtpRegistrationUseCase @Inject constructor(
     private val userService: UserService
-) : UseCase<ResultOrFailure<AccessTokenApiModel, Throwable>, FinalizeOtpRegistrationUseCase.Params>() {
+) : UseCase<ResultOrFailure<Unit, Throwable>, FinalizeOtpRegistrationUseCase.Params>() {
 
     data class Params(
         val email: String,

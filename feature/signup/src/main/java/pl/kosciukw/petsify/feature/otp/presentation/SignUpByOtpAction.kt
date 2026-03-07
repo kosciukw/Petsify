@@ -6,6 +6,6 @@ sealed class SignUpByOtpAction : ViewSingleAction {
 
     sealed class Navigation : SignUpByOtpAction() {
 
-        data object NavigateToMain : Navigation()
+        data object NavigateToHome : Navigation()
     }
 }

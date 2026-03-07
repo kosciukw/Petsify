@@ -12,13 +12,11 @@ import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.ui.viewmodel.BaseViewModel
-import pl.kosciukw.petsify.shared.validator.notempty.NotEmptyValidator
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpByOtpViewModel @Inject constructor(
     private val finalizeOtpRegistrationUseCase: FinalizeOtpRegistrationUseCase,
-    private val notEmptyValidator: NotEmptyValidator<CharArray>,
     integrationErrorMapper: IntegrationErrorMapper
 ) : BaseViewModel<SignUpByOtpEvent, SignUpByOtpState, SignUpByOtpAction>(
     integrationErrorMapper = integrationErrorMapper
@@ -32,6 +30,7 @@ class SignUpByOtpViewModel @Inject constructor(
     override fun onTriggerEvent(event: SignUpByOtpEvent) {
         when (event) {
             is SignUpByOtpEvent.OnOtpProvided -> onOtpTextProvided(event.value)
+            is SignUpByOtpEvent.OnConfirmButtonClicked -> onConfirmButtonClicked()
         }
     }
 
@@ -39,19 +38,27 @@ class SignUpByOtpViewModel @Inject constructor(
         this.navArgs = navArgs
     }
 
-    // TODO verify if validation is needed or make it make sense
     private fun onOtpTextProvided(otp: String) {
-        isOptValid = otp.isNotBlank()
+        isOptValid = otp.length == OTP_LENGTH
         setState {
             copy(
-                isOtpValidErrorEnabled = !isOptValid,
+                isOtpValidErrorEnabled = false,
                 inputOtp = otp
             )
+        }
+        handleButtonState()
+    }
+
+    private fun onConfirmButtonClicked() {
+        handleButtonState()
+        if (!_state.value.isSignUpButtonStateEnabled) {
+            setState { copy(isOtpValidErrorEnabled = true) }
+            return
         }
 
         navArgs?.let {
             finalizeOtpRegistration(
-                otp = otp,
+                otp = _state.value.inputOtp,
                 email = it.email,
                 termsAccepted = it.termsAccepted,
                 name = it.name,
@@ -89,13 +96,18 @@ class SignUpByOtpViewModel @Inject constructor(
                         setState { copy(progressBarState = ProgressBarState.Idle) }
 
                         setAction {
-                            SignUpByOtpAction.Navigation.NavigateToMain
+                            SignUpByOtpAction.Navigation.NavigateToHome
                         }
                     }
 
                     is ResultOrFailure.Failure -> {
                         onFailure(error = result.error)
-                        setState { copy(progressBarState = ProgressBarState.Idle) }
+                        setState {
+                            copy(
+                                progressBarState = ProgressBarState.Idle,
+                                isOtpValidErrorEnabled = true
+                            )
+                        }
                     }
                 }
             }
@@ -104,6 +116,10 @@ class SignUpByOtpViewModel @Inject constructor(
 
     private fun handleButtonState() {
         val enabled = isOptValid
-//        setState { copy(isSignUpButtonStateEnabled = enabled) }
+        setState { copy(isSignUpButtonStateEnabled = enabled) }
+    }
+
+    companion object {
+        private const val OTP_LENGTH = 6
     }
 }

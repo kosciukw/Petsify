@@ -29,6 +29,11 @@
 
     <!-- Otp Screen -->
     <string name="sign_up_by_otp_screen">Type the code we sent you to your email address</string>
+    <string name="otp_validation_error">Please enter the 6-digit code</string>
+
+    <!-- Home Screen -->
+    <string name="home_screen_header">Home</string>
+    <string name="home_screen_title">Welcome to Petsify</string>
 
     <!-- Error messages -->
     <string name="error_no_internet_connection">No internet connection</string>

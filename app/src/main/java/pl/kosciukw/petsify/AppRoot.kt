@@ -7,6 +7,8 @@ import pl.kosciukw.petsify.feature.composer.composerScreenRoot
 import pl.kosciukw.petsify.feature.composer.navigateToComposer
 import pl.kosciukw.petsify.feature.emaildetails.emailDetailsScreen
 import pl.kosciukw.petsify.feature.emaildetails.navigateToEmailDetails
+import pl.kosciukw.petsify.feature.home.navigation.homeScreen
+import pl.kosciukw.petsify.feature.home.navigation.navigateToHome
 import pl.kosciukw.petsify.feature.login.navigation.loginScreen
 import pl.kosciukw.petsify.feature.main.mainScreen
 import pl.kosciukw.petsify.feature.main.navigateToMain
@@ -43,9 +45,11 @@ fun AppRoot() {
         )
 
         signUpByOtpScreen(
-            onNavigateToMain = { navController.navigateToMain() },
+            onNavigateToHome = { navController.navigateToHome() },
             onNavigateUp = { navController.navigateUp() }
         )
+
+        homeScreen()
 
         mainScreen(
             onOpenEmailDetails = { emailId -> navController.navigateToEmailDetails(emailId) },

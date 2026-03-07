@@ -7,5 +7,6 @@ import pl.kosciukw.petsify.shared.utils.empty
 data class SignUpByOtpState(
     val inputOtp: String = String.empty(),
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
-    val isOtpValidErrorEnabled: Boolean = false
+    val isOtpValidErrorEnabled: Boolean = false,
+    val isSignUpButtonStateEnabled: Boolean = false
 ) : ViewState

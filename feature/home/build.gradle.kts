@@ -1,24 +1,21 @@
 plugins {
-  alias(libs.plugins.android.application)
+  alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.kotlin.serialization)
-  alias(libs.plugins.hilt.android.gradle.plugin)
+  id("kotlin-parcelize")
   kotlin("kapt")
 }
 
 android {
-  namespace = "pl.kosciukw.petsify"
+  namespace = "pl.kosciukw.petsify.feature.home"
   compileSdk = libs.versions.compileSdkVersion.get().toInt()
 
   defaultConfig {
-    applicationId = "pl.kosciukw.petsify"
     minSdk = libs.versions.minSdkVersion.get().toInt()
-    targetSdk = libs.versions.compileSdkVersion.get().toInt()
-    versionCode = 1
-    versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles("consumer-rules.pro")
   }
 
   buildTypes {
@@ -37,41 +34,18 @@ android {
   kotlinOptions {
     jvmTarget = libs.versions.javaVersion.get()
   }
-
-  buildFeatures {
-    compose = true
-  }
-  testOptions {
-    unitTests.isIncludeAndroidResources = true
-    unitTests.all {
-      it.useJUnitPlatform()
-    }
-  }
 }
 
 dependencies {
   implementation(projects.shared.ui)
-  implementation(projects.feature.splash)
-  implementation(projects.feature.login)
-  implementation(projects.feature.signup)
-  implementation(projects.feature.home)
-  implementation(projects.feature.main)
-  implementation(projects.feature.emaildetails)
-  implementation(projects.feature.composer)
-  implementation(libs.bundles.androidx)
+  implementation(projects.services)
 
-  implementation(libs.kotlinx.metadata.jvm)
   implementation(libs.hilt.android)
-  implementation(project(":services"))
-  kapt(libs.hilt.compiler)
   implementation(libs.androidx.hilt.navigation.compose)
+  kapt(libs.hilt.compiler)
 
-  debugImplementation(libs.bundles.compose.debug)
-
-  androidTestImplementation(platform(libs.androidx.compose.bom))
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
-  androidTestImplementation(libs.androidx.ui.test.junit4)
 
   testImplementation(libs.bundles.junit5)
   testImplementation(libs.mockk)

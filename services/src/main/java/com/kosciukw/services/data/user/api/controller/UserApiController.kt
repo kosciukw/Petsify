@@ -13,7 +13,7 @@ interface UserApiController {
 
     suspend fun startOtpRegistrationRequest(request: StartOtpRegistrationRequest)
 
-    suspend fun finalizeOtpRegistrationRequest(request: FinalizeOtpRegistrationRequest): AccessTokenApiModel
+    suspend fun finalizeOtpRegistrationRequest(request: FinalizeOtpRegistrationRequest)
 
     suspend fun refreshToken(request: RefreshRequest): AccessTokenApiModel
 

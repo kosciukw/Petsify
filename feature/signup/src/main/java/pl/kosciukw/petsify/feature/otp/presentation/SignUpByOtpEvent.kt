@@ -4,4 +4,5 @@ import pl.kosciukw.petsify.shared.ui.components.view.ViewEvent
 
 sealed class SignUpByOtpEvent : ViewEvent {
     data class OnOtpProvided(val value: String) : SignUpByOtpEvent()
+    data object OnConfirmButtonClicked : SignUpByOtpEvent()
 }
