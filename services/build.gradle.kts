@@ -57,6 +57,7 @@ dependencies {
 
     implementation(libs.androidx.datastore.core.android)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.okhttp.logging.interceptor)
 
     testImplementation(libs.bundles.junit5)
     testImplementation(libs.mockk)

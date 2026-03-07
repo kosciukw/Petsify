@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-  namespace = "pl.kosciukw.petsify.feature.signup"
+  namespace = "pl.kosciukw.petsify.feature.splash"
   compileSdk = libs.versions.compileSdkVersion.get().toInt()
 
   defaultConfig {

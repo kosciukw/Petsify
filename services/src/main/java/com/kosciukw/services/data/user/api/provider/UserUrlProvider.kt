@@ -6,4 +6,5 @@ interface UserUrlProvider {
     fun getStartOtpRegistrationUrl(): String
     fun getFinalizeOtpRegistrationUrl(): String
     fun getSignUpUrl(): String
+    fun getRefreshTokenUrl(): String
 }

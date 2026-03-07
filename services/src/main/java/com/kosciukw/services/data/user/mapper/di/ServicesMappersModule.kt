@@ -1,5 +1,6 @@
 package com.kosciukw.services.data.user.mapper.di
 
+import com.kosciukw.services.data.user.mapper.FinalizeOtpRegistrationDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.LoginByPasswordDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.SignUpDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.StartOtpRegistrationDomainToRequestModelMapper
@@ -26,4 +27,8 @@ object ServicesMappersModule {
     @Provides
     fun provideStartOtpRegistrationDomainToRequestModelMapper(): StartOtpRegistrationDomainToRequestModelMapper =
         StartOtpRegistrationDomainToRequestModelMapperImpl()
+
+    @Provides
+    fun provideFinalizeOtpRegistrationDomainToRequestModelMapper(): FinalizeOtpRegistrationDomainToRequestModelMapper =
+        FinalizeOtpRegistrationDomainToRequestModelMapperImpl()
 }

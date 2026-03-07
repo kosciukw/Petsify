@@ -64,7 +64,6 @@ internal fun LoginScreen(
             when (action) {
                 is LoginAction.Navigation.NavigateToMain -> onNavigateToMain()
                 is LoginAction.Navigation.NavigateToSignup -> onNavigateToSignUp()
-                else -> Unit
             }
         }
     }

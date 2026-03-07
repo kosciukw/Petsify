@@ -9,7 +9,6 @@ data class SignUpState(
     val inputEmail: String = String.empty(),
     val inputPassword: String = String.empty(),
     val inputConfirmPassword: String = String.empty(),
-
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
     val isTermsAccepted: Boolean = false,
     val isMarketingAccepted: Boolean = false,

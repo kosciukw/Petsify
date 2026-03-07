@@ -51,6 +51,7 @@ android {
 
 dependencies {
   implementation(projects.shared.ui)
+  implementation(projects.feature.splash)
   implementation(projects.feature.login)
   implementation(projects.feature.signup)
   implementation(projects.feature.main)
