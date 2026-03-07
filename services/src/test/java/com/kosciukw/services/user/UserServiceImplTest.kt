@@ -1,9 +1,12 @@
 package com.kosciukw.services.user
 
+import com.kosciukw.services.data.session.service.AuthTokenService
+import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
 import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
 import com.kosciukw.services.data.user.repository.UserRepository
 import com.kosciukw.services.data.user.service.user.UserService
 import com.kosciukw.services.data.user.service.user.impl.UserServiceImpl
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -14,12 +17,14 @@ internal class UserServiceImplTest {
 
     private lateinit var service: UserService
 
-    private val userRepository: UserRepository = mockk(relaxed = true)
+    private val userRepository: UserRepository = mockk()
+    private val authTokenService: AuthTokenService = mockk()
 
     @BeforeEach
     fun setUp() {
         service = UserServiceImpl(
-            userRepository = userRepository
+            userRepository = userRepository,
+            authTokenService = authTokenService
         )
     }
 
@@ -30,9 +35,15 @@ internal class UserServiceImplTest {
             email = "email",
             password = "password"
         )
+        val expectedResponse = AccessTokenApiModel(
+            accessToken = "access-token",
+            refreshToken = "refresh-token"
+        )
+        coEvery { userRepository.loginDeviceByPassword(givenLoginByPasswordDomainModel) } returns expectedResponse
+        coEvery { authTokenService.storeTokens(any()) } returns Unit
 
         //When
-        userRepository.loginDeviceByPassword(givenLoginByPasswordDomainModel)
+        service.loginDeviceByPassword(givenLoginByPasswordDomainModel)
 
         //Then
         coVerify { userRepository.loginDeviceByPassword(givenLoginByPasswordDomainModel) }

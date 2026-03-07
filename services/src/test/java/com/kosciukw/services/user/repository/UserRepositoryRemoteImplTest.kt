@@ -1,14 +1,17 @@
 package com.kosciukw.services.user.repository
 
 import com.kosciukw.services.data.user.api.controller.UserApiController
+import com.kosciukw.services.data.user.mapper.FinalizeOtpRegistrationDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.LoginByPasswordDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.SignUpDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.StartOtpRegistrationDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.UserApiToDomainErrorMapper
 import com.kosciukw.services.data.user.model.api.request.LoginByPasswordRequest
+import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
 import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
 import com.kosciukw.services.data.user.repository.UserRepository
 import com.kosciukw.services.data.user.repository.impl.UserRepositoryRemoteImpl
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import org.junit.jupiter.api.BeforeEach
@@ -22,12 +25,13 @@ import pl.kosciukw.petsify.shared.network.NetworkStateProvider
 internal class UserRepositoryRemoteImplTest {
 
     private lateinit var repository: UserRepository
-    private val userApiController: UserApiController = mockk(relaxed = true)
-    private val errorMapper: UserApiToDomainErrorMapper = mockk(relaxed = true)
-    private val networkStateProvider: NetworkStateProvider = mockk(relaxed = true)
-    private val loginByPasswordDomainToRequestModelMapper: LoginByPasswordDomainToRequestModelMapper = mockk(relaxed = true)
-    private val signUpDomainToRequestModelMapper: SignUpDomainToRequestModelMapper = mockk(relaxed = true)
-    private val startOtpRegistrationDomainToRequestModelMapper: StartOtpRegistrationDomainToRequestModelMapper = mockk(relaxed = true)
+    private val userApiController: UserApiController = mockk()
+    private val errorMapper: UserApiToDomainErrorMapper = mockk()
+    private val networkStateProvider: NetworkStateProvider = mockk()
+    private val loginByPasswordDomainToRequestModelMapper: LoginByPasswordDomainToRequestModelMapper = mockk()
+    private val signUpDomainToRequestModelMapper: SignUpDomainToRequestModelMapper = mockk()
+    private val startOtpRegistrationDomainToRequestModelMapper: StartOtpRegistrationDomainToRequestModelMapper = mockk()
+    private val finalizeOtpRegistrationDomainToRequestModelMapper: FinalizeOtpRegistrationDomainToRequestModelMapper = mockk()
 
     @BeforeEach
     fun setUp() {
@@ -37,7 +41,8 @@ internal class UserRepositoryRemoteImplTest {
             userApiController = userApiController,
             loginByPasswordDomainToRequestModelMapper = loginByPasswordDomainToRequestModelMapper,
             signUpDomainToRequestModelMapper = signUpDomainToRequestModelMapper,
-            startOtpRegistrationDomainToRequestModelMapper = startOtpRegistrationDomainToRequestModelMapper
+            startOtpRegistrationDomainToRequestModelMapper = startOtpRegistrationDomainToRequestModelMapper,
+            finalizeOtpRegistrationDomainToRequestModelMapper = finalizeOtpRegistrationDomainToRequestModelMapper
         )
     }
 
@@ -60,6 +65,12 @@ internal class UserRepositoryRemoteImplTest {
         every {
             loginByPasswordDomainToRequestModelMapper.map(givenLoginByPasswordDomainModel)
         } returns givenLoginDeviceByPasswordRequest
+        coEvery {
+            userApiController.loginByPassword(givenLoginDeviceByPasswordRequest)
+        } returns AccessTokenApiModel(
+            accessToken = "access-token",
+            refreshToken = "refresh-token"
+        )
 
         //When
         runBlocking {

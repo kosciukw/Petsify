@@ -15,7 +15,7 @@ import pl.kosciukw.petsify.shared.ui.R as SharedR
 
 internal class UserDomainToAppErrorMapperImplTest {
 
-    private val context: Context = mockk(relaxed = true)
+    private val context: Context = mockk()
     private lateinit var mapper: UserDomainToAppErrorMapper
 
     @BeforeEach
