@@ -4,7 +4,6 @@ import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
 import com.kosciukw.services.data.user.model.domain.FinalizeOtpRegistrationDomainModel
 import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
 import com.kosciukw.services.data.user.model.domain.RefreshTokenDomainModel
-import com.kosciukw.services.data.user.model.domain.SignUpDomainModel
 import com.kosciukw.services.data.user.model.domain.StartOtpRegistrationDomainModel
 
 interface UserRepository {
@@ -24,7 +23,4 @@ interface UserRepository {
     suspend fun refreshToken(
         refreshTokenDomainModel: RefreshTokenDomainModel
     ): AccessTokenApiModel
-
-    @Deprecated("Use Start + FinalizeRegistration")
-    suspend fun signUp(signUpDomainModel: SignUpDomainModel)
 }

@@ -3,7 +3,6 @@ package com.kosciukw.services.data.user.api
 import com.kosciukw.services.data.user.model.api.request.FinalizeOtpRegistrationRequest
 import com.kosciukw.services.data.user.model.api.request.LoginByPasswordRequest
 import com.kosciukw.services.data.user.model.api.request.RefreshRequest
-import com.kosciukw.services.data.user.model.api.request.SignUpRequest
 import com.kosciukw.services.data.user.model.api.request.StartOtpRegistrationRequest
 import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
 import retrofit2.http.Body
@@ -30,12 +29,6 @@ interface UserApi {
         @Url url: String,
         @Body finalizeOtpRegistrationRequest: FinalizeOtpRegistrationRequest
     ): AccessTokenApiModel
-
-    @POST
-    suspend fun signUp(
-        @Url url: String,
-        @Body signUpRequest: SignUpRequest
-    )
 
     @POST
     @Headers("X-Bypass-Auth: true")

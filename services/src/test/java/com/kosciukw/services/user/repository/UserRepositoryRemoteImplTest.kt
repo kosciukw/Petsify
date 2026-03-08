@@ -3,7 +3,6 @@ package com.kosciukw.services.user.repository
 import com.kosciukw.services.data.user.api.controller.UserApiController
 import com.kosciukw.services.data.user.mapper.FinalizeOtpRegistrationDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.LoginByPasswordDomainToRequestModelMapper
-import com.kosciukw.services.data.user.mapper.SignUpDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.StartOtpRegistrationDomainToRequestModelMapper
 import com.kosciukw.services.data.user.mapper.UserApiToDomainErrorMapper
 import com.kosciukw.services.data.user.model.api.request.LoginByPasswordRequest
@@ -29,7 +28,6 @@ internal class UserRepositoryRemoteImplTest {
     private val errorMapper: UserApiToDomainErrorMapper = mockk()
     private val networkStateProvider: NetworkStateProvider = mockk()
     private val loginByPasswordDomainToRequestModelMapper: LoginByPasswordDomainToRequestModelMapper = mockk()
-    private val signUpDomainToRequestModelMapper: SignUpDomainToRequestModelMapper = mockk()
     private val startOtpRegistrationDomainToRequestModelMapper: StartOtpRegistrationDomainToRequestModelMapper = mockk()
     private val finalizeOtpRegistrationDomainToRequestModelMapper: FinalizeOtpRegistrationDomainToRequestModelMapper = mockk()
 
@@ -40,7 +38,6 @@ internal class UserRepositoryRemoteImplTest {
             errorMapper = errorMapper,
             userApiController = userApiController,
             loginByPasswordDomainToRequestModelMapper = loginByPasswordDomainToRequestModelMapper,
-            signUpDomainToRequestModelMapper = signUpDomainToRequestModelMapper,
             startOtpRegistrationDomainToRequestModelMapper = startOtpRegistrationDomainToRequestModelMapper,
             finalizeOtpRegistrationDomainToRequestModelMapper = finalizeOtpRegistrationDomainToRequestModelMapper
         )

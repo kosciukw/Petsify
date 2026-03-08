@@ -46,7 +46,6 @@ object UserModule {
         networkStateProvider: NetworkStateProvider,
         userApiController: UserApiController,
         loginByPasswordDomainToRequestModelMapper: LoginByPasswordDomainToRequestModelMapper,
-        signUpDomainToRequestModelMapper: SignUpDomainToRequestModelMapper,
         startOtpRegistrationDomainToRequestModelMapper: StartOtpRegistrationDomainToRequestModelMapper,
         finalizeOtpRegistrationDomainToRequestModelMapper: FinalizeOtpRegistrationDomainToRequestModelMapper
     ): UserRepository = UserRepositoryRemoteImpl(
@@ -54,7 +53,6 @@ object UserModule {
         networkStateProvider = networkStateProvider,
         userApiController = userApiController,
         loginByPasswordDomainToRequestModelMapper = loginByPasswordDomainToRequestModelMapper,
-        signUpDomainToRequestModelMapper = signUpDomainToRequestModelMapper,
         startOtpRegistrationDomainToRequestModelMapper = startOtpRegistrationDomainToRequestModelMapper,
         finalizeOtpRegistrationDomainToRequestModelMapper = finalizeOtpRegistrationDomainToRequestModelMapper
     )

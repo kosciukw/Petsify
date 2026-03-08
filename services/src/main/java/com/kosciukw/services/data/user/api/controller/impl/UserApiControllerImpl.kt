@@ -7,7 +7,6 @@ import com.kosciukw.services.data.user.error.mapper.UserExceptionMapper
 import com.kosciukw.services.data.user.model.api.request.FinalizeOtpRegistrationRequest
 import com.kosciukw.services.data.user.model.api.request.LoginByPasswordRequest
 import com.kosciukw.services.data.user.model.api.request.RefreshRequest
-import com.kosciukw.services.data.user.model.api.request.SignUpRequest
 import com.kosciukw.services.data.user.model.api.request.StartOtpRegistrationRequest
 
 class UserApiControllerImpl(
@@ -48,14 +47,4 @@ class UserApiControllerImpl(
                 url = userUrlProvider.getRefreshTokenUrl()
             )
         }
-
-    @Deprecated("Use Start + FinalizeRegistration")
-    override suspend fun signUp(request: SignUpRequest) {
-        userExceptionMapper.mapException {
-            userApi.signUp(
-                signUpRequest = request,
-                url = userUrlProvider.getSignUpUrl()
-            )
-        }
-    }
 }

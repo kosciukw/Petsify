@@ -5,7 +5,6 @@ import com.kosciukw.services.data.session.service.AuthTokenService
 import com.kosciukw.services.data.user.model.domain.FinalizeOtpRegistrationDomainModel
 import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
 import com.kosciukw.services.data.user.model.domain.RefreshTokenDomainModel
-import com.kosciukw.services.data.user.model.domain.SignUpDomainModel
 import com.kosciukw.services.data.user.model.domain.StartOtpRegistrationDomainModel
 import com.kosciukw.services.data.user.repository.UserRepository
 import com.kosciukw.services.data.user.service.user.UserService
@@ -49,13 +48,6 @@ class UserServiceImpl @Inject constructor(
     override suspend fun refreshToken(
         request: RefreshTokenDomainModel
     ) = userRepository.refreshToken(request)
-
-    @Deprecated("Use Start + FinalizeRegistration")
-    override suspend fun signUp(
-        request: SignUpDomainModel
-    ) {
-        userRepository.signUp(request)
-    }
 
     override suspend fun isSignedIn() =
         authTokenService.getAccessToken() != null //todo check if correct
