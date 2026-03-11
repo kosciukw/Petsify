@@ -27,6 +27,14 @@
     <string name="sign_up_screen_sign_up">Sign up</string>
     <string name="sign_up_screen_please_enter_data">Please enter required data to complete registration</string>
 
+    <!-- Otp Screen -->
+    <string name="sign_up_by_otp_screen">Type the code we sent you to your email address</string>
+    <string name="otp_validation_error">Please enter the 6-digit code</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_screen_header">Settings</string>
+    <string name="settings_screen_title">Settings</string>
+
     <!-- Error messages -->
     <string name="error_no_internet_connection">No internet connection</string>
     <string name="error_something_went_wrong">Oops… Something went wrong… Please try again</string>

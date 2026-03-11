@@ -4,8 +4,9 @@ import com.kosciukw.services.data.user.api.UserApi
 import com.kosciukw.services.data.user.api.controller.UserApiController
 import com.kosciukw.services.data.user.api.provider.UserUrlProvider
 import com.kosciukw.services.data.user.error.mapper.UserExceptionMapper
+import com.kosciukw.services.data.user.model.api.request.FinalizeOtpRegistrationRequest
 import com.kosciukw.services.data.user.model.api.request.LoginByPasswordRequest
-import com.kosciukw.services.data.user.model.api.request.SignUpRequest
+import com.kosciukw.services.data.user.model.api.request.RefreshRequest
 import com.kosciukw.services.data.user.model.api.request.StartOtpRegistrationRequest
 
 class UserApiControllerImpl(
@@ -31,12 +32,19 @@ class UserApiControllerImpl(
         }
     }
 
-    override suspend fun signUp(request: SignUpRequest) {
+    override suspend fun finalizeOtpRegistrationRequest(request: FinalizeOtpRegistrationRequest) =
         userExceptionMapper.mapException {
-            userApi.signUp(
-                signUpRequest = request,
-                url = userUrlProvider.getLoginByPasswordUrl()
+            userApi.finalizeOtpRegistration(
+                finalizeOtpRegistrationRequest = request,
+                url = userUrlProvider.getFinalizeOtpRegistrationUrl()
             )
         }
-    }
+
+    override suspend fun refreshToken(request: RefreshRequest) =
+        userExceptionMapper.mapException {
+            userApi.refreshToken(
+                refreshRequest = request,
+                url = userUrlProvider.getRefreshTokenUrl()
+            )
+        }
 }

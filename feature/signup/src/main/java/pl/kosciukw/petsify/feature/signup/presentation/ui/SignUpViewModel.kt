@@ -3,6 +3,7 @@ package pl.kosciukw.petsify.feature.signup.presentation.ui
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import pl.kosciukw.petsify.feature.otp.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpAction
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpEvent
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpState
@@ -50,7 +51,8 @@ class SignUpViewModel @Inject constructor(
             is SignUpEvent.OnTermsAcceptedChanged -> onTermsAcceptedChanged(event.accepted)
             is SignUpEvent.OnMarketingAcceptedChanged -> onMarketingAccepted(event.accepted)
             is SignUpEvent.OnConfirmButtonClicked -> onConfirmButtonClicked()
-            is SignUpEvent.OnLoginButtonClicked -> { setAction { SignUpAction.Navigation.NavigateToLogin } }
+            is SignUpEvent.OnLoginButtonClicked -> setAction { SignUpAction.Navigation.NavigateToLogin }
+            is SignUpEvent.OnScreenDisposed -> clearForm()
         }
     }
 
@@ -95,12 +97,14 @@ class SignUpViewModel @Inject constructor(
 
         when (matchState) {
             is PasswordMatchState.Match -> {
+                isRepeatPasswordValid = true
                 setState {
                     copy(isConfirmPasswordValidationErrorEnabled = false)
                 }
             }
 
             is PasswordMatchState.Mismatch -> {
+                isRepeatPasswordValid = false
                 setState {
                     copy(isConfirmPasswordValidationErrorEnabled = true)
                 }
@@ -108,6 +112,7 @@ class SignUpViewModel @Inject constructor(
             }
 
             is PasswordMatchState.Empty -> {
+                isRepeatPasswordValid = false
                 //no-op
             }
         }
@@ -122,25 +127,26 @@ class SignUpViewModel @Inject constructor(
         )
 
         setState {
-            copy(
-                inputConfirmPassword = confirmPassword.concatToString(),
-            )
+            copy(inputConfirmPassword = confirmPassword.concatToString())
         }
 
         when (matchState) {
             is PasswordMatchState.Match -> {
+                isRepeatPasswordValid = true
                 setState {
                     copy(isConfirmPasswordValidationErrorEnabled = false)
                 }
             }
 
             is PasswordMatchState.Mismatch -> {
+                isRepeatPasswordValid = false
                 setState {
                     copy(isConfirmPasswordValidationErrorEnabled = true)
                 }
             }
 
             is PasswordMatchState.Empty -> {
+                isRepeatPasswordValid = false
                 setState {
                     copy(inputConfirmPassword = confirmPassword.concatToString())
                 }
@@ -173,6 +179,8 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun onConfirmButtonClicked() {
+        handleButtonState()
+        if (!_state.value.isSignUpButtonStateEnabled) return
         startOtpRegistration(_state.value.inputEmail)
     }
 
@@ -191,7 +199,17 @@ class SignUpViewModel @Inject constructor(
                     is ResultOrFailure.Success -> {
                         setState { copy(progressBarState = ProgressBarState.Idle) }
 
-                        // TODO 26.06.2025 handle finalize registration process
+                        setAction {
+                            SignUpAction.Navigation.NavigateToOtp(
+                                SignUpByOtpNavArgs(
+                                    email = _state.value.inputEmail,
+                                    name = _state.value.inputName,
+                                    password = _state.value.inputPassword,
+                                    termsAccepted = _state.value.isTermsAccepted,
+                                    marketingAccepted = _state.value.isMarketingAccepted
+                                )
+                            )
+                        }
                     }
 
                     is ResultOrFailure.Failure -> {
@@ -204,12 +222,22 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun handleButtonState() {
-        val enabled = isNameValid
-                && isEmailValid
-                && isPasswordValid
-                && isRepeatPasswordValid
-                && isTermsAccepted
-                && isMarketingAccepted
+        val enabled = isNameValid &&
+            isEmailValid &&
+            isPasswordValid &&
+            isRepeatPasswordValid &&
+            isTermsAccepted &&
+            isMarketingAccepted
         setState { copy(isSignUpButtonStateEnabled = enabled) }
+    }
+
+    private fun clearForm() {
+        isNameValid = false
+        isEmailValid = false
+        isPasswordValid = false
+        isRepeatPasswordValid = false
+        isTermsAccepted = false
+        isMarketingAccepted = false
+        setState { setInitialState() }
     }
 }

@@ -1,6 +1,7 @@
-package pl.kosciukw.petsify.feature.signup.usecase
+package pl.kosciukw.petsify.feature.otp.usecase
 
-import com.kosciukw.services.data.user.model.domain.SignUpDomainModel
+import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
+import com.kosciukw.services.data.user.model.domain.RefreshTokenDomainModel
 import com.kosciukw.services.data.user.service.user.UserService
 import kotlinx.coroutines.flow.flow
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
@@ -8,16 +9,12 @@ import pl.kosciukw.petsify.shared.usecase.UseCase
 import pl.kosciukw.petsify.shared.utils.empty
 import javax.inject.Inject
 
-class SignUpUseCase @Inject constructor(
+class RefreshTokenUseCase @Inject constructor(
     private val userService: UserService
-) : UseCase<ResultOrFailure<Unit, Throwable>, SignUpUseCase.Params>() {
+) : UseCase<ResultOrFailure<AccessTokenApiModel, Throwable>, RefreshTokenUseCase.Params>() {
 
     data class Params(
-        val email: String,
-        val password: String,
-        val name: String,
-        val termsAccepted: Boolean,
-        val marketingAccepted: Boolean
+        val refreshToken: String
     ) {
         override fun toString() = String.empty()
     }
@@ -25,16 +22,12 @@ class SignUpUseCase @Inject constructor(
     override fun action(params: Params) = flow {
         emit(ResultOrFailure.Loading)
 
-        val request = SignUpDomainModel(
-            email = params.email,
-            password = params.password,
-            name = params.name,
-            termsAccepted = params.termsAccepted,
-            marketingAccepted = params.marketingAccepted
+        val request = RefreshTokenDomainModel(
+            refreshToken = params.refreshToken
         )
 
         runCatching {
-            userService.signUp(request)
+            userService.refreshToken(request)
         }.onSuccess { result ->
             emit(ResultOrFailure.Success(result))
         }.onFailure { error ->

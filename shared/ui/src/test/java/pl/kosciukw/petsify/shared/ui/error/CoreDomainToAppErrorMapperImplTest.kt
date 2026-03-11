@@ -20,7 +20,7 @@ internal class CoreDomainToAppErrorMapperImplTest {
 
     @BeforeEach
     fun setUp() {
-        context = mockk(relaxed = true)
+        context = mockk()
         mapper = CoreDomainToAppErrorMapperImpl(context)
     }
 

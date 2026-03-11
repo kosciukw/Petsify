@@ -1,8 +1,9 @@
 package com.kosciukw.services.data.user.repository
 
 import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
+import com.kosciukw.services.data.user.model.domain.FinalizeOtpRegistrationDomainModel
 import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
-import com.kosciukw.services.data.user.model.domain.SignUpDomainModel
+import com.kosciukw.services.data.user.model.domain.RefreshTokenDomainModel
 import com.kosciukw.services.data.user.model.domain.StartOtpRegistrationDomainModel
 
 interface UserRepository {
@@ -15,7 +16,11 @@ interface UserRepository {
         startOtpRegistrationDomainModel: StartOtpRegistrationDomainModel
     )
 
-    suspend fun signUp(
-        signUpDomainModel: SignUpDomainModel
-    )
+    suspend fun finalizeOtpRegistration(
+        finalizeOtpRegistrationDomainModel: FinalizeOtpRegistrationDomainModel
+    ): AccessTokenApiModel
+
+    suspend fun refreshToken(
+        refreshTokenDomainModel: RefreshTokenDomainModel
+    ): AccessTokenApiModel
 }

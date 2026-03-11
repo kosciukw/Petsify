@@ -11,4 +11,5 @@ sealed class SignUpEvent : ViewEvent {
     data class OnMarketingAcceptedChanged(val accepted: Boolean) : SignUpEvent()
     data object OnConfirmButtonClicked : SignUpEvent()
     data object OnLoginButtonClicked : SignUpEvent()
+    data object OnScreenDisposed : SignUpEvent()
 }
