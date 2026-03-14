@@ -20,7 +20,7 @@ import pl.kosciukw.petsify.feature.login.presentation.ui.LoginViewModel
 import pl.kosciukw.petsify.feature.login.usecase.LoginDeviceUseCase
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
-import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
+import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.validator.IdentifierState
 import pl.kosciukw.petsify.shared.validator.notempty.NotEmptyValidator
 import kotlinx.coroutines.test.StandardTestDispatcher

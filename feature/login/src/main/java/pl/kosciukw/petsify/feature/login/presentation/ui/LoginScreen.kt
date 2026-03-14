@@ -34,14 +34,14 @@ import pl.kosciukw.petsify.feature.login.presentation.LoginEvent
 import pl.kosciukw.petsify.feature.login.presentation.LoginState
 import pl.kosciukw.petsify.shared.ui.components.spacer.*
 import pl.kosciukw.petsify.shared.data.network.NetworkState
-import pl.kosciukw.petsify.shared.extensions.makeToast
+import pl.kosciukw.petsify.shared.presentation.extensions.makeToast
 import pl.kosciukw.petsify.shared.ui.components.image.BackgroundImage
 import pl.kosciukw.petsify.shared.ui.components.button.ButtonRegular
 import pl.kosciukw.petsify.shared.ui.components.button.ButtonText
 import pl.kosciukw.petsify.shared.ui.components.base.BaseScreen
 import pl.kosciukw.petsify.shared.ui.components.input.EditText
-import pl.kosciukw.petsify.shared.ui.UIComponent
-import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
+import pl.kosciukw.petsify.shared.presentation.UIComponent
+import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.ui.components.secure.PasswordInput
 import pl.kosciukw.petsify.shared.ui.theme.*
 import pl.kosciukw.petsify.shared.utils.empty

@@ -19,12 +19,12 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.collectLatest
 import pl.kosciukw.petsify.feature.otp.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.feature.signup.presentation.*
-import pl.kosciukw.petsify.shared.ui.UIComponent
+import pl.kosciukw.petsify.shared.presentation.UIComponent
 import pl.kosciukw.petsify.shared.ui.components.base.BaseScreen
 import pl.kosciukw.petsify.shared.ui.components.button.ButtonRegular
 import pl.kosciukw.petsify.shared.ui.components.checkbox.CheckBoxText
 import pl.kosciukw.petsify.shared.ui.components.input.EditText
-import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
+import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.ui.components.spacer.*
 import pl.kosciukw.petsify.shared.ui.components.toolbar.ToolbarConfig
 import pl.kosciukw.petsify.shared.ui.theme.*

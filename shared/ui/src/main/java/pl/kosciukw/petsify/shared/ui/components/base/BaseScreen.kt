@@ -15,10 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.flow.Flow
 import pl.kosciukw.petsify.shared.data.network.NetworkState
-import pl.kosciukw.petsify.shared.ui.UIComponent
+import pl.kosciukw.petsify.shared.presentation.UIComponent
 import pl.kosciukw.petsify.shared.ui.components.dialog.CreateUIComponentDialog
 import pl.kosciukw.petsify.shared.ui.components.progress.LoadingScreen
-import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
+import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.ui.components.snackbar.AppSnackbar
 import pl.kosciukw.petsify.shared.ui.components.toolbar.ToolbarConfig
 import pl.kosciukw.petsify.shared.ui.components.toolbar.ToolbarCustom

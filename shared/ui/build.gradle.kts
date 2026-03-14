@@ -2,8 +2,6 @@ plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose)
-  alias(libs.plugins.hilt.android.gradle.plugin)
-  kotlin("kapt")
 }
 
 android {
@@ -42,11 +40,11 @@ android {
 }
 
 dependencies {
+  api(rootProject.project(":shared:core"))
+  api(rootProject.project(":shared:presentation"))
   api(platform(libs.androidx.compose.bom))
   api(libs.bundles.compose)
   api(libs.androidx.material3)
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
 
   debugImplementation(libs.bundles.compose.debug)
 

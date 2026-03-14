@@ -10,8 +10,8 @@ import pl.kosciukw.petsify.feature.signup.presentation.SignUpState
 import pl.kosciukw.petsify.feature.signup.usecase.StartOtpRegistrationUseCase
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
-import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
-import pl.kosciukw.petsify.shared.ui.viewmodel.BaseViewModel
+import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
+import pl.kosciukw.petsify.shared.presentation.viewmodel.BaseViewModel
 import pl.kosciukw.petsify.shared.validator.EmailIdentifier
 import pl.kosciukw.petsify.shared.validator.IdentifierState
 import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator

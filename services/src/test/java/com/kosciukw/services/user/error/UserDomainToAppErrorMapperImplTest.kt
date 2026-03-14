@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pl.kosciukw.petsify.shared.error.AppError
-import pl.kosciukw.petsify.shared.ui.R as SharedR
+import pl.kosciukw.petsify.shared.core.R as SharedR
 
 internal class UserDomainToAppErrorMapperImplTest {
 

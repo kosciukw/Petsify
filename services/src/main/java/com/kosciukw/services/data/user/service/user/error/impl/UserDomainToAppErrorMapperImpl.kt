@@ -6,7 +6,7 @@ import com.kosciukw.services.data.user.service.user.error.UserDomainToAppErrorMa
 import pl.kosciukw.petsify.shared.error.AppError
 import pl.kosciukw.petsify.shared.error.DomainError
 import javax.inject.Inject
-import pl.kosciukw.petsify.shared.ui.R as SharedR
+import pl.kosciukw.petsify.shared.core.R as SharedR
 
 class UserDomainToAppErrorMapperImpl @Inject constructor(
     private val context: Context

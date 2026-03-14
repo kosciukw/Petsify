@@ -1,6 +1,6 @@
 package pl.kosciukw.petsify.feature.signup.presentation
 
-import pl.kosciukw.petsify.shared.ui.components.view.ViewEvent
+import pl.kosciukw.petsify.shared.presentation.components.view.ViewEvent
 
 sealed class SignUpEvent : ViewEvent {
     data class OnNameTextChanged(val value: String) : SignUpEvent()
