@@ -1,12 +1,11 @@
 package pl.kosciukw.petsify.app
 
 import android.app.Application
-import com.kosciukw.services.internal.session.di.authModule
 import com.kosciukw.services.internal.user.di.userModule
-import com.kosciukw.services.internal.user.error.di.userServiceModule
 import com.kosciukw.services.internal.user.mapper.di.servicesMappersModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import pl.kosciukw.petsify.di.authModule
 import pl.kosciukw.petsify.di.appModule
 import pl.kosciukw.petsify.feature.login.di.loginModule
 import pl.kosciukw.petsify.feature.settings.di.settingsModule
@@ -30,7 +29,6 @@ class MyApplication : Application() {
                 servicesMappersModule,
                 authModule,
                 userModule,
-                userServiceModule,
                 appModule,
                 loginModule,
                 signUpModule,

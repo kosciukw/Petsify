@@ -59,6 +59,8 @@ dependencies {
   implementation(libs.bundles.androidx)
   implementation(libs.koin.android)
   implementation(libs.koin.androidx.compose)
+  implementation(libs.androidx.datastore.core.android)
+  implementation(libs.androidx.datastore.preferences)
 
   implementation(libs.kotlinx.metadata.jvm)
   implementation(project(":services"))

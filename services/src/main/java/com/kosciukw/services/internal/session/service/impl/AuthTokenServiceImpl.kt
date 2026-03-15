@@ -7,6 +7,8 @@ import com.kosciukw.services.internal.user.api.UserApi
 import com.kosciukw.services.internal.user.api.provider.UserUrlProvider
 import com.kosciukw.services.internal.user.error.mapper.UserExceptionMapper
 import com.kosciukw.services.internal.user.model.api.request.RefreshRequest
+import com.google.gson.JsonParser
+import java.util.Base64
 
 class AuthTokenServiceImpl(
     private val authSessionRepository: AuthSessionRepository,
@@ -71,13 +73,13 @@ class AuthTokenServiceImpl(
     private fun decodeJwtExpiration(jwt: String): Long? = runCatching {
         val payloadBase64 = jwt.split('.')[1]
         val payloadJson = String(
-            android.util.Base64.decode(
-                payloadBase64,
-                android.util.Base64.URL_SAFE or android.util.Base64.NO_WRAP
-            )
+            Base64.getUrlDecoder().decode(payloadBase64)
         )
-        org.json.JSONObject(payloadJson)
-            .optLong("exp")
-            .takeIf { it > 0 }
+        val expiration = JsonParser.parseString(payloadJson)
+            .asJsonObject
+            .get("exp")
+            ?.asLong
+
+        expiration?.takeIf { it > 0 }
     }.getOrNull()
 }

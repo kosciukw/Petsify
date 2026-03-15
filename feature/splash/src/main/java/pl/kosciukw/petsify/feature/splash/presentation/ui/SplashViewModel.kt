@@ -1,14 +1,12 @@
 package pl.kosciukw.petsify.feature.splash.presentation.ui
 
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import pl.kosciukw.petsify.feature.splash.presentation.SplashAction
 import pl.kosciukw.petsify.feature.splash.presentation.SplashEvent
 import pl.kosciukw.petsify.feature.splash.presentation.SplashState
 import pl.kosciukw.petsify.feature.splash.usecase.IsSignedInUseCase
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
+import pl.kosciukw.petsify.shared.presentation.common.viewmodel.BaseViewModel
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
-import pl.kosciukw.petsify.shared.presentation.viewmodel.BaseViewModel
 
 class SplashViewModel(
     private val isSignedInUseCase: IsSignedInUseCase,
@@ -30,7 +28,7 @@ class SplashViewModel(
     }
 
     private fun isSignedIn() {
-        viewModelScope.launch {
+        launch {
             setState { copy(isLoading = true) }
             isSignedInUseCase.action(Unit).collect { result ->
                 when (result) {
@@ -40,10 +38,11 @@ class SplashViewModel(
 
                     is ResultOrFailure.Success -> {
                         setState { copy(isLoading = false) }
-                        val isSignedIn = result.data
-
-                        if (isSignedIn) setAction { SplashAction.Navigation.NavigateToMain }
-                        else setAction { SplashAction.Navigation.NavigateToLogin }
+                        if (result.data) {
+                            setAction { SplashAction.Navigation.NavigateToMain }
+                        } else {
+                            setAction { SplashAction.Navigation.NavigateToLogin }
+                        }
                     }
 
                     is ResultOrFailure.Failure -> {
@@ -54,5 +53,4 @@ class SplashViewModel(
             }
         }
     }
-
 }
