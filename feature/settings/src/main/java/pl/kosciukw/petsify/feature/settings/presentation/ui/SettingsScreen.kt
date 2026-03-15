@@ -18,7 +18,7 @@ import pl.kosciukw.petsify.feature.settings.presentation.SettingsAction
 import pl.kosciukw.petsify.feature.settings.presentation.SettingsEvent
 import pl.kosciukw.petsify.feature.settings.presentation.SettingsState
 import pl.kosciukw.petsify.shared.ui.R
-import pl.kosciukw.petsify.shared.ui.UIComponent
+import pl.kosciukw.petsify.shared.presentation.UIComponent
 import pl.kosciukw.petsify.shared.ui.components.base.BaseScreen
 import pl.kosciukw.petsify.shared.ui.components.spacer.Spacer96dp
 import pl.kosciukw.petsify.shared.ui.components.toolbar.ToolbarConfig

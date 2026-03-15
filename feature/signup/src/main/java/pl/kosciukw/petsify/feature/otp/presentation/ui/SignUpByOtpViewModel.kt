@@ -10,8 +10,8 @@ import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpState
 import pl.kosciukw.petsify.feature.otp.usecase.FinalizeOtpRegistrationUseCase
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
-import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
-import pl.kosciukw.petsify.shared.ui.viewmodel.BaseViewModel
+import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
+import pl.kosciukw.petsify.shared.presentation.viewmodel.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel

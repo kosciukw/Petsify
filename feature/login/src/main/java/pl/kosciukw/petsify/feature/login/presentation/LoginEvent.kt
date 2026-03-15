@@ -1,7 +1,7 @@
 package pl.kosciukw.petsify.feature.login.presentation
 
 import pl.kosciukw.petsify.shared.data.network.NetworkState
-import pl.kosciukw.petsify.shared.ui.components.view.ViewEvent
+import pl.kosciukw.petsify.shared.presentation.components.view.ViewEvent
 
 sealed class LoginEvent : ViewEvent {
     data class OnEmailTextChanged(val value: String) : LoginEvent()

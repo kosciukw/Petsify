@@ -24,7 +24,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run unit tests
-        run: ./gradlew clean testDebug
+        run: ./gradlew testDebugUnitTest
 
   version_bump:
     name: Increment Version Before Build

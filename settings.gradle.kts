@@ -22,7 +22,9 @@ dependencyResolutionManagement {
 rootProject.name = "Petsify"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
+include(":shared:core")
 include(":shared:ui")
+include(":shared:presentation")
 include(":feature:login")
 include(":feature:signup")
 include(":feature:settings")

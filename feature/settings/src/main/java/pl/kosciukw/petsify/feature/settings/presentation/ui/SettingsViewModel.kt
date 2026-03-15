@@ -5,7 +5,7 @@ import pl.kosciukw.petsify.feature.settings.presentation.SettingsAction
 import pl.kosciukw.petsify.feature.settings.presentation.SettingsEvent
 import pl.kosciukw.petsify.feature.settings.presentation.SettingsState
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
-import pl.kosciukw.petsify.shared.ui.viewmodel.BaseViewModel
+import pl.kosciukw.petsify.shared.presentation.viewmodel.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel

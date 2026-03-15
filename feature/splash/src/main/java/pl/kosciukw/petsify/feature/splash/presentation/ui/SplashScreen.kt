@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.collectLatest
 import pl.kosciukw.petsify.feature.splash.presentation.SplashAction
 import pl.kosciukw.petsify.feature.splash.presentation.SplashEvent
 import pl.kosciukw.petsify.feature.splash.presentation.SplashState
-import pl.kosciukw.petsify.shared.ui.UIComponent
+import pl.kosciukw.petsify.shared.presentation.UIComponent
 
 @Composable
 fun SplashScreen(

@@ -11,8 +11,8 @@ import pl.kosciukw.petsify.feature.login.usecase.LoginDeviceUseCase
 import pl.kosciukw.petsify.shared.data.network.NetworkState
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
-import pl.kosciukw.petsify.shared.ui.components.progress.ProgressBarState
-import pl.kosciukw.petsify.shared.ui.viewmodel.BaseViewModel
+import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
+import pl.kosciukw.petsify.shared.presentation.viewmodel.BaseViewModel
 import pl.kosciukw.petsify.shared.utils.clear
 import pl.kosciukw.petsify.shared.validator.EmailIdentifier
 import pl.kosciukw.petsify.shared.validator.IdentifierState

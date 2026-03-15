@@ -9,7 +9,7 @@ import pl.kosciukw.petsify.feature.splash.presentation.SplashState
 import pl.kosciukw.petsify.feature.splash.usecase.IsSignedInUseCase
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
-import pl.kosciukw.petsify.shared.ui.viewmodel.BaseViewModel
+import pl.kosciukw.petsify.shared.presentation.viewmodel.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel

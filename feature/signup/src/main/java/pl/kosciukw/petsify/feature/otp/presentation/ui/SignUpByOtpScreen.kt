@@ -28,7 +28,7 @@ import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpAction
 import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpEvent
 import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpState
 import pl.kosciukw.petsify.shared.ui.R
-import pl.kosciukw.petsify.shared.ui.UIComponent
+import pl.kosciukw.petsify.shared.presentation.UIComponent
 import pl.kosciukw.petsify.shared.ui.components.base.BaseScreen
 import pl.kosciukw.petsify.shared.ui.components.button.ButtonRegular
 import pl.kosciukw.petsify.shared.ui.components.spacer.Spacer16dp

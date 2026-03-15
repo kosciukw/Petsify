@@ -1,6 +1,6 @@
 package pl.kosciukw.petsify.feature.otp.presentation
 
-import pl.kosciukw.petsify.shared.ui.components.view.ViewSingleAction
+import pl.kosciukw.petsify.shared.presentation.components.view.ViewSingleAction
 
 sealed class SignUpByOtpAction : ViewSingleAction {
 
