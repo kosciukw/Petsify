@@ -1,13 +1,13 @@
 package com.kosciukw.services.user
 
-import com.kosciukw.services.data.session.service.AuthTokenService
-import com.kosciukw.services.data.user.mapper.AccessTokenApiToAuthSessionDomainModelMapper
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
-import com.kosciukw.services.data.user.model.domain.AuthSessionDomainModel
-import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
-import com.kosciukw.services.data.user.repository.UserRepository
-import com.kosciukw.services.data.user.service.user.UserService
-import com.kosciukw.services.data.user.service.user.impl.UserServiceImpl
+import com.kosciukw.services.api.auth.AuthService
+import com.kosciukw.services.api.auth.model.AuthSessionDomainModel
+import com.kosciukw.services.api.auth.model.LoginByPasswordDomainModel
+import com.kosciukw.services.internal.session.service.AuthTokenService
+import com.kosciukw.services.internal.user.mapper.AccessTokenApiToAuthSessionDomainModelMapper
+import com.kosciukw.services.internal.user.model.api.response.AccessTokenApiModel
+import com.kosciukw.services.internal.user.repository.UserRepository
+import com.kosciukw.services.internal.user.service.UserServiceImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test
 
 internal class UserServiceImplTest {
 
-    private lateinit var service: UserService
+    private lateinit var service: AuthService
 
     private val userRepository: UserRepository = mockk()
     private val authTokenService: AuthTokenService = mockk()

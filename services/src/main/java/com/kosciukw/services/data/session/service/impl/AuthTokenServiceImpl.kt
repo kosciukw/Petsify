@@ -1,12 +1,12 @@
-package com.kosciukw.services.data.session.service.impl
+package com.kosciukw.services.internal.session.service.impl
 
-import com.kosciukw.services.data.session.model.AuthTokens
-import com.kosciukw.services.data.session.repository.AuthSessionRepository
-import com.kosciukw.services.data.session.service.AuthTokenService
-import com.kosciukw.services.data.user.api.UserApi
-import com.kosciukw.services.data.user.api.provider.UserUrlProvider
-import com.kosciukw.services.data.user.error.mapper.UserExceptionMapper
-import com.kosciukw.services.data.user.model.api.request.RefreshRequest
+import com.kosciukw.services.internal.session.model.AuthTokens
+import com.kosciukw.services.internal.session.repository.AuthSessionRepository
+import com.kosciukw.services.internal.session.service.AuthTokenService
+import com.kosciukw.services.internal.user.api.UserApi
+import com.kosciukw.services.internal.user.api.provider.UserUrlProvider
+import com.kosciukw.services.internal.user.error.mapper.UserExceptionMapper
+import com.kosciukw.services.internal.user.model.api.request.RefreshRequest
 import javax.inject.Inject
 
 class AuthTokenServiceImpl @Inject constructor(

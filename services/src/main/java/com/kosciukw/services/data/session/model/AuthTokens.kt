@@ -1,4 +1,4 @@
-package com.kosciukw.services.data.session.model
+package com.kosciukw.services.internal.session.model
 
 import pl.kosciukw.petsify.shared.utils.empty
 

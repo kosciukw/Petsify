@@ -1,14 +1,16 @@
-package com.kosciukw.services.data.user.service.user.impl
+package com.kosciukw.services.internal.user.service
 
-import com.kosciukw.services.data.session.model.AuthTokens
-import com.kosciukw.services.data.session.service.AuthTokenService
-import com.kosciukw.services.data.user.mapper.AccessTokenApiToAuthSessionDomainModelMapper
-import com.kosciukw.services.data.user.model.domain.FinalizeOtpRegistrationDomainModel
-import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
-import com.kosciukw.services.data.user.model.domain.RefreshTokenDomainModel
-import com.kosciukw.services.data.user.model.domain.StartOtpRegistrationDomainModel
-import com.kosciukw.services.data.user.repository.UserRepository
-import com.kosciukw.services.data.user.service.user.UserService
+import com.kosciukw.services.api.auth.AuthService
+import com.kosciukw.services.api.auth.model.LoginByPasswordDomainModel
+import com.kosciukw.services.api.registration.RegistrationService
+import com.kosciukw.services.api.registration.model.FinalizeOtpRegistrationDomainModel
+import com.kosciukw.services.api.registration.model.StartOtpRegistrationDomainModel
+import com.kosciukw.services.api.session.SessionService
+import com.kosciukw.services.api.session.model.RefreshTokenDomainModel
+import com.kosciukw.services.internal.session.model.AuthTokens
+import com.kosciukw.services.internal.session.service.AuthTokenService
+import com.kosciukw.services.internal.user.mapper.AccessTokenApiToAuthSessionDomainModelMapper
+import com.kosciukw.services.internal.user.repository.UserRepository
 import pl.kosciukw.petsify.shared.utils.empty
 import javax.inject.Inject
 
@@ -16,7 +18,7 @@ class UserServiceImpl @Inject constructor(
     private val userRepository: UserRepository,
     private val authTokenService: AuthTokenService,
     private val accessTokenApiToAuthSessionDomainModelMapper: AccessTokenApiToAuthSessionDomainModelMapper
-) : UserService {
+) : AuthService, RegistrationService, SessionService {
 
     override suspend fun loginDeviceByPassword(
         request: LoginByPasswordDomainModel

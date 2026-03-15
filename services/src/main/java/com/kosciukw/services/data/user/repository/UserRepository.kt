@@ -1,10 +1,10 @@
-package com.kosciukw.services.data.user.repository
+package com.kosciukw.services.internal.user.repository
 
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
-import com.kosciukw.services.data.user.model.domain.FinalizeOtpRegistrationDomainModel
-import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
-import com.kosciukw.services.data.user.model.domain.RefreshTokenDomainModel
-import com.kosciukw.services.data.user.model.domain.StartOtpRegistrationDomainModel
+import com.kosciukw.services.api.auth.model.LoginByPasswordDomainModel
+import com.kosciukw.services.api.registration.model.FinalizeOtpRegistrationDomainModel
+import com.kosciukw.services.api.registration.model.StartOtpRegistrationDomainModel
+import com.kosciukw.services.api.session.model.RefreshTokenDomainModel
+import com.kosciukw.services.internal.user.model.api.response.AccessTokenApiModel
 
 interface UserRepository {
 

@@ -1,8 +1,8 @@
 package pl.kosciukw.petsify.feature.otp.usecase
 
-import com.kosciukw.services.data.user.model.domain.AuthSessionDomainModel
-import com.kosciukw.services.data.user.model.domain.RefreshTokenDomainModel
-import com.kosciukw.services.data.user.service.user.UserService
+import com.kosciukw.services.api.auth.model.AuthSessionDomainModel
+import com.kosciukw.services.api.session.SessionService
+import com.kosciukw.services.api.session.model.RefreshTokenDomainModel
 import kotlinx.coroutines.flow.flow
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.usecase.UseCase
@@ -10,7 +10,7 @@ import pl.kosciukw.petsify.shared.utils.empty
 import javax.inject.Inject
 
 class RefreshTokenUseCase @Inject constructor(
-    private val userService: UserService
+    private val sessionService: SessionService
 ) : UseCase<ResultOrFailure<AuthSessionDomainModel, Throwable>, RefreshTokenUseCase.Params>() {
 
     data class Params(
@@ -27,7 +27,7 @@ class RefreshTokenUseCase @Inject constructor(
         )
 
         runCatching {
-            userService.refreshToken(request)
+            sessionService.refreshToken(request)
         }.onSuccess { result ->
             emit(ResultOrFailure.Success(result))
         }.onFailure { error ->

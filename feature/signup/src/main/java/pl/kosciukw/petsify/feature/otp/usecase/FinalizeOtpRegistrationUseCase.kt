@@ -1,8 +1,8 @@
 package pl.kosciukw.petsify.feature.otp.usecase
 
-import com.kosciukw.services.data.user.model.domain.AuthSessionDomainModel
-import com.kosciukw.services.data.user.model.domain.FinalizeOtpRegistrationDomainModel
-import com.kosciukw.services.data.user.service.user.UserService
+import com.kosciukw.services.api.auth.model.AuthSessionDomainModel
+import com.kosciukw.services.api.registration.RegistrationService
+import com.kosciukw.services.api.registration.model.FinalizeOtpRegistrationDomainModel
 import kotlinx.coroutines.flow.flow
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.usecase.UseCase
@@ -10,7 +10,7 @@ import pl.kosciukw.petsify.shared.utils.empty
 import javax.inject.Inject
 
 class FinalizeOtpRegistrationUseCase @Inject constructor(
-    private val userService: UserService
+    private val registrationService: RegistrationService
 ) : UseCase<ResultOrFailure<AuthSessionDomainModel, Throwable>, FinalizeOtpRegistrationUseCase.Params>() {
 
     data class Params(
@@ -37,7 +37,7 @@ class FinalizeOtpRegistrationUseCase @Inject constructor(
         )
 
         runCatching {
-            userService.finalizeOtpRegistration(request)
+            registrationService.finalizeOtpRegistration(request)
         }.onSuccess { result ->
             emit(ResultOrFailure.Success(result))
         }.onFailure { error ->

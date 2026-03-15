@@ -1,6 +1,6 @@
 package pl.kosciukw.petsify.feature.otp.presentation.ui
 
-import com.kosciukw.services.data.user.model.domain.AuthSessionDomainModel
+import com.kosciukw.services.api.auth.model.AuthSessionDomainModel
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

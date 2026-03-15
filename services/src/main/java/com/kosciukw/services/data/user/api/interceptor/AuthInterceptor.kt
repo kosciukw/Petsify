@@ -1,6 +1,6 @@
-package com.kosciukw.services.data.user.api.interceptor
+package com.kosciukw.services.internal.user.api.interceptor
 
-import com.kosciukw.services.data.session.repository.AuthSessionRepository
+import com.kosciukw.services.internal.session.repository.AuthSessionRepository
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response

@@ -1,7 +1,7 @@
 package pl.kosciukw.petsify.error.mapper
 
-import com.kosciukw.services.data.user.repository.error.model.UserDomainError
-import com.kosciukw.services.data.user.service.user.error.UserDomainToAppErrorMapper
+import com.kosciukw.services.api.user.error.UserDomainError
+import com.kosciukw.services.api.user.error.UserDomainToAppErrorMapper
 import pl.kosciukw.petsify.shared.error.AppError
 import pl.kosciukw.petsify.shared.error.CoreDomainError
 import pl.kosciukw.petsify.shared.error.mapper.CoreDomainToAppErrorMapper

@@ -1,8 +1,8 @@
 package pl.kosciukw.petsify.feature.login.usecase
 
-import com.kosciukw.services.data.user.model.domain.AuthSessionDomainModel
-import com.kosciukw.services.data.user.repository.error.model.UserDomainError
-import com.kosciukw.services.data.user.service.user.UserService
+import com.kosciukw.services.api.auth.AuthService
+import com.kosciukw.services.api.auth.model.AuthSessionDomainModel
+import com.kosciukw.services.api.user.error.UserDomainError
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -14,13 +14,13 @@ import pl.kosciukw.petsify.shared.result.ResultOrFailure
 
 internal class LoginDeviceUseCaseTest {
 
-    private val userService: UserService = mockk()
+    private val authService: AuthService = mockk()
 
     private lateinit var loginDeviceUseCase: LoginDeviceUseCase
 
     @BeforeEach
     fun setup() {
-        loginDeviceUseCase = LoginDeviceUseCase(userService)
+        loginDeviceUseCase = LoginDeviceUseCase(authService)
     }
 
     @Test
@@ -35,7 +35,7 @@ internal class LoginDeviceUseCaseTest {
         )
 
         coEvery {
-            userService.loginDeviceByPassword(any())
+            authService.loginDeviceByPassword(any())
         } throws exception
 
         // When
@@ -60,7 +60,7 @@ internal class LoginDeviceUseCaseTest {
         )
 
         coEvery {
-            userService.loginDeviceByPassword(any())
+            authService.loginDeviceByPassword(any())
         } returns expectedAccessToken
 
         // When

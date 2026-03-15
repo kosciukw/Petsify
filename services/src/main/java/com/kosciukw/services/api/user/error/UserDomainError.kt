@@ -1,4 +1,4 @@
-package com.kosciukw.services.data.user.repository.error.model
+package com.kosciukw.services.api.user.error
 
 import pl.kosciukw.petsify.shared.error.DomainError
 import pl.kosciukw.petsify.shared.utils.empty

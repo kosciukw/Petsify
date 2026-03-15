@@ -1,6 +1,6 @@
 package pl.kosciukw.petsify.di
 
-import com.kosciukw.services.data.user.service.user.error.UserDomainToAppErrorMapper
+import com.kosciukw.services.api.user.error.UserDomainToAppErrorMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
