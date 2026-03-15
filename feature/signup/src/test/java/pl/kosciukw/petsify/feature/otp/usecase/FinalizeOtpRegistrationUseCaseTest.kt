@@ -1,6 +1,6 @@
 package pl.kosciukw.petsify.feature.otp.usecase
 
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
+import com.kosciukw.services.data.user.model.domain.AuthSessionDomainModel
 import com.kosciukw.services.data.user.service.user.UserService
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -32,7 +32,7 @@ internal class FinalizeOtpRegistrationUseCaseTest {
             marketingAccepted = true,
             otp = "123456"
         )
-        val expected = AccessTokenApiModel(
+        val expected = AuthSessionDomainModel(
             accessToken = "access-token",
             refreshToken = "refresh-token"
         )

@@ -2,6 +2,7 @@ package com.kosciukw.services.data.user.service.user.impl
 
 import com.kosciukw.services.data.session.model.AuthTokens
 import com.kosciukw.services.data.session.service.AuthTokenService
+import com.kosciukw.services.data.user.mapper.AccessTokenApiToAuthSessionDomainModelMapper
 import com.kosciukw.services.data.user.model.domain.FinalizeOtpRegistrationDomainModel
 import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
 import com.kosciukw.services.data.user.model.domain.RefreshTokenDomainModel
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 class UserServiceImpl @Inject constructor(
     private val userRepository: UserRepository,
-    private val authTokenService: AuthTokenService
+    private val authTokenService: AuthTokenService,
+    private val accessTokenApiToAuthSessionDomainModelMapper: AccessTokenApiToAuthSessionDomainModelMapper
 ) : UserService {
 
     override suspend fun loginDeviceByPassword(
@@ -27,6 +29,7 @@ class UserServiceImpl @Inject constructor(
                 )
             )
         }
+        .let(accessTokenApiToAuthSessionDomainModelMapper::map)
 
     override suspend fun startOtpRegistration(
         request: StartOtpRegistrationDomainModel
@@ -41,13 +44,15 @@ class UserServiceImpl @Inject constructor(
             tokens = AuthTokens(
                 accessToken = response.accessToken,
                 refreshToken = response.refreshToken ?: String.empty()
+                )
             )
-        )
-    }
+        }
+        .let(accessTokenApiToAuthSessionDomainModelMapper::map)
 
     override suspend fun refreshToken(
         request: RefreshTokenDomainModel
     ) = userRepository.refreshToken(request)
+        .let(accessTokenApiToAuthSessionDomainModelMapper::map)
 
     override suspend fun isSignedIn() =
         authTokenService.getAccessToken() != null //todo check if correct

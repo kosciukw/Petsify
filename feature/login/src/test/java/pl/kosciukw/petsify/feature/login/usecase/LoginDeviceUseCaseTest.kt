@@ -1,6 +1,6 @@
 package pl.kosciukw.petsify.feature.login.usecase
 
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
+import com.kosciukw.services.data.user.model.domain.AuthSessionDomainModel
 import com.kosciukw.services.data.user.repository.error.model.UserDomainError
 import com.kosciukw.services.data.user.service.user.UserService
 import org.junit.jupiter.api.BeforeEach
@@ -54,7 +54,7 @@ internal class LoginDeviceUseCaseTest {
             password = "correctpassword"
         )
 
-        val expectedAccessToken = AccessTokenApiModel(
+        val expectedAccessToken = AuthSessionDomainModel(
             accessToken = "accessToken",
             refreshToken = "refreshToken"
         )

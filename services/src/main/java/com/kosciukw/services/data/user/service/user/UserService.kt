@@ -1,6 +1,6 @@
 package com.kosciukw.services.data.user.service.user
 
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
+import com.kosciukw.services.data.user.model.domain.AuthSessionDomainModel
 import com.kosciukw.services.data.user.model.domain.FinalizeOtpRegistrationDomainModel
 import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
 import com.kosciukw.services.data.user.model.domain.RefreshTokenDomainModel
@@ -10,7 +10,7 @@ interface UserService {
 
     suspend fun loginDeviceByPassword(
         request: LoginByPasswordDomainModel
-    ): AccessTokenApiModel
+    ): AuthSessionDomainModel
 
     suspend fun startOtpRegistration(
         request: StartOtpRegistrationDomainModel
@@ -18,11 +18,11 @@ interface UserService {
 
     suspend fun finalizeOtpRegistration(
         request: FinalizeOtpRegistrationDomainModel
-    ): AccessTokenApiModel
+    ): AuthSessionDomainModel
 
     suspend fun refreshToken(
         request: RefreshTokenDomainModel
-    ): AccessTokenApiModel
+    ): AuthSessionDomainModel
 
     suspend fun isSignedIn(): Boolean
 }

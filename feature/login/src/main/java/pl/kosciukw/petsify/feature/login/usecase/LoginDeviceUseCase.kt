@@ -1,6 +1,6 @@
 package pl.kosciukw.petsify.feature.login.usecase
 
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
+import com.kosciukw.services.data.user.model.domain.AuthSessionDomainModel
 import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
 import com.kosciukw.services.data.user.service.user.UserService
 import kotlinx.coroutines.flow.*
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class LoginDeviceUseCase @Inject constructor(
     private val userService: UserService
-) : UseCase<ResultOrFailure<AccessTokenApiModel, Throwable>, LoginDeviceUseCase.Params>() {
+) : UseCase<ResultOrFailure<AuthSessionDomainModel, Throwable>, LoginDeviceUseCase.Params>() {
 
     data class Params(
         val email: String,

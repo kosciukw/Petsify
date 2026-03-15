@@ -117,10 +117,12 @@ object UserModule {
     @Provides
     fun provideUserService(
         userRepository: UserRepository,
-        authTokenService: AuthTokenService
+        authTokenService: AuthTokenService,
+        accessTokenApiToAuthSessionDomainModelMapper: AccessTokenApiToAuthSessionDomainModelMapper
     ): UserService = UserServiceImpl(
         userRepository = userRepository,
-        authTokenService = authTokenService
+        authTokenService = authTokenService,
+        accessTokenApiToAuthSessionDomainModelMapper = accessTokenApiToAuthSessionDomainModelMapper
     )
 
     @Provides
