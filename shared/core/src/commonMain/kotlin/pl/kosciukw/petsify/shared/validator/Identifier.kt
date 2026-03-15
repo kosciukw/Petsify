@@ -1,7 +1,5 @@
 package pl.kosciukw.petsify.shared.validator
 
-import java.io.Serializable
-
-sealed class Identifier : Serializable {
+sealed class Identifier {
     abstract fun clear()
 }

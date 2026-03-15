@@ -16,9 +16,7 @@ class PasswordIdentifier(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as PasswordIdentifier
+        if (other !is PasswordIdentifier) return false
 
         if (! password.contentEquals(other.password)) return false
 

@@ -16,9 +16,7 @@ class EmailIdentifier(
     
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        
-        other as EmailIdentifier
+        if (other !is EmailIdentifier) return false
         
         if (! email.contentEquals(other.email)) return false
         

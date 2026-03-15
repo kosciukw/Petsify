@@ -1,13 +1,9 @@
 package pl.kosciukw.petsify.shared.validator.email
 
-import java.nio.CharBuffer
-
 class EmailValidatorImpl : EmailValidator {
 
     override fun isValid(data: CharArray): Boolean {
-        val buffer = CharBuffer.wrap(data)
-        return EMAIL_REGEX.matches(buffer)
-            .also { buffer.clear() }
+        return EMAIL_REGEX.matches(data.concatToString())
     }
 
     private companion object {
