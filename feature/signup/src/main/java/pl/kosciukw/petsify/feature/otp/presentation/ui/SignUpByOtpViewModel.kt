@@ -1,7 +1,5 @@
 package pl.kosciukw.petsify.feature.otp.presentation.ui
 
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import pl.kosciukw.petsify.feature.otp.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpAction
 import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpEvent
@@ -10,7 +8,7 @@ import pl.kosciukw.petsify.feature.otp.usecase.FinalizeOtpRegistrationUseCase
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
-import pl.kosciukw.petsify.shared.presentation.viewmodel.BaseViewModel
+import pl.kosciukw.petsify.shared.presentation.common.viewmodel.BaseViewModel
 
 class SignUpByOtpViewModel(
     private val finalizeOtpRegistrationUseCase: FinalizeOtpRegistrationUseCase,
@@ -48,14 +46,14 @@ class SignUpByOtpViewModel(
 
     private fun onConfirmButtonClicked() {
         handleButtonState()
-        if (!_state.value.isSignUpButtonStateEnabled) {
+        if (!state.value.isSignUpButtonStateEnabled) {
             setState { copy(isOtpValidErrorEnabled = true) }
             return
         }
 
         navArgs?.let {
             finalizeOtpRegistration(
-                otp = _state.value.inputOtp,
+                otp = state.value.inputOtp,
                 email = it.email,
                 termsAccepted = it.termsAccepted,
                 name = it.name,
@@ -73,7 +71,7 @@ class SignUpByOtpViewModel(
         marketingAccepted: Boolean,
         otp: String
     ) {
-        viewModelScope.launch {
+        launch {
             finalizeOtpRegistrationUseCase.action(
                 FinalizeOtpRegistrationUseCase.Params(
                     email = email,

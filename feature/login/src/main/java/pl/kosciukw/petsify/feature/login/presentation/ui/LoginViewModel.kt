@@ -1,7 +1,5 @@
 package pl.kosciukw.petsify.feature.login.presentation.ui
 
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator
 import pl.kosciukw.petsify.feature.login.presentation.LoginAction
 import pl.kosciukw.petsify.feature.login.presentation.LoginEvent
@@ -11,7 +9,7 @@ import pl.kosciukw.petsify.shared.data.network.NetworkState
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
-import pl.kosciukw.petsify.shared.presentation.viewmodel.BaseViewModel
+import pl.kosciukw.petsify.shared.presentation.common.viewmodel.BaseViewModel
 import pl.kosciukw.petsify.shared.utils.clear
 import pl.kosciukw.petsify.shared.validator.EmailIdentifier
 import pl.kosciukw.petsify.shared.validator.IdentifierState
@@ -64,7 +62,7 @@ class LoginViewModel(
         email: String,
         password: String
     ) {
-        viewModelScope.launch {
+        launch {
             loginDeviceUseCase.action(
                 LoginDeviceUseCase.Params(
                     email,
@@ -73,15 +71,11 @@ class LoginViewModel(
             ).collect { result ->
                 when (result) {
                     is ResultOrFailure.Loading -> {
-                        _state.value = _state.value.copy(
-                            progressBarState = ProgressBarState.ScreenLoading
-                        )
+                        setState { copy(progressBarState = ProgressBarState.ScreenLoading) }
                     }
 
                     is ResultOrFailure.Success -> {
-                        _state.value = _state.value.copy(
-                            progressBarState = ProgressBarState.Idle
-                        )
+                        setState { copy(progressBarState = ProgressBarState.Idle) }
 
                         setAction {
                             LoginAction.Navigation.NavigateToMain
@@ -91,9 +85,7 @@ class LoginViewModel(
                     is ResultOrFailure.Failure -> {
                         onFailure(error = result.error)
 
-                        _state.value = _state.value.copy(
-                            progressBarState = ProgressBarState.Idle
-                        )
+                        setState { copy(progressBarState = ProgressBarState.Idle) }
                     }
                 }
             }

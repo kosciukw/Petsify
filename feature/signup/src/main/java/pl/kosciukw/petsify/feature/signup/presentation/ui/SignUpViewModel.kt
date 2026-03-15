@@ -1,7 +1,5 @@
 package pl.kosciukw.petsify.feature.signup.presentation.ui
 
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import pl.kosciukw.petsify.feature.otp.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpAction
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpEvent
@@ -10,7 +8,7 @@ import pl.kosciukw.petsify.feature.signup.usecase.StartOtpRegistrationUseCase
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
-import pl.kosciukw.petsify.shared.presentation.viewmodel.BaseViewModel
+import pl.kosciukw.petsify.shared.presentation.common.viewmodel.BaseViewModel
 import pl.kosciukw.petsify.shared.validator.EmailIdentifier
 import pl.kosciukw.petsify.shared.validator.IdentifierState
 import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator
@@ -82,7 +80,7 @@ class SignUpViewModel(
 
         val matchState = passwordMatchValidator.isValid(
             password = password,
-            confirmPassword = _state.value.inputConfirmPassword.toCharArray()
+            confirmPassword = state.value.inputConfirmPassword.toCharArray()
         )
 
         setState {
@@ -119,7 +117,7 @@ class SignUpViewModel(
 
     private fun onConfirmPasswordChanged(confirmPassword: CharArray) {
         val matchState = passwordMatchValidator.isValid(
-            password = _state.value.inputPassword.toCharArray(),
+            password = state.value.inputPassword.toCharArray(),
             confirmPassword = confirmPassword
         )
 
@@ -177,14 +175,14 @@ class SignUpViewModel(
 
     private fun onConfirmButtonClicked() {
         handleButtonState()
-        if (!_state.value.isSignUpButtonStateEnabled) return
-        startOtpRegistration(_state.value.inputEmail)
+        if (!state.value.isSignUpButtonStateEnabled) return
+        startOtpRegistration(state.value.inputEmail)
     }
 
     private fun startOtpRegistration(
         email: String
     ) {
-        viewModelScope.launch {
+        launch {
             startOtpRegistrationUseCase.action(
                 StartOtpRegistrationUseCase.Params(email = email)
             ).collect { result ->
@@ -199,11 +197,11 @@ class SignUpViewModel(
                         setAction {
                             SignUpAction.Navigation.NavigateToOtp(
                                 SignUpByOtpNavArgs(
-                                    email = _state.value.inputEmail,
-                                    name = _state.value.inputName,
-                                    password = _state.value.inputPassword,
-                                    termsAccepted = _state.value.isTermsAccepted,
-                                    marketingAccepted = _state.value.isMarketingAccepted
+                                    email = state.value.inputEmail,
+                                    name = state.value.inputName,
+                                    password = state.value.inputPassword,
+                                    termsAccepted = state.value.isTermsAccepted,
+                                    marketingAccepted = state.value.isMarketingAccepted
                                 )
                             )
                         }
