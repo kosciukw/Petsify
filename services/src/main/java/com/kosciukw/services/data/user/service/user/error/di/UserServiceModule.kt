@@ -1,8 +1,8 @@
-package com.kosciukw.services.data.user.service.user.error.di
+package com.kosciukw.services.internal.user.error.di
 
 import android.content.Context
-import com.kosciukw.services.data.user.service.user.error.UserDomainToAppErrorMapper
-import com.kosciukw.services.data.user.service.user.error.impl.UserDomainToAppErrorMapperImpl
+import com.kosciukw.services.api.user.error.UserDomainToAppErrorMapper
+import com.kosciukw.services.internal.user.error.impl.UserDomainToAppErrorMapperImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

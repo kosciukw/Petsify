@@ -1,8 +1,8 @@
-package com.kosciukw.services.data.user.service.user.error.impl
+package com.kosciukw.services.internal.user.error.impl
 
 import android.content.Context
-import com.kosciukw.services.data.user.repository.error.model.UserDomainError
-import com.kosciukw.services.data.user.service.user.error.UserDomainToAppErrorMapper
+import com.kosciukw.services.api.user.error.UserDomainError
+import com.kosciukw.services.api.user.error.UserDomainToAppErrorMapper
 import pl.kosciukw.petsify.shared.error.AppError
 import pl.kosciukw.petsify.shared.error.DomainError
 import javax.inject.Inject

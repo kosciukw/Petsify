@@ -1,8 +1,8 @@
-package com.kosciukw.services.data.session.repository.impl
+package com.kosciukw.services.internal.session.repository.impl
 
-import com.kosciukw.services.data.session.model.AuthTokens
-import com.kosciukw.services.data.session.repository.AuthSessionRepository
-import com.kosciukw.services.data.session.persistence.TokenPersistence
+import com.kosciukw.services.internal.session.model.AuthTokens
+import com.kosciukw.services.internal.session.repository.AuthSessionRepository
+import com.kosciukw.services.internal.session.persistence.TokenPersistence
 import javax.inject.Inject
 
 class AuthSessionRepositoryImpl @Inject constructor(

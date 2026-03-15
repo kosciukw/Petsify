@@ -1,4 +1,4 @@
-package com.kosciukw.services.data.user.mapper
+package com.kosciukw.services.internal.user.mapper
 
 import pl.kosciukw.petsify.shared.mapper.ApiToDomainErrorMapper
 

@@ -1,8 +1,9 @@
-package com.kosciukw.services.data.user.model.domain
+package com.kosciukw.services.api.auth.model
 
 import pl.kosciukw.petsify.shared.utils.empty
 
-data class RefreshTokenDomainModel(
+data class AuthSessionDomainModel(
+    val accessToken: String,
     val refreshToken: String
 ) {
     override fun toString() = String.empty()

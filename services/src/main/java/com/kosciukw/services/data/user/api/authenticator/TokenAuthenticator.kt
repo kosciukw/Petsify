@@ -1,7 +1,7 @@
-package com.kosciukw.services.data.user.api.authenticator
+package com.kosciukw.services.internal.user.api.authenticator
 
-import com.kosciukw.services.data.session.repository.AuthSessionRepository
-import com.kosciukw.services.data.session.service.AuthTokenService
+import com.kosciukw.services.internal.session.repository.AuthSessionRepository
+import com.kosciukw.services.internal.session.service.AuthTokenService
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request

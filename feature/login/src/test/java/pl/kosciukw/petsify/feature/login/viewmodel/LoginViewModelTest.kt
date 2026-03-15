@@ -1,6 +1,6 @@
 package pl.kosciukw.petsify.feature.login.viewmodel
 
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
+import com.kosciukw.services.api.auth.model.AuthSessionDomainModel
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -84,7 +84,7 @@ class LoginViewModelTest {
         val givenEmail = "test@example.com"
         val givenPassword = "password"
 
-        val givenAccessTokenApiModel = AccessTokenApiModel(
+        val givenAccessTokenApiModel = AuthSessionDomainModel(
             accessToken = "accessToken",
             refreshToken = "refreshToken"
         )

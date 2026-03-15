@@ -1,6 +1,6 @@
-package com.kosciukw.services.data.session.persistence
+package com.kosciukw.services.internal.session.persistence
 
-import com.kosciukw.services.data.session.model.AuthTokens
+import com.kosciukw.services.internal.session.model.AuthTokens
 
 interface TokenPersistence {
 

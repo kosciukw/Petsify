@@ -1,6 +1,6 @@
-package com.kosciukw.services.data.user.api.provider.impl
+package com.kosciukw.services.internal.user.api.provider.impl
 
-import com.kosciukw.services.data.user.api.provider.UserUrlProvider
+import com.kosciukw.services.internal.user.api.provider.UserUrlProvider
 
 class UserUrlProviderImpl : UserUrlProvider {
 

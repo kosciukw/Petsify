@@ -1,15 +1,15 @@
 package com.kosciukw.services.user.repository
 
-import com.kosciukw.services.data.user.api.controller.UserApiController
-import com.kosciukw.services.data.user.mapper.FinalizeOtpRegistrationDomainToRequestModelMapper
-import com.kosciukw.services.data.user.mapper.LoginByPasswordDomainToRequestModelMapper
-import com.kosciukw.services.data.user.mapper.StartOtpRegistrationDomainToRequestModelMapper
-import com.kosciukw.services.data.user.mapper.UserApiToDomainErrorMapper
-import com.kosciukw.services.data.user.model.api.request.LoginByPasswordRequest
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
-import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
-import com.kosciukw.services.data.user.repository.UserRepository
-import com.kosciukw.services.data.user.repository.impl.UserRepositoryRemoteImpl
+import com.kosciukw.services.internal.user.api.controller.UserApiController
+import com.kosciukw.services.internal.user.mapper.FinalizeOtpRegistrationDomainToRequestModelMapper
+import com.kosciukw.services.internal.user.mapper.LoginByPasswordDomainToRequestModelMapper
+import com.kosciukw.services.internal.user.mapper.StartOtpRegistrationDomainToRequestModelMapper
+import com.kosciukw.services.internal.user.mapper.UserApiToDomainErrorMapper
+import com.kosciukw.services.internal.user.model.api.request.LoginByPasswordRequest
+import com.kosciukw.services.internal.user.model.api.response.AccessTokenApiModel
+import com.kosciukw.services.api.auth.model.LoginByPasswordDomainModel
+import com.kosciukw.services.internal.user.repository.UserRepository
+import com.kosciukw.services.internal.user.repository.impl.UserRepositoryRemoteImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

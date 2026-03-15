@@ -1,4 +1,4 @@
-package com.kosciukw.services.data.user.api.provider
+package com.kosciukw.services.internal.user.api.provider
 
 interface UserUrlProvider {
 

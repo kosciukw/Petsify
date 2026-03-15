@@ -1,7 +1,7 @@
-package com.kosciukw.services.data.user.error.mapper.impl
+package com.kosciukw.services.internal.user.error.mapper.impl
 
-import com.kosciukw.services.data.user.error.mapper.ErrorResponseToUserApiExceptionMapper
-import com.kosciukw.services.data.user.error.mapper.HttpToUserApiExceptionMapper
+import com.kosciukw.services.internal.user.error.mapper.ErrorResponseToUserApiExceptionMapper
+import com.kosciukw.services.internal.user.error.mapper.HttpToUserApiExceptionMapper
 import com.kosciukw.services.error.UserApiError
 import com.kosciukw.services.mapper.HttpExceptionToErrorResponseMapper
 import retrofit2.HttpException

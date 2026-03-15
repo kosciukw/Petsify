@@ -1,7 +1,7 @@
 package pl.kosciukw.petsify.feature.otp.usecase
 
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
-import com.kosciukw.services.data.user.service.user.UserService
+import com.kosciukw.services.api.auth.model.AuthSessionDomainModel
+import com.kosciukw.services.api.registration.RegistrationService
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.toList
@@ -13,13 +13,13 @@ import pl.kosciukw.petsify.shared.result.ResultOrFailure
 
 internal class FinalizeOtpRegistrationUseCaseTest {
 
-    private val userService: UserService = mockk()
+    private val registrationService: RegistrationService = mockk()
 
     private lateinit var useCase: FinalizeOtpRegistrationUseCase
 
     @BeforeEach
     fun setUp() {
-        useCase = FinalizeOtpRegistrationUseCase(userService)
+        useCase = FinalizeOtpRegistrationUseCase(registrationService)
     }
 
     @Test
@@ -32,12 +32,12 @@ internal class FinalizeOtpRegistrationUseCaseTest {
             marketingAccepted = true,
             otp = "123456"
         )
-        val expected = AccessTokenApiModel(
+        val expected = AuthSessionDomainModel(
             accessToken = "access-token",
             refreshToken = "refresh-token"
         )
 
-        coEvery { userService.finalizeOtpRegistration(any()) } returns expected
+        coEvery { registrationService.finalizeOtpRegistration(any()) } returns expected
 
         val result = useCase.action(params).toList()
 
@@ -57,7 +57,7 @@ internal class FinalizeOtpRegistrationUseCaseTest {
         )
         val expectedError = IllegalStateException("OTP failed")
 
-        coEvery { userService.finalizeOtpRegistration(any()) } throws expectedError
+        coEvery { registrationService.finalizeOtpRegistration(any()) } throws expectedError
 
         val result = useCase.action(params).toList()
 

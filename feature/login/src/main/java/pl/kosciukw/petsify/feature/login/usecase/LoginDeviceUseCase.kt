@@ -1,8 +1,8 @@
 package pl.kosciukw.petsify.feature.login.usecase
 
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
-import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
-import com.kosciukw.services.data.user.service.user.UserService
+import com.kosciukw.services.api.auth.AuthService
+import com.kosciukw.services.api.auth.model.AuthSessionDomainModel
+import com.kosciukw.services.api.auth.model.LoginByPasswordDomainModel
 import kotlinx.coroutines.flow.*
 import pl.kosciukw.petsify.shared.usecase.UseCase
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
@@ -10,8 +10,8 @@ import pl.kosciukw.petsify.shared.utils.empty
 import javax.inject.Inject
 
 class LoginDeviceUseCase @Inject constructor(
-    private val userService: UserService
-) : UseCase<ResultOrFailure<AccessTokenApiModel, Throwable>, LoginDeviceUseCase.Params>() {
+    private val authService: AuthService
+) : UseCase<ResultOrFailure<AuthSessionDomainModel, Throwable>, LoginDeviceUseCase.Params>() {
 
     data class Params(
         val email: String,
@@ -29,7 +29,7 @@ class LoginDeviceUseCase @Inject constructor(
         )
 
         runCatching {
-            userService.loginDeviceByPassword(request)
+            authService.loginDeviceByPassword(request)
         }.onSuccess { result ->
             emit(ResultOrFailure.Success(result))
         }.onFailure { error ->

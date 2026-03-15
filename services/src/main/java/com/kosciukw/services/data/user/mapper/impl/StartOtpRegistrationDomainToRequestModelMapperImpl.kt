@@ -1,8 +1,8 @@
-package com.kosciukw.services.data.user.mapper.impl
+package com.kosciukw.services.internal.user.mapper.impl
 
-import com.kosciukw.services.data.user.mapper.StartOtpRegistrationDomainToRequestModelMapper
-import com.kosciukw.services.data.user.model.api.request.StartOtpRegistrationRequest
-import com.kosciukw.services.data.user.model.domain.StartOtpRegistrationDomainModel
+import com.kosciukw.services.api.registration.model.StartOtpRegistrationDomainModel
+import com.kosciukw.services.internal.user.mapper.StartOtpRegistrationDomainToRequestModelMapper
+import com.kosciukw.services.internal.user.model.api.request.StartOtpRegistrationRequest
 
 class StartOtpRegistrationDomainToRequestModelMapperImpl :
     StartOtpRegistrationDomainToRequestModelMapper {

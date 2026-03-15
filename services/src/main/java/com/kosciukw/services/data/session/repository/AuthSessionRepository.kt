@@ -1,6 +1,6 @@
-package com.kosciukw.services.data.session.repository
+package com.kosciukw.services.internal.session.repository
 
-import com.kosciukw.services.data.session.model.AuthTokens
+import com.kosciukw.services.internal.session.model.AuthTokens
 
 interface AuthSessionRepository {
     suspend fun loadTokens(): AuthTokens?

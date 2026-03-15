@@ -1,6 +1,6 @@
 package pl.kosciukw.petsify.feature.otp.presentation.ui
 
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
+import com.kosciukw.services.api.auth.model.AuthSessionDomainModel
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -83,7 +83,7 @@ class SignUpByOtpViewModelTest {
 
     @Test
     fun `when finalize otp succeeds then should navigate to main`() = runTest {
-        val response = AccessTokenApiModel(
+        val response = AuthSessionDomainModel(
             accessToken = "access-token",
             refreshToken = "refresh-token"
         )

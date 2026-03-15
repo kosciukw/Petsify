@@ -1,8 +1,8 @@
 package com.kosciukw.services.user.mapper
 
-import com.kosciukw.services.data.user.mapper.LoginByPasswordDomainToRequestModelMapper
-import com.kosciukw.services.data.user.mapper.impl.LoginByPasswordDomainToRequestModelMapperImpl
-import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
+import com.kosciukw.services.internal.user.mapper.LoginByPasswordDomainToRequestModelMapper
+import com.kosciukw.services.internal.user.mapper.impl.LoginByPasswordDomainToRequestModelMapperImpl
+import com.kosciukw.services.api.auth.model.LoginByPasswordDomainModel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
