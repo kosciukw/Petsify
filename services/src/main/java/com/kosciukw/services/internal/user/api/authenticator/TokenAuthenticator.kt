@@ -7,13 +7,14 @@ import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
-import javax.inject.Inject
-import javax.inject.Provider
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class TokenAuthenticator @Inject constructor(
-    private val authSessionRepository: AuthSessionRepository,
-    private val authTokenServiceProvider: Provider<AuthTokenService>
-) : Authenticator {
+class TokenAuthenticator(
+    private val authSessionRepository: AuthSessionRepository
+) : Authenticator, KoinComponent {
+
+    private val authTokenService: AuthTokenService by inject()
 
     override fun authenticate(
         route: Route?,
@@ -22,7 +23,7 @@ class TokenAuthenticator @Inject constructor(
         if (responseCount(response) >= 2) return null
         if (response.request.header("X-Bypass-Auth") == "true") return null
 
-        val isRefreshed = runBlocking { authTokenServiceProvider.get().refreshAfterUnauthorized() }
+        val isRefreshed = runBlocking { authTokenService.refreshAfterUnauthorized() }
         if (!isRefreshed) return null
 
         val newAccessToken = runBlocking { authSessionRepository.loadTokens()?.accessToken }

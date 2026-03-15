@@ -14,9 +14,8 @@ import com.kosciukw.services.internal.user.repository.UserRepository
 import pl.kosciukw.petsify.shared.callback.mapResult
 import pl.kosciukw.petsify.shared.network.NetworkStateProvider
 import pl.kosciukw.petsify.shared.network.suspendNetworkRequest
-import javax.inject.Inject
 
-class UserRepositoryRemoteImpl @Inject constructor(
+class UserRepositoryRemoteImpl(
     private val loginByPasswordDomainToRequestModelMapper: LoginByPasswordDomainToRequestModelMapper,
     private val startOtpRegistrationDomainToRequestModelMapper: StartOtpRegistrationDomainToRequestModelMapper,
     private val finalizeOtpRegistrationDomainToRequestModelMapper: FinalizeOtpRegistrationDomainToRequestModelMapper,

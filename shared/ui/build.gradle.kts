@@ -45,6 +45,7 @@ dependencies {
   api(platform(libs.androidx.compose.bom))
   api(libs.bundles.compose)
   api(libs.androidx.material3)
+  api(libs.koin.androidx.compose)
 
   debugImplementation(libs.bundles.compose.debug)
 

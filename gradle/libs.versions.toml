@@ -16,6 +16,7 @@ activityCompose = "1.10.1"
 composeBom = "2025.03.01"
 composeNavigationVersion = "2.8.9"
 hilt = "2.53"
+koin = "3.5.6"
 appcompat = "1.7.0"
 material = "1.12.0"
 gson = "2.10.1"
@@ -56,6 +57,8 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }

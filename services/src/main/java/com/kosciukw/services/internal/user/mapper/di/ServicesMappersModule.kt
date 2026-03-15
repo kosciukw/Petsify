@@ -1,5 +1,7 @@
 package com.kosciukw.services.internal.user.mapper.di
 
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import com.kosciukw.services.internal.user.mapper.FinalizeOtpRegistrationDomainToRequestModelMapper
 import com.kosciukw.services.internal.user.mapper.LoginByPasswordDomainToRequestModelMapper
 import com.kosciukw.services.internal.user.mapper.StartOtpRegistrationDomainToRequestModelMapper
@@ -7,28 +9,11 @@ import com.kosciukw.services.internal.user.mapper.AccessTokenApiToAuthSessionDom
 import com.kosciukw.services.internal.user.mapper.impl.AccessTokenApiToAuthSessionDomainModelMapperImpl
 import com.kosciukw.services.internal.user.mapper.impl.LoginByPasswordDomainToRequestModelMapperImpl
 import com.kosciukw.services.internal.user.mapper.impl.StartOtpRegistrationDomainToRequestModelMapperImpl
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object ServicesMappersModule {
-
-    @Provides
-    fun provideAccessTokenApiToAuthSessionDomainModelMapper(): AccessTokenApiToAuthSessionDomainModelMapper =
-        AccessTokenApiToAuthSessionDomainModelMapperImpl()
-
-    @Provides
-    fun provideLoginByPasswordDomainToRequestModelMapper(): LoginByPasswordDomainToRequestModelMapper =
-        LoginByPasswordDomainToRequestModelMapperImpl()
-
-    @Provides
-    fun provideStartOtpRegistrationDomainToRequestModelMapper(): StartOtpRegistrationDomainToRequestModelMapper =
-        StartOtpRegistrationDomainToRequestModelMapperImpl()
-
-    @Provides
-    fun provideFinalizeOtpRegistrationDomainToRequestModelMapper(): FinalizeOtpRegistrationDomainToRequestModelMapper =
-        FinalizeOtpRegistrationDomainToRequestModelMapperImpl()
+val servicesMappersModule = module {
+    singleOf(::AccessTokenApiToAuthSessionDomainModelMapperImpl) { bind<AccessTokenApiToAuthSessionDomainModelMapper>() }
+    singleOf(::LoginByPasswordDomainToRequestModelMapperImpl) { bind<LoginByPasswordDomainToRequestModelMapper>() }
+    singleOf(::StartOtpRegistrationDomainToRequestModelMapperImpl) { bind<StartOtpRegistrationDomainToRequestModelMapper>() }
+    singleOf(::FinalizeOtpRegistrationDomainToRequestModelMapperImpl) { bind<FinalizeOtpRegistrationDomainToRequestModelMapper>() }
 }

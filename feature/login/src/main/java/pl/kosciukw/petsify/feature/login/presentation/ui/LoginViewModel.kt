@@ -1,7 +1,6 @@
 package pl.kosciukw.petsify.feature.login.presentation.ui
 
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator
 import pl.kosciukw.petsify.feature.login.presentation.LoginAction
@@ -17,10 +16,8 @@ import pl.kosciukw.petsify.shared.utils.clear
 import pl.kosciukw.petsify.shared.validator.EmailIdentifier
 import pl.kosciukw.petsify.shared.validator.IdentifierState
 import pl.kosciukw.petsify.shared.validator.notempty.NotEmptyValidator
-import javax.inject.Inject
 
-@HiltViewModel
-class LoginViewModel @Inject constructor(
+class LoginViewModel(
     private val loginDeviceUseCase: LoginDeviceUseCase,
     private val emailIdentifierValidator: EmailIdentifierValidator,
     private val notEmptyValidator: NotEmptyValidator<CharArray>,

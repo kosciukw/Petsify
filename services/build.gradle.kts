@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.hilt.android.gradle.plugin)
-    kotlin("kapt")
 }
 
 android {
@@ -43,8 +41,7 @@ android {
 
 dependencies {
     implementation(projects.shared.core)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    implementation(libs.koin.android)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)

@@ -1,11 +1,11 @@
 package pl.kosciukw.petsify.feature.login.navigation
 
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
+import org.koin.androidx.compose.koinViewModel
 import pl.kosciukw.petsify.feature.login.presentation.ui.LoginScreen
 import pl.kosciukw.petsify.feature.login.presentation.ui.LoginViewModel
 
@@ -17,7 +17,7 @@ fun NavGraphBuilder.loginScreen(
     onNavigateToSignUp: () -> Unit
 ) {
     composable<LoginDestination> {
-        val loginViewModel: LoginViewModel = hiltViewModel()
+        val loginViewModel: LoginViewModel = koinViewModel()
         val state = loginViewModel.state.value
         val action = loginViewModel.action
         val errors = loginViewModel.errors

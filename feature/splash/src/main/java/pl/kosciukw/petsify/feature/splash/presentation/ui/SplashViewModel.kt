@@ -1,7 +1,6 @@
 package pl.kosciukw.petsify.feature.splash.presentation.ui
 
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.kosciukw.petsify.feature.splash.presentation.SplashAction
 import pl.kosciukw.petsify.feature.splash.presentation.SplashEvent
@@ -10,10 +9,8 @@ import pl.kosciukw.petsify.feature.splash.usecase.IsSignedInUseCase
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.presentation.viewmodel.BaseViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class SplashViewModel @Inject constructor(
+class SplashViewModel(
     private val isSignedInUseCase: IsSignedInUseCase,
     integrationErrorMapper: IntegrationErrorMapper
 ) : BaseViewModel<SplashEvent, SplashState, SplashAction>(

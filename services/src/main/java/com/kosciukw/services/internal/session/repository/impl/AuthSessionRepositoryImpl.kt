@@ -3,9 +3,8 @@ package com.kosciukw.services.internal.session.repository.impl
 import com.kosciukw.services.internal.session.model.AuthTokens
 import com.kosciukw.services.internal.session.repository.AuthSessionRepository
 import com.kosciukw.services.internal.session.persistence.TokenPersistence
-import javax.inject.Inject
 
-class AuthSessionRepositoryImpl @Inject constructor(
+class AuthSessionRepositoryImpl(
     private val tokenPersistence: TokenPersistence
 ) : AuthSessionRepository {
 

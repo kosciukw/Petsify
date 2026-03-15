@@ -4,9 +4,8 @@ import com.kosciukw.services.api.session.SessionService
 import kotlinx.coroutines.flow.flow
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.usecase.UseCase
-import javax.inject.Inject
 
-class IsSignedInUseCase @Inject constructor(
+class IsSignedInUseCase(
     private val sessionService: SessionService
 ) : UseCase<ResultOrFailure<Boolean, Throwable>, Unit>() {
 

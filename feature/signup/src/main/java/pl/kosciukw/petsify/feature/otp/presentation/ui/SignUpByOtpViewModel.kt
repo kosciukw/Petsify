@@ -1,7 +1,6 @@
 package pl.kosciukw.petsify.feature.otp.presentation.ui
 
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.kosciukw.petsify.feature.otp.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpAction
@@ -12,10 +11,8 @@ import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.presentation.viewmodel.BaseViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class SignUpByOtpViewModel @Inject constructor(
+class SignUpByOtpViewModel(
     private val finalizeOtpRegistrationUseCase: FinalizeOtpRegistrationUseCase,
     integrationErrorMapper: IntegrationErrorMapper
 ) : BaseViewModel<SignUpByOtpEvent, SignUpByOtpState, SignUpByOtpAction>(

@@ -1,9 +1,8 @@
 package pl.kosciukw.petsify.shared.validator.di
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator
 import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidatorImpl
 import pl.kosciukw.petsify.shared.validator.email.EmailValidator
@@ -16,37 +15,11 @@ import pl.kosciukw.petsify.shared.validator.password.PasswordMatchValidatorImpl
 import pl.kosciukw.petsify.shared.validator.password.PasswordValidator
 import pl.kosciukw.petsify.shared.validator.password.PasswordValidatorImpl
 
-@Module
-@InstallIn(SingletonComponent::class)
-object ValidatorsModule {
-
-    @Provides
-    fun provideEmailValidator(): EmailValidator = EmailValidatorImpl()
-
-    @Provides
-    fun provideNotEmptyValidator(): NotEmptyValidator<CharArray> = NotEmptyValidator()
-
-    @Provides
-    fun provideEmailIdentifierValidator(
-        emailValidator: EmailValidator,
-        notEmptyValidator: NotEmptyValidator<CharArray>
-    ): EmailIdentifierValidator = EmailIdentifierValidatorImpl(
-        emailValidator = emailValidator,
-        notEmptyValidator = notEmptyValidator
-    )
-
-    @Provides
-    fun providePasswordValidator(): PasswordValidator = PasswordValidatorImpl()
-
-    @Provides
-    fun providePasswordIdentifierValidator(
-        passwordValidator: PasswordValidator,
-        notEmptyValidator: NotEmptyValidator<CharArray>
-    ): PasswordIdentifierValidator = PasswordIdentifierValidatorImpl(
-        passwordValidator = passwordValidator,
-        notEmptyValidator = notEmptyValidator
-    )
-
-    @Provides
-    fun providePasswordMatchValidator(): PasswordMatchValidator = PasswordMatchValidatorImpl()
+val validatorsModule = module {
+    single<EmailValidator> { EmailValidatorImpl() }
+    single<NotEmptyValidator<CharArray>> { NotEmptyValidator() }
+    singleOf(::EmailIdentifierValidatorImpl) { bind<EmailIdentifierValidator>() }
+    single<PasswordValidator> { PasswordValidatorImpl() }
+    singleOf(::PasswordIdentifierValidatorImpl) { bind<PasswordIdentifierValidator>() }
+    single<PasswordMatchValidator> { PasswordMatchValidatorImpl() }
 }

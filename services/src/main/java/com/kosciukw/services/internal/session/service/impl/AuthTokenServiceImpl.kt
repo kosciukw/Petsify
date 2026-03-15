@@ -7,9 +7,8 @@ import com.kosciukw.services.internal.user.api.UserApi
 import com.kosciukw.services.internal.user.api.provider.UserUrlProvider
 import com.kosciukw.services.internal.user.error.mapper.UserExceptionMapper
 import com.kosciukw.services.internal.user.model.api.request.RefreshRequest
-import javax.inject.Inject
 
-class AuthTokenServiceImpl @Inject constructor(
+class AuthTokenServiceImpl(
     private val authSessionRepository: AuthSessionRepository,
     private val userApi: UserApi,
     private val userUrlProvider: UserUrlProvider,

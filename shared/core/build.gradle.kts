@@ -2,8 +2,6 @@ plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.serialization)
-  alias(libs.plugins.hilt.android.gradle.plugin)
-  kotlin("kapt")
 }
 
 android {
@@ -43,13 +41,11 @@ android {
 }
 
 dependencies {
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
-
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.navigation)
   implementation(libs.kotlinx.serialization)
   implementation(libs.kotlin.reflect)
+  implementation(libs.koin.android)
 
   testImplementation(libs.bundles.junit5)
   testImplementation(libs.mockk)

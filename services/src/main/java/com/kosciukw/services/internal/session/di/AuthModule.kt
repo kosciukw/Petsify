@@ -14,65 +14,40 @@ import com.kosciukw.services.internal.session.service.impl.AuthTokenServiceImpl
 import com.kosciukw.services.internal.user.api.UserApi
 import com.kosciukw.services.internal.user.api.provider.UserUrlProvider
 import com.kosciukw.services.internal.user.error.mapper.UserExceptionMapper
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import javax.inject.Qualifier
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class AuthDataStore
+private val authDataStoreQualifier = named("AuthDataStore")
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class AuthTokenStore
-
-@Module
-@InstallIn(SingletonComponent::class)
-object DataStoreModule {
-
-    @Provides
-    @Singleton
-    @AuthTokenStore
-    fun provideTokenPersistence(
-        @AuthDataStore dataStore: DataStore<Preferences>
-    ): TokenPersistence = TokenPersistenceImpl(
-        dataStore = dataStore
-    )
-
-    @Provides
-    @Singleton
-    fun provideAuthSessionRepository(
-        @AuthTokenStore tokenPersistence: TokenPersistence
-    ): AuthSessionRepository = AuthSessionRepositoryImpl(tokenPersistence = tokenPersistence)
-
-    @Provides
-    @Singleton
-    @AuthDataStore
-    fun provideAuthPreferencesDataStore(
-        @ApplicationContext context: Context
-    ): DataStore<Preferences> = PreferenceDataStoreFactory.create(
-        scope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
-        produceFile = { context.preferencesDataStoreFile("auth_prefs.preferences_pb") }
-    )
-
-    @Provides
-    @Singleton
-    fun provideAuthTokenService(
-        authSessionRepository: AuthSessionRepository,
-        userApi: UserApi,
-        userUrlProvider: UserUrlProvider,
-        userExceptionMapper: UserExceptionMapper
-    ): AuthTokenService = AuthTokenServiceImpl(
-        authSessionRepository = authSessionRepository,
-        userApi = userApi,
-        userUrlProvider = userUrlProvider,
-        userExceptionMapper = userExceptionMapper
-    )
+val authModule = module {
+    single<DataStore<Preferences>>(qualifier = authDataStoreQualifier) {
+        provideAuthPreferencesDataStore(androidContext())
+    }
+    single<TokenPersistence> {
+        TokenPersistenceImpl(
+            dataStore = get(authDataStoreQualifier)
+        )
+    }
+    single<AuthSessionRepository> {
+        AuthSessionRepositoryImpl(tokenPersistence = get())
+    }
+    single<AuthTokenService> {
+        AuthTokenServiceImpl(
+            authSessionRepository = get(),
+            userApi = get(),
+            userUrlProvider = get(),
+            userExceptionMapper = get()
+        )
+    }
 }
+
+private fun provideAuthPreferencesDataStore(
+    context: Context
+): DataStore<Preferences> = PreferenceDataStoreFactory.create(
+    scope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
+    produceFile = { context.preferencesDataStoreFile("auth_prefs.preferences_pb") }
+)

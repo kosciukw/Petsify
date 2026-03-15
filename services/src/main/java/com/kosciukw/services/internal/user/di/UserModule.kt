@@ -23,152 +23,75 @@ import com.kosciukw.services.error.ErrorResponse
 import com.kosciukw.services.internal.user.service.UserServiceImpl
 import com.kosciukw.services.mapper.HttpExceptionToErrorResponseMapper
 import com.kosciukw.services.mapper.impl.HttpExceptionToErrorResponseMapperImpl
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 import pl.kosciukw.petsify.shared.network.NetworkStateProvider
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
-import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-object UserModule {
+private val userApiOkHttpQualifier = named("UserApiOkHttp")
+private val userApiRetrofitQualifier = named("UserApiRetrofit")
 
-    @Provides
-    @Singleton
-    fun provideUserRepository(
-        errorMapper: UserApiToDomainErrorMapper,
-        networkStateProvider: NetworkStateProvider,
-        userApiController: UserApiController,
-        loginByPasswordDomainToRequestModelMapper: LoginByPasswordDomainToRequestModelMapper,
-        startOtpRegistrationDomainToRequestModelMapper: StartOtpRegistrationDomainToRequestModelMapper,
-        finalizeOtpRegistrationDomainToRequestModelMapper: FinalizeOtpRegistrationDomainToRequestModelMapper
-    ): UserRepository = UserRepositoryRemoteImpl(
-        errorMapper = errorMapper,
-        networkStateProvider = networkStateProvider,
-        userApiController = userApiController,
-        loginByPasswordDomainToRequestModelMapper = loginByPasswordDomainToRequestModelMapper,
-        startOtpRegistrationDomainToRequestModelMapper = startOtpRegistrationDomainToRequestModelMapper,
-        finalizeOtpRegistrationDomainToRequestModelMapper = finalizeOtpRegistrationDomainToRequestModelMapper
-    )
-
-    @Provides
-    fun provideUserApiToDomainErrorMapper(): UserApiToDomainErrorMapper =
-        UserApiToDomainErrorMapperImpl()
-
-    @Provides
-    @Singleton
-    @Named("UserApiOkHttp")
-    fun provideOkHttpClient(
-        authInterceptor: AuthInterceptor,
-        tokenAuthenticator: TokenAuthenticator
-    ): OkHttpClient {
-//        val logging = HttpLoggingInterceptor().apply {
-//            level = HttpLoggingInterceptor.Level.BASIC
-//        }
-        return OkHttpClient.Builder()
-            .addInterceptor(authInterceptor)
-            .authenticator(tokenAuthenticator)
-            //  .addInterceptor(logging)
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(20, TimeUnit.SECONDS)
-            .build()
+val userModule = module {
+    single<UserApiToDomainErrorMapper> { UserApiToDomainErrorMapperImpl() }
+    single { AuthInterceptor(get()) }
+    single { TokenAuthenticator(get()) }
+    single<OkHttpClient>(qualifier = userApiOkHttpQualifier) {
+        provideOkHttpClient(
+            authInterceptor = get(),
+            tokenAuthenticator = get()
+        )
     }
-
-    @Provides
-    @Singleton
-    @Named("UserApiRetrofit")
-    fun provideUserRetrofit(
-        @Named("UserApiOkHttp") client: OkHttpClient
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080/") // TODO ip nie jest stałe
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    single<Retrofit>(qualifier = userApiRetrofitQualifier) {
+        provideUserRetrofit(
+            client = get(userApiOkHttpQualifier)
+        )
     }
-
-    @Provides
-    @Singleton
-    fun provideUserApi(
-        @Named("UserApiRetrofit") retrofit: Retrofit
-    ): UserApi = retrofit.create(UserApi::class.java)
-
-    @Provides
-    fun provideUserApiController(
-        userApi: UserApi,
-        userUrlProvider: UserUrlProvider,
-        userExceptionMapper: UserExceptionMapper
-    ): UserApiController = UserApiControllerImpl(
-        userApi = userApi,
-        userUrlProvider = userUrlProvider,
-        userExceptionMapper = userExceptionMapper
-    )
-
-    @Provides
-    fun provideUserUrlProvider(): UserUrlProvider = UserUrlProviderImpl()
-
-    @Provides
-    @Singleton
-    fun provideUserServiceImpl(
-        userRepository: UserRepository,
-        authTokenService: AuthTokenService,
-        accessTokenApiToAuthSessionDomainModelMapper: AccessTokenApiToAuthSessionDomainModelMapper
-    ): UserServiceImpl = UserServiceImpl(
-        userRepository = userRepository,
-        authTokenService = authTokenService,
-        accessTokenApiToAuthSessionDomainModelMapper = accessTokenApiToAuthSessionDomainModelMapper
-    )
-
-    @Provides
-    fun provideAuthService(
-        userServiceImpl: UserServiceImpl
-    ): AuthService = userServiceImpl
-
-    @Provides
-    fun provideRegistrationService(
-        userServiceImpl: UserServiceImpl
-    ): RegistrationService = userServiceImpl
-
-    @Provides
-    fun provideSessionService(
-        userServiceImpl: UserServiceImpl
-    ): SessionService = userServiceImpl
-
-    @Provides
-    fun provideUserExceptionMapper(
-        httpToUserApiExceptionMapper: HttpToUserApiExceptionMapper
-    ): UserExceptionMapper = UserExceptionMapperImpl(httpToUserApiExceptionMapper)
-
-    @Provides
-    fun provideHttpToUserApiExceptionMapper(
-        httpExceptionToErrorResponseMapper: HttpExceptionToErrorResponseMapper,
-        errorResponseToUserApiExceptionMapper: ErrorResponseToUserApiExceptionMapper
-    ): HttpToUserApiExceptionMapper = HttpToUserApiExceptionMapperImpl(
-        httpExceptionToErrorResponseMapper,
-        errorResponseToUserApiExceptionMapper
-    )
-
-    @Provides
-    fun provideHttpExceptionToErrorResponseMapper(
-        converter: Converter<ResponseBody, ErrorResponse>
-    ): HttpExceptionToErrorResponseMapper = HttpExceptionToErrorResponseMapperImpl(converter)
-
-    @Provides
-    fun provideErrorResponseConverter(
-        @Named("UserApiRetrofit") retrofit: Retrofit
-    ): Converter<ResponseBody, ErrorResponse> =
-        retrofit.responseBodyConverter(ErrorResponse::class.java, emptyArray())
-
-    @Provides
-    fun provideErrorResponseToUserApiExceptionMapper(): ErrorResponseToUserApiExceptionMapper =
-        ErrorResponseToUserApiExceptionMapperImpl()
+    single<UserApi> { get<Retrofit>(userApiRetrofitQualifier).create(UserApi::class.java) }
+    single<UserApiController> { UserApiControllerImpl(get(), get(), get()) }
+    single<UserUrlProvider> { UserUrlProviderImpl() }
+    single<UserRepository> {
+        UserRepositoryRemoteImpl(
+            loginByPasswordDomainToRequestModelMapper = get(),
+            startOtpRegistrationDomainToRequestModelMapper = get(),
+            finalizeOtpRegistrationDomainToRequestModelMapper = get(),
+            networkStateProvider = get<NetworkStateProvider>(),
+            errorMapper = get(),
+            userApiController = get()
+        )
+    }
+    single { UserServiceImpl(get(), get(), get()) }
+    single<AuthService> { get<UserServiceImpl>() }
+    single<RegistrationService> { get<UserServiceImpl>() }
+    single<SessionService> { get<UserServiceImpl>() }
+    single<UserExceptionMapper> { UserExceptionMapperImpl(get()) }
+    single<HttpToUserApiExceptionMapper> { HttpToUserApiExceptionMapperImpl(get(), get()) }
+    single<HttpExceptionToErrorResponseMapper> { HttpExceptionToErrorResponseMapperImpl(get()) }
+    single<Converter<ResponseBody, ErrorResponse>> {
+        get<Retrofit>(userApiRetrofitQualifier).responseBodyConverter(ErrorResponse::class.java, emptyArray())
+    }
+    single<ErrorResponseToUserApiExceptionMapper> { ErrorResponseToUserApiExceptionMapperImpl() }
 }
+
+private fun provideOkHttpClient(
+    authInterceptor: AuthInterceptor,
+    tokenAuthenticator: TokenAuthenticator
+): OkHttpClient = OkHttpClient.Builder()
+    .addInterceptor(authInterceptor)
+    .authenticator(tokenAuthenticator)
+    .connectTimeout(20, TimeUnit.SECONDS)
+    .readTimeout(20, TimeUnit.SECONDS)
+    .writeTimeout(20, TimeUnit.SECONDS)
+    .build()
+
+private fun provideUserRetrofit(
+    client: OkHttpClient
+): Retrofit = Retrofit.Builder()
+    .baseUrl("http://10.0.2.2:8080/") // TODO ip nie jest stałe
+    .client(client)
+    .addConverterFactory(GsonConverterFactory.create())
+    .build()

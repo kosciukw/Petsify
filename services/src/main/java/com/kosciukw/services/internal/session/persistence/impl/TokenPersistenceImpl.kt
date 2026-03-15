@@ -7,9 +7,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.kosciukw.services.internal.session.model.AuthTokens
 import com.kosciukw.services.internal.session.persistence.TokenPersistence
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
 
-class TokenPersistenceImpl @Inject constructor(
+class TokenPersistenceImpl(
     private val dataStore: DataStore<Preferences>
 ) : TokenPersistence {
 

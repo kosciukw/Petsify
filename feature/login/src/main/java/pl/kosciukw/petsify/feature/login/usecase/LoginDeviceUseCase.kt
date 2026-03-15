@@ -7,9 +7,8 @@ import kotlinx.coroutines.flow.*
 import pl.kosciukw.petsify.shared.usecase.UseCase
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.utils.empty
-import javax.inject.Inject
 
-class LoginDeviceUseCase @Inject constructor(
+class LoginDeviceUseCase(
     private val authService: AuthService
 ) : UseCase<ResultOrFailure<AuthSessionDomainModel, Throwable>, LoginDeviceUseCase.Params>() {
 

@@ -1,9 +1,9 @@
 package pl.kosciukw.petsify.feature.splash.navigation
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
+import org.koin.androidx.compose.koinViewModel
 import pl.kosciukw.petsify.feature.splash.presentation.ui.SplashScreen
 import pl.kosciukw.petsify.feature.splash.presentation.ui.SplashViewModel
 
@@ -16,7 +16,7 @@ fun NavGraphBuilder.splashScreen(
 ) {
     composable<SplashDestination> {
 
-        val signUpViewModel: SplashViewModel = hiltViewModel()
+        val signUpViewModel: SplashViewModel = koinViewModel()
         val state = signUpViewModel.state.value
         val action = signUpViewModel.action
         val errors = signUpViewModel.errors

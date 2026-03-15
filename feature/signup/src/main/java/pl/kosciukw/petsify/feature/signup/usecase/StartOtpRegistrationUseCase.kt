@@ -6,9 +6,8 @@ import kotlinx.coroutines.flow.flow
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.usecase.UseCase
 import pl.kosciukw.petsify.shared.utils.empty
-import javax.inject.Inject
 
-class StartOtpRegistrationUseCase @Inject constructor(
+class StartOtpRegistrationUseCase(
     private val registrationService: RegistrationService
 ) : UseCase<ResultOrFailure<Unit, Throwable>, StartOtpRegistrationUseCase.Params>() {
 

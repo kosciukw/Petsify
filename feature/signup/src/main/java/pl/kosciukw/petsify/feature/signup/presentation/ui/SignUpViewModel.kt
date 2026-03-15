@@ -1,7 +1,6 @@
 package pl.kosciukw.petsify.feature.signup.presentation.ui
 
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.kosciukw.petsify.feature.otp.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.feature.signup.presentation.SignUpAction
@@ -19,10 +18,8 @@ import pl.kosciukw.petsify.shared.validator.notempty.NotEmptyValidator
 import pl.kosciukw.petsify.shared.validator.password.PasswordMatchState
 import pl.kosciukw.petsify.shared.validator.password.PasswordMatchValidator
 import pl.kosciukw.petsify.shared.validator.password.PasswordValidator
-import javax.inject.Inject
 
-@HiltViewModel
-class SignUpViewModel @Inject constructor(
+class SignUpViewModel(
     private val startOtpRegistrationUseCase: StartOtpRegistrationUseCase,
     private val emailIdentifierValidator: EmailIdentifierValidator,
     private val notEmptyValidator: NotEmptyValidator<CharArray>,

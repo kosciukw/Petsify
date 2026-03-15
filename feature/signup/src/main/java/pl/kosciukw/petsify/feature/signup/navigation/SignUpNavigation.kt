@@ -1,10 +1,10 @@
 package pl.kosciukw.petsify.feature.signup.navigation
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
+import org.koin.androidx.compose.koinViewModel
 import pl.kosciukw.petsify.feature.otp.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.feature.signup.presentation.ui.SignUpScreen
 import pl.kosciukw.petsify.feature.signup.presentation.ui.SignUpViewModel
@@ -19,7 +19,7 @@ fun NavGraphBuilder.signUpScreen(
 ) {
     composable<SignUpDestination> {
 
-        val signUpViewModel: SignUpViewModel = hiltViewModel()
+        val signUpViewModel: SignUpViewModel = koinViewModel()
         val state = signUpViewModel.state.value
         val action = signUpViewModel.action
         val errors = signUpViewModel.errors

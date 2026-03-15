@@ -5,10 +5,9 @@ import com.kosciukw.services.api.user.error.UserDomainError
 import com.kosciukw.services.api.user.error.UserDomainToAppErrorMapper
 import pl.kosciukw.petsify.shared.error.AppError
 import pl.kosciukw.petsify.shared.error.DomainError
-import javax.inject.Inject
 import pl.kosciukw.petsify.shared.core.R as SharedR
 
-class UserDomainToAppErrorMapperImpl @Inject constructor(
+class UserDomainToAppErrorMapperImpl(
     private val context: Context
 ) : UserDomainToAppErrorMapper {
 

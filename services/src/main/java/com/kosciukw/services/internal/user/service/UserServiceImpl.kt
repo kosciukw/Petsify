@@ -12,9 +12,8 @@ import com.kosciukw.services.internal.session.service.AuthTokenService
 import com.kosciukw.services.internal.user.mapper.AccessTokenApiToAuthSessionDomainModelMapper
 import com.kosciukw.services.internal.user.repository.UserRepository
 import pl.kosciukw.petsify.shared.utils.empty
-import javax.inject.Inject
 
-class UserServiceImpl @Inject constructor(
+class UserServiceImpl(
     private val userRepository: UserRepository,
     private val authTokenService: AuthTokenService,
     private val accessTokenApiToAuthSessionDomainModelMapper: AccessTokenApiToAuthSessionDomainModelMapper

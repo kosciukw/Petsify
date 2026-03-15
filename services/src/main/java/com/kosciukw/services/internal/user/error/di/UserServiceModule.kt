@@ -1,23 +1,10 @@
 package com.kosciukw.services.internal.user.error.di
 
-import android.content.Context
 import com.kosciukw.services.api.user.error.UserDomainToAppErrorMapper
 import com.kosciukw.services.internal.user.error.impl.UserDomainToAppErrorMapperImpl
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-class UserServiceModule {
-
-    @Provides
-    fun providesUserDomainToAppErrorMapper(
-        @ApplicationContext context: Context
-    ): UserDomainToAppErrorMapper =
-        UserDomainToAppErrorMapperImpl(
-            context = context
-        )
+val userServiceModule = module {
+    single<UserDomainToAppErrorMapper> { UserDomainToAppErrorMapperImpl(androidContext()) }
 }

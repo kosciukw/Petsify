@@ -7,9 +7,8 @@ import kotlinx.coroutines.flow.flow
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.usecase.UseCase
 import pl.kosciukw.petsify.shared.utils.empty
-import javax.inject.Inject
 
-class RefreshTokenUseCase @Inject constructor(
+class RefreshTokenUseCase(
     private val sessionService: SessionService
 ) : UseCase<ResultOrFailure<AuthSessionDomainModel, Throwable>, RefreshTokenUseCase.Params>() {
 
