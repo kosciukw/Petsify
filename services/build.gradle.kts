@@ -42,9 +42,8 @@ android {
 }
 
 dependencies {
-    implementation(projects.shared.ui)
+    implementation(projects.shared.core)
     implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.hilt.compiler)
 
     implementation(libs.retrofit)
