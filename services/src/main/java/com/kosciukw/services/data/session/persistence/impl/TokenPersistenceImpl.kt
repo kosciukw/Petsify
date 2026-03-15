@@ -1,11 +1,11 @@
-package com.kosciukw.services.data.session.persistence.impl
+package com.kosciukw.services.internal.session.persistence.impl
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.kosciukw.services.data.session.model.AuthTokens
-import com.kosciukw.services.data.session.persistence.TokenPersistence
+import com.kosciukw.services.internal.session.model.AuthTokens
+import com.kosciukw.services.internal.session.persistence.TokenPersistence
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 

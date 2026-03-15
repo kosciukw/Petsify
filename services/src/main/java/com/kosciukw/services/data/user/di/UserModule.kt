@@ -1,24 +1,26 @@
-package com.kosciukw.services.data.user.di
+package com.kosciukw.services.internal.user.di
 
-import com.kosciukw.services.data.session.service.AuthTokenService
-import com.kosciukw.services.data.user.api.UserApi
-import com.kosciukw.services.data.user.api.authenticator.TokenAuthenticator
-import com.kosciukw.services.data.user.api.controller.UserApiController
-import com.kosciukw.services.data.user.api.controller.impl.UserApiControllerImpl
-import com.kosciukw.services.data.user.api.interceptor.AuthInterceptor
-import com.kosciukw.services.data.user.api.provider.UserUrlProvider
-import com.kosciukw.services.data.user.api.provider.impl.UserUrlProviderImpl
-import com.kosciukw.services.data.user.error.mapper.*
-import com.kosciukw.services.data.user.error.mapper.impl.ErrorResponseToUserApiExceptionMapperImpl
-import com.kosciukw.services.data.user.error.mapper.impl.HttpToUserApiExceptionMapperImpl
-import com.kosciukw.services.data.user.error.mapper.impl.UserExceptionMapperImpl
-import com.kosciukw.services.data.user.mapper.*
-import com.kosciukw.services.data.user.repository.UserRepository
-import com.kosciukw.services.data.user.repository.error.UserApiToDomainErrorMapperImpl
-import com.kosciukw.services.data.user.repository.impl.UserRepositoryRemoteImpl
-import com.kosciukw.services.data.user.service.user.UserService
-import com.kosciukw.services.data.user.service.user.impl.UserServiceImpl
+import com.kosciukw.services.api.auth.AuthService
+import com.kosciukw.services.api.registration.RegistrationService
+import com.kosciukw.services.api.session.SessionService
+import com.kosciukw.services.internal.session.service.AuthTokenService
+import com.kosciukw.services.internal.user.api.UserApi
+import com.kosciukw.services.internal.user.api.authenticator.TokenAuthenticator
+import com.kosciukw.services.internal.user.api.controller.UserApiController
+import com.kosciukw.services.internal.user.api.controller.impl.UserApiControllerImpl
+import com.kosciukw.services.internal.user.api.interceptor.AuthInterceptor
+import com.kosciukw.services.internal.user.api.provider.UserUrlProvider
+import com.kosciukw.services.internal.user.api.provider.impl.UserUrlProviderImpl
+import com.kosciukw.services.internal.user.error.mapper.*
+import com.kosciukw.services.internal.user.error.mapper.impl.ErrorResponseToUserApiExceptionMapperImpl
+import com.kosciukw.services.internal.user.error.mapper.impl.HttpToUserApiExceptionMapperImpl
+import com.kosciukw.services.internal.user.error.mapper.impl.UserExceptionMapperImpl
+import com.kosciukw.services.internal.user.mapper.*
+import com.kosciukw.services.internal.user.repository.UserRepository
+import com.kosciukw.services.internal.user.repository.error.UserApiToDomainErrorMapperImpl
+import com.kosciukw.services.internal.user.repository.impl.UserRepositoryRemoteImpl
 import com.kosciukw.services.error.ErrorResponse
+import com.kosciukw.services.internal.user.service.UserServiceImpl
 import com.kosciukw.services.mapper.HttpExceptionToErrorResponseMapper
 import com.kosciukw.services.mapper.impl.HttpExceptionToErrorResponseMapperImpl
 import dagger.Module
@@ -88,7 +90,7 @@ object UserModule {
         @Named("UserApiOkHttp") client: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.100.137:8080/") // TODO ip nie jest stałe
+            .baseUrl("http://10.0.2.2:8080/") // TODO ip nie jest stałe
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -115,13 +117,31 @@ object UserModule {
     fun provideUserUrlProvider(): UserUrlProvider = UserUrlProviderImpl()
 
     @Provides
-    fun provideUserService(
+    @Singleton
+    fun provideUserServiceImpl(
         userRepository: UserRepository,
-        authTokenService: AuthTokenService
-    ): UserService = UserServiceImpl(
+        authTokenService: AuthTokenService,
+        accessTokenApiToAuthSessionDomainModelMapper: AccessTokenApiToAuthSessionDomainModelMapper
+    ): UserServiceImpl = UserServiceImpl(
         userRepository = userRepository,
-        authTokenService = authTokenService
+        authTokenService = authTokenService,
+        accessTokenApiToAuthSessionDomainModelMapper = accessTokenApiToAuthSessionDomainModelMapper
     )
+
+    @Provides
+    fun provideAuthService(
+        userServiceImpl: UserServiceImpl
+    ): AuthService = userServiceImpl
+
+    @Provides
+    fun provideRegistrationService(
+        userServiceImpl: UserServiceImpl
+    ): RegistrationService = userServiceImpl
+
+    @Provides
+    fun provideSessionService(
+        userServiceImpl: UserServiceImpl
+    ): SessionService = userServiceImpl
 
     @Provides
     fun provideUserExceptionMapper(

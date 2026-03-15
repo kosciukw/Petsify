@@ -1,7 +1,7 @@
 package pl.kosciukw.petsify.feature.signup.usecase
 
-import com.kosciukw.services.data.user.model.domain.StartOtpRegistrationDomainModel
-import com.kosciukw.services.data.user.service.user.UserService
+import com.kosciukw.services.api.registration.RegistrationService
+import com.kosciukw.services.api.registration.model.StartOtpRegistrationDomainModel
 import kotlinx.coroutines.flow.flow
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.usecase.UseCase
@@ -9,7 +9,7 @@ import pl.kosciukw.petsify.shared.utils.empty
 import javax.inject.Inject
 
 class StartOtpRegistrationUseCase @Inject constructor(
-    private val userService: UserService
+    private val registrationService: RegistrationService
 ) : UseCase<ResultOrFailure<Unit, Throwable>, StartOtpRegistrationUseCase.Params>() {
 
     data class Params(
@@ -26,7 +26,7 @@ class StartOtpRegistrationUseCase @Inject constructor(
         )
 
         runCatching {
-            userService.startOtpRegistration(request)
+            registrationService.startOtpRegistration(request)
         }.onSuccess { result ->
             emit(ResultOrFailure.Success(result))
         }.onFailure { error ->

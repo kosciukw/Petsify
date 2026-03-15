@@ -1,7 +1,7 @@
 package pl.kosciukw.petsify.error
 
-import com.kosciukw.services.data.user.repository.error.model.UserDomainError
-import com.kosciukw.services.data.user.service.user.error.UserDomainToAppErrorMapper
+import com.kosciukw.services.api.user.error.UserDomainError
+import com.kosciukw.services.api.user.error.UserDomainToAppErrorMapper
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

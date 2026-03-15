@@ -1,4 +1,4 @@
-package com.kosciukw.services.data.user.model.domain
+package com.kosciukw.services.api.auth.model
 
 import pl.kosciukw.petsify.shared.utils.empty
 

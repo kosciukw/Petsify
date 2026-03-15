@@ -1,10 +1,10 @@
-package com.kosciukw.services.data.user.api
+package com.kosciukw.services.internal.user.api
 
-import com.kosciukw.services.data.user.model.api.request.FinalizeOtpRegistrationRequest
-import com.kosciukw.services.data.user.model.api.request.LoginByPasswordRequest
-import com.kosciukw.services.data.user.model.api.request.RefreshRequest
-import com.kosciukw.services.data.user.model.api.request.StartOtpRegistrationRequest
-import com.kosciukw.services.data.user.model.api.response.AccessTokenApiModel
+import com.kosciukw.services.internal.user.model.api.request.FinalizeOtpRegistrationRequest
+import com.kosciukw.services.internal.user.model.api.request.LoginByPasswordRequest
+import com.kosciukw.services.internal.user.model.api.request.RefreshRequest
+import com.kosciukw.services.internal.user.model.api.request.StartOtpRegistrationRequest
+import com.kosciukw.services.internal.user.model.api.response.AccessTokenApiModel
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST

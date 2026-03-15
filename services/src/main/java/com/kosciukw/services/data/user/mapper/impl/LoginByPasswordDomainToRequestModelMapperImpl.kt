@@ -1,8 +1,8 @@
-package com.kosciukw.services.data.user.mapper.impl
+package com.kosciukw.services.internal.user.mapper.impl
 
-import com.kosciukw.services.data.user.mapper.LoginByPasswordDomainToRequestModelMapper
-import com.kosciukw.services.data.user.model.api.request.LoginByPasswordRequest
-import com.kosciukw.services.data.user.model.domain.LoginByPasswordDomainModel
+import com.kosciukw.services.api.auth.model.LoginByPasswordDomainModel
+import com.kosciukw.services.internal.user.mapper.LoginByPasswordDomainToRequestModelMapper
+import com.kosciukw.services.internal.user.model.api.request.LoginByPasswordRequest
 
 class LoginByPasswordDomainToRequestModelMapperImpl : LoginByPasswordDomainToRequestModelMapper {
 

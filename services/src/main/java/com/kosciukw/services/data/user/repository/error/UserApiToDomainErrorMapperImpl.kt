@@ -1,7 +1,7 @@
-package com.kosciukw.services.data.user.repository.error
+package com.kosciukw.services.internal.user.repository.error
 
-import com.kosciukw.services.data.user.mapper.UserApiToDomainErrorMapper
-import com.kosciukw.services.data.user.repository.error.model.UserDomainError
+import com.kosciukw.services.api.user.error.UserDomainError
+import com.kosciukw.services.internal.user.mapper.UserApiToDomainErrorMapper
 import com.kosciukw.services.error.UserApiError
 import pl.kosciukw.petsify.shared.error.CoreDomainError
 

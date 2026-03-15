@@ -1,8 +1,8 @@
-package com.kosciukw.services.data.user.mapper.di
+package com.kosciukw.services.internal.user.mapper.di
 
-import com.kosciukw.services.data.user.mapper.FinalizeOtpRegistrationDomainToRequestModelMapper
-import com.kosciukw.services.data.user.model.api.request.FinalizeOtpRegistrationRequest
-import com.kosciukw.services.data.user.model.domain.FinalizeOtpRegistrationDomainModel
+import com.kosciukw.services.api.registration.model.FinalizeOtpRegistrationDomainModel
+import com.kosciukw.services.internal.user.mapper.FinalizeOtpRegistrationDomainToRequestModelMapper
+import com.kosciukw.services.internal.user.model.api.request.FinalizeOtpRegistrationRequest
 
 class FinalizeOtpRegistrationDomainToRequestModelMapperImpl :
     FinalizeOtpRegistrationDomainToRequestModelMapper {

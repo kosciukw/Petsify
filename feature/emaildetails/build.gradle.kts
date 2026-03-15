@@ -3,12 +3,10 @@ plugins {
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.kotlin.serialization)
-  alias(libs.plugins.hilt.android.gradle.plugin)
-  kotlin("kapt")
 }
 
 android {
-  namespace = "com.kosciukw.services"
+  namespace = "pl.kosciukw.petsify.feature.emaildetails"
   compileSdk = libs.versions.compileSdkVersion.get().toInt()
 
   defaultConfig {
@@ -37,18 +35,6 @@ android {
 
 dependencies {
   implementation(projects.shared.ui)
-
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
-  implementation(libs.androidx.hilt.navigation.compose)
-
-  implementation(libs.retrofit)
-  implementation(libs.retrofit.gson)
-  implementation(libs.gson)
-
-  implementation(libs.androidx.core.ktx)
-  implementation(libs.androidx.appcompat)
-  implementation(libs.material)
 
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)

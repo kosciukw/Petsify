@@ -1,4 +1,4 @@
-package com.kosciukw.services.data.user.model.api.response
+package com.kosciukw.services.internal.user.model.api.response
 
 import com.google.gson.annotations.SerializedName
 import pl.kosciukw.petsify.shared.utils.empty

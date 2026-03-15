@@ -1,4 +1,4 @@
-package com.kosciukw.services.data.user.service.user.error
+package com.kosciukw.services.api.user.error
 
 import pl.kosciukw.petsify.shared.mapper.DomainToAppErrorMapper
 
