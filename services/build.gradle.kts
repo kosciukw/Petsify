@@ -1,16 +1,62 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.serialization)
+}
+
+kotlin {
+    androidTarget()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
+    jvmToolchain(libs.versions.javaVersion.get().toInt())
+
+    sourceSets {
+        commonMain {
+            kotlin.srcDir("src/commonMain/kotlin")
+            dependencies {
+                implementation(projects.shared.servicesApi)
+                implementation(projects.shared.core)
+                implementation(libs.koin.core)
+                implementation(libs.kotlinxCoroutinesCore)
+                implementation(libs.kotlinx.serialization)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
+            }
+        }
+
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
+
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
+
+        androidUnitTest {
+            kotlin.srcDir("src/test/java")
+            dependencies {
+                implementation(libs.bundles.junit5)
+                implementation(libs.mockk)
+                implementation(libs.kotlinxCoroutinesTest)
+                implementation(libs.androidx.junit)
+                implementation(libs.androidx.espresso.core)
+            }
+        }
+    }
 }
 
 android {
     namespace = "com.kosciukw.services"
-    compileSdk = 35
+    compileSdk = libs.versions.compileSdkVersion.get().toInt()
+
+    sourceSets["main"].manifest.srcFile("src/main/AndroidManifest.xml")
 
     defaultConfig {
-        minSdk = 26
-        testOptions.targetSdk = 35
+        minSdk = libs.versions.minSdkVersion.get().toInt()
+        testOptions.targetSdk = libs.versions.compileSdkVersion.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -25,37 +71,15 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        val javaVersion = libs.versions.javaVersion.get()
+        sourceCompatibility = JavaVersion.toVersion(javaVersion)
+        targetCompatibility = JavaVersion.toVersion(javaVersion)
     }
 
-    kotlinOptions {
-        jvmTarget = "11"
-    }
     testOptions {
         unitTests.isIncludeAndroidResources = true
         unitTests.all {
             it.useJUnitPlatform()
         }
     }
-}
-
-dependencies {
-    implementation(projects.shared.servicesApi)
-    implementation(projects.shared.core)
-    implementation(libs.koin.core)
-    implementation(libs.kotlinxCoroutinesCore)
-
-    implementation(libs.gson)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.serialization.gson)
-
-    testImplementation(libs.bundles.junit5)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinxCoroutinesTest)
-
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }

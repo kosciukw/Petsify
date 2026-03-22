@@ -6,13 +6,6 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.kosciukw.services.internal.session.persistence.TokenPersistence
-import com.kosciukw.services.internal.session.repository.AuthSessionRepository
-import com.kosciukw.services.internal.session.repository.impl.AuthSessionRepositoryImpl
-import com.kosciukw.services.internal.session.service.AuthTokenService
-import com.kosciukw.services.internal.session.service.impl.AuthTokenServiceImpl
-import com.kosciukw.services.internal.user.api.UserApi
-import com.kosciukw.services.internal.user.api.provider.UserUrlProvider
-import com.kosciukw.services.internal.user.error.mapper.UserExceptionMapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -30,17 +23,6 @@ val authModule = module {
     single<TokenPersistence> {
         TokenPersistenceImpl(
             dataStore = get(authDataStoreQualifier)
-        )
-    }
-    single<AuthSessionRepository> {
-        AuthSessionRepositoryImpl(tokenPersistence = get())
-    }
-    single<AuthTokenService> {
-        AuthTokenServiceImpl(
-            authSessionRepository = get(),
-            userApi = get<UserApi>(),
-            userUrlProvider = get<UserUrlProvider>(),
-            userExceptionMapper = get<UserExceptionMapper>()
         )
     }
 }
