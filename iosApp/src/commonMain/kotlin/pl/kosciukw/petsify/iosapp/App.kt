@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +21,7 @@ import pl.kosciukw.petsify.shared.presentation.common.viewmodel.BaseViewModel
 import pl.kosciukw.petsify.shared.presentation.components.view.ViewEvent
 import pl.kosciukw.petsify.shared.presentation.components.view.ViewSingleAction
 import pl.kosciukw.petsify.shared.presentation.components.view.ViewState
+import pl.kosciukw.petsify.shared.ui.theme.PetsifyTheme
 
 @Composable
 fun IosApp() {
@@ -32,7 +32,7 @@ fun IosApp() {
         onDispose { viewModel.clear() }
     }
 
-    MaterialTheme {
+    PetsifyTheme {
         Surface {
             Column(
                 modifier = Modifier
@@ -43,12 +43,12 @@ fun IosApp() {
             ) {
                 Text(
                     text = state.title,
-                    style = MaterialTheme.typography.headlineMedium
+                    style = androidx.compose.material3.MaterialTheme.typography.headlineMedium
                 )
                 Text(
                     modifier = Modifier.padding(top = 12.dp),
                     text = state.message,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
                 )
                 Button(
                     modifier = Modifier.padding(top = 24.dp),

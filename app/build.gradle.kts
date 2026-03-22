@@ -48,6 +48,7 @@ android {
 }
 
 dependencies {
+  implementation(projects.shared.servicesApi)
   implementation(projects.shared.ui)
   implementation(projects.feature.splash)
   implementation(projects.feature.login)

@@ -24,6 +24,7 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
+      implementation(projects.shared.design)
       implementation(projects.shared.core)
       implementation(projects.shared.presentationCore)
       implementation(compose.runtime)

@@ -5,35 +5,26 @@ import com.kosciukw.services.internal.user.model.api.request.LoginByPasswordRequ
 import com.kosciukw.services.internal.user.model.api.request.RefreshRequest
 import com.kosciukw.services.internal.user.model.api.request.StartOtpRegistrationRequest
 import com.kosciukw.services.internal.user.model.api.response.AccessTokenApiModel
-import retrofit2.http.Body
-import retrofit2.http.Headers
-import retrofit2.http.POST
-import retrofit2.http.Url
 
 interface UserApi {
 
-    @POST
     suspend fun loginByPassword(
-        @Url url: String,
-        @Body loginByPasswordRequest: LoginByPasswordRequest
+        url: String,
+        loginByPasswordRequest: LoginByPasswordRequest
     ): AccessTokenApiModel
 
-    @POST
     suspend fun startOtpRegistration(
-        @Url url: String,
-        @Body startOtpRegistrationRequest: StartOtpRegistrationRequest
+        url: String,
+        startOtpRegistrationRequest: StartOtpRegistrationRequest
     )
 
-    @POST
     suspend fun finalizeOtpRegistration(
-        @Url url: String,
-        @Body finalizeOtpRegistrationRequest: FinalizeOtpRegistrationRequest
+        url: String,
+        finalizeOtpRegistrationRequest: FinalizeOtpRegistrationRequest
     ): AccessTokenApiModel
 
-    @POST
-    @Headers("X-Bypass-Auth: true")
     suspend fun refreshToken(
-        @Url url: String,
-        @Body refreshRequest: RefreshRequest
-    ) : AccessTokenApiModel
+        url: String,
+        refreshRequest: RefreshRequest
+    ): AccessTokenApiModel
 }

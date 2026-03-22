@@ -23,6 +23,8 @@ rootProject.name = "Petsify"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":iosApp")
+include(":shared:design")
+include(":shared:services-api")
 include(":shared:core")
 include(":shared:presentation-core")
 include(":shared:ui")

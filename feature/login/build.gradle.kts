@@ -42,7 +42,7 @@ android {
 
 dependencies {
   implementation(projects.shared.ui)
-  implementation(projects.services)
+  implementation(projects.shared.servicesApi)
   implementation(libs.koin.android)
 
   androidTestImplementation(libs.androidx.junit)

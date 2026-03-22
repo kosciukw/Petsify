@@ -1,27 +1,21 @@
 package com.kosciukw.services.internal.user.api.interceptor
 
 import com.kosciukw.services.internal.session.repository.AuthSessionRepository
-import kotlinx.coroutines.runBlocking
-import okhttp3.Interceptor
-import okhttp3.Response
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
 
 class AuthInterceptor(
     private val authSessionRepository: AuthSessionRepository
-) : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val req = chain.request()
+) {
 
-        if (req.header("X-Bypass-Auth") == "true") {
-            return chain.proceed(req)
-        }
+    suspend fun appendAuthHeader(request: HttpRequestBuilder) {
+        if (request.headers["X-Bypass-Auth"] == "true") return
 
-        val token = runBlocking { authSessionRepository.loadTokens() }?.accessToken
-        val newReq = if (!token.isNullOrBlank()) {
-            req.newBuilder()
-                .header("Authorization", "Bearer $token")
-                .build()
-        } else req
+        val token = authSessionRepository.loadTokens()?.accessToken
+        if (token.isNullOrBlank()) return
 
-        return chain.proceed(newReq)
+        request.headers.remove(HttpHeaders.Authorization)
+        request.header(HttpHeaders.Authorization, "Bearer $token")
     }
 }
