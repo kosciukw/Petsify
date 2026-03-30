@@ -24,9 +24,19 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
+      implementation(projects.services)
+      implementation(projects.feature.login)
+      implementation(projects.feature.signup)
+      implementation(projects.feature.settings)
+      implementation(projects.feature.splash)
+      implementation(projects.feature.main)
+      implementation(projects.feature.emaildetails)
+      implementation(projects.feature.composer)
+      implementation(projects.shared.servicesApi)
       implementation(projects.shared.design)
       implementation(projects.shared.core)
       implementation(projects.shared.presentationCore)
+      implementation(libs.koin.core)
       implementation(compose.runtime)
       implementation(compose.foundation)
       implementation(compose.material3)

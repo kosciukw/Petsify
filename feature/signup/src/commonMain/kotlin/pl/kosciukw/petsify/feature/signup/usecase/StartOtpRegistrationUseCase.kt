@@ -1,0 +1,32 @@
+package pl.kosciukw.petsify.feature.signup.usecase
+
+import com.kosciukw.services.api.registration.RegistrationService
+import com.kosciukw.services.api.registration.model.StartOtpRegistrationDomainModel
+import kotlinx.coroutines.flow.flow
+import pl.kosciukw.petsify.shared.result.ResultOrFailure
+import pl.kosciukw.petsify.shared.usecase.UseCase
+
+class StartOtpRegistrationUseCase(
+    private val registrationService: RegistrationService
+) : UseCase<ResultOrFailure<Unit, Throwable>, StartOtpRegistrationUseCase.Params>() {
+
+    data class Params(
+        val email: String
+    )
+
+    override fun action(params: Params) = flow {
+        emit(ResultOrFailure.Loading)
+
+        val request = StartOtpRegistrationDomainModel(
+            email = params.email
+        )
+
+        runCatching {
+            registrationService.startOtpRegistration(request)
+        }.onSuccess { result ->
+            emit(ResultOrFailure.Success(result))
+        }.onFailure { error ->
+            emit(ResultOrFailure.Failure(error))
+        }
+    }
+}

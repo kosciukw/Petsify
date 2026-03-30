@@ -16,15 +16,15 @@ import pl.kosciukw.petsify.feature.otp.navigation.signUpByOtpScreen
 import pl.kosciukw.petsify.feature.settings.navigation.settingsScreen
 import pl.kosciukw.petsify.feature.signup.navigation.navigateToSignUp
 import pl.kosciukw.petsify.feature.signup.navigation.signUpScreen
-import pl.kosciukw.petsify.feature.splash.navigation.SplashDestination
 import pl.kosciukw.petsify.feature.splash.navigation.splashScreen
+import pl.kosciukw.petsify.shared.navigation.AppRoute
 
 @Composable
 fun AppRoot() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = SplashDestination
+        startDestination = AppRoute.Splash
     ) {
 
         splashScreen(

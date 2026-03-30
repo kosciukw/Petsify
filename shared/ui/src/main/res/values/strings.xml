@@ -4,7 +4,7 @@
     <string name="ok_button">Ok</string>
 
     <!-- Login Screen -->
-    <string name="login_screen_welcomd_our_community_today">Welcome to our pet community!</string>
+    <string name="login_screen_welcome_to_our_community_today">Welcome to our pet community!</string>
     <string name="login_screen_email_field">Email*</string>
     <string name="login_screen_password_field">Password*</string>
     <string name="login_screen_login_button">Login</string>
