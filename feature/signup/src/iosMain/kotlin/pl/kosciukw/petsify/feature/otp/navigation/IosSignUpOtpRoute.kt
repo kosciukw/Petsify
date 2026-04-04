@@ -4,9 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import org.koin.mp.KoinPlatform
 import pl.kosciukw.petsify.feature.otp.presentation.ui.SignUpByOtpScreen
 import pl.kosciukw.petsify.feature.otp.presentation.ui.SignUpByOtpViewModel
-import pl.kosciukw.petsify.iosapp.di.rememberKoinInstance
 import pl.kosciukw.petsify.shared.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.shared.strings.FeatureStringsProvider
 
@@ -16,8 +17,8 @@ fun IosSignUpOtpRoute(
     onNavigateToMain: () -> Unit,
     onNavigateUp: () -> Unit
 ) {
-    val signUpByOtpViewModel = rememberKoinInstance<SignUpByOtpViewModel>()
-    val stringsProvider = rememberKoinInstance<FeatureStringsProvider>()
+    val signUpByOtpViewModel = remember { KoinPlatform.getKoin().get<SignUpByOtpViewModel>() }
+    val stringsProvider = remember { KoinPlatform.getKoin().get<FeatureStringsProvider>() }
     val state by signUpByOtpViewModel.state.collectAsState()
 
     DisposableEffect(signUpByOtpViewModel) {

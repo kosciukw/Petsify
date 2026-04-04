@@ -4,9 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import org.koin.mp.KoinPlatform
 import pl.kosciukw.petsify.feature.signup.presentation.ui.SignUpScreen
 import pl.kosciukw.petsify.feature.signup.presentation.ui.SignUpViewModel
-import pl.kosciukw.petsify.iosapp.di.rememberKoinInstance
 import pl.kosciukw.petsify.shared.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.shared.strings.FeatureStringsProvider
 
@@ -16,8 +17,8 @@ fun IosSignUpRoute(
     onNavigateToLogin: () -> Unit,
     onNavigateUp: () -> Unit
 ) {
-    val signUpViewModel = rememberKoinInstance<SignUpViewModel>()
-    val stringsProvider = rememberKoinInstance<FeatureStringsProvider>()
+    val signUpViewModel = remember { KoinPlatform.getKoin().get<SignUpViewModel>() }
+    val stringsProvider = remember { KoinPlatform.getKoin().get<FeatureStringsProvider>() }
     val state by signUpViewModel.state.collectAsState()
 
     DisposableEffect(signUpViewModel) {
