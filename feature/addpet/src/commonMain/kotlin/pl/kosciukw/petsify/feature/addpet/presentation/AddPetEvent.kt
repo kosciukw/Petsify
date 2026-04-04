@@ -1,5 +1,8 @@
 package pl.kosciukw.petsify.feature.addpet.presentation
 
+import pl.kosciukw.petsify.feature.addpet.model.ui.PetSexUiModel
+import pl.kosciukw.petsify.feature.addpet.model.ui.PetSpeciesUiModel
+import pl.kosciukw.petsify.feature.addpet.model.ui.PetTemperamentUiModel
 import pl.kosciukw.petsify.shared.presentation.components.view.ViewEvent
 
 sealed class AddPetEvent : ViewEvent {
@@ -18,17 +21,4 @@ sealed class AddPetEvent : ViewEvent {
     data class OnColorChanged(val value: String) : AddPetEvent()
     data class OnNotesChanged(val value: String) : AddPetEvent()
     data object OnSaveClicked : AddPetEvent()
-}
-
-enum class PetSexUiModel {
-    Male,
-    Female
-}
-
-enum class PetTemperamentUiModel {
-    Calm,
-    Energetic,
-    Friendly,
-    Shy,
-    Curious
 }

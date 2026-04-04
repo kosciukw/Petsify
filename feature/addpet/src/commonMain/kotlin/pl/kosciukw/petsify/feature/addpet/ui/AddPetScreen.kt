@@ -44,12 +44,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.Flow
+import pl.kosciukw.petsify.feature.addpet.model.domain.PetSpeciesDomainType
+import pl.kosciukw.petsify.feature.addpet.model.ui.PetSexUiModel
+import pl.kosciukw.petsify.feature.addpet.model.ui.PetSpeciesUiModel
+import pl.kosciukw.petsify.feature.addpet.model.ui.PetTemperamentUiModel
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetAction
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetEvent
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetState
-import pl.kosciukw.petsify.feature.addpet.presentation.PetSexUiModel
-import pl.kosciukw.petsify.feature.addpet.presentation.PetSpeciesUiModel
-import pl.kosciukw.petsify.feature.addpet.presentation.PetTemperamentUiModel
 import pl.kosciukw.petsify.shared.strings.AddPetStrings
 import pl.kosciukw.petsify.shared.strings.CommonScreenStrings
 import pl.kosciukw.petsify.shared.ui.theme.BlackLiquorice
@@ -244,18 +245,10 @@ private fun AddPetContent(
 
         PhotoUploadCard(strings = strings)
 
-        BasicFieldsSection(
+        NameFieldSection(
             name = name,
-            knowsBirthDate = knowsBirthDate,
-            age = age,
-            birthDate = birthDate,
-            weight = weight,
             strings = strings,
-            onNameChanged = onNameChanged,
-            onKnowsBirthDateChanged = onKnowsBirthDateChanged,
-            onAgeChanged = onAgeChanged,
-            onBirthDateChanged = onBirthDateChanged,
-            onWeightChanged = onWeightChanged
+            onNameChanged = onNameChanged
         )
 
         SpeciesSection(
@@ -268,6 +261,18 @@ private fun AddPetContent(
             onSpeciesSelected = onSpeciesSelected,
             onOtherSpeciesToggled = onOtherSpeciesToggled,
             onCustomSpeciesChanged = onCustomSpeciesChanged
+        )
+
+        AgeAndWeightSection(
+            knowsBirthDate = knowsBirthDate,
+            age = age,
+            birthDate = birthDate,
+            weight = weight,
+            strings = strings,
+            onKnowsBirthDateChanged = onKnowsBirthDateChanged,
+            onAgeChanged = onAgeChanged,
+            onBirthDateChanged = onBirthDateChanged,
+            onWeightChanged = onWeightChanged
         )
 
         MoreDetailsSection(
@@ -302,18 +307,10 @@ private fun AddPetIntro(strings: AddPetStrings) {
 }
 
 @Composable
-private fun BasicFieldsSection(
+private fun NameFieldSection(
     name: String,
-    knowsBirthDate: Boolean,
-    age: String,
-    birthDate: String,
-    weight: String,
     strings: AddPetStrings,
-    onNameChanged: (String) -> Unit,
-    onKnowsBirthDateChanged: (Boolean) -> Unit,
-    onAgeChanged: (String) -> Unit,
-    onBirthDateChanged: (String) -> Unit,
-    onWeightChanged: (String) -> Unit
+    onNameChanged: (String) -> Unit
 ) {
     PetsifyInput(
         modifier = Modifier.fillMaxWidth(),
@@ -322,22 +319,44 @@ private fun BasicFieldsSection(
         label = strings.nameLabel,
         placeholder = strings.namePlaceholder
     )
+}
 
-    CheckBoxRow(
-        isChecked = knowsBirthDate,
-        text = strings.knowsBirthDateLabel,
-        onCheckedChange = onKnowsBirthDateChanged
+@Composable
+private fun AgeAndWeightSection(
+    knowsBirthDate: Boolean,
+    age: String,
+    birthDate: String,
+    weight: String,
+    strings: AddPetStrings,
+    onKnowsBirthDateChanged: (Boolean) -> Unit,
+    onAgeChanged: (String) -> Unit,
+    onBirthDateChanged: (String) -> Unit,
+    onWeightChanged: (String) -> Unit
+) {
+    PetsifyInput(
+        modifier = Modifier.fillMaxWidth(),
+        text = birthDate,
+        onTextChange = onBirthDateChanged,
+        label = strings.birthDateLabel,
+        placeholder = strings.birthDatePlaceholder,
+        enabled = knowsBirthDate
     )
 
-    if (knowsBirthDate) {
-        PetsifyInput(
-            modifier = Modifier.fillMaxWidth(),
-            text = birthDate,
-            onTextChange = onBirthDateChanged,
-            label = strings.birthDateLabel,
-            placeholder = strings.birthDatePlaceholder
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
+        BirthdayKnowledgeTrigger(
+            label = if (knowsBirthDate) {
+                strings.birthdayUnknownTrigger
+            } else {
+                strings.birthdayKnownTrigger
+            },
+            onClick = { onKnowsBirthDateChanged(!knowsBirthDate) }
         )
-    } else {
+    }
+
+    if (!knowsBirthDate) {
         PetsifyInput(
             modifier = Modifier.fillMaxWidth(),
             text = age,
@@ -354,6 +373,24 @@ private fun BasicFieldsSection(
         label = strings.weightLabel,
         placeholder = strings.weightPlaceholder
     )
+}
+
+@Composable
+private fun BirthdayKnowledgeTrigger(
+    label: String,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .clickable(onClick = onClick)
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
 }
 
 @Composable
@@ -383,7 +420,8 @@ private fun SpeciesSection(
                 SpeciesOptionCard(
                     modifier = Modifier.weight(1f),
                     species = species,
-                    selected = selectedSpecies?.code == species.code,
+                    label = species.label(strings),
+                    selected = selectedSpecies == species,
                     onClick = { onSpeciesSelected(species) }
                 )
             }
@@ -403,7 +441,7 @@ private fun SpeciesSection(
         if (isOtherSpeciesExpanded) {
             OtherSpeciesSection(
                 species = otherSpecies,
-                selectedSpeciesCode = selectedSpecies?.code,
+                selectedSpecies = selectedSpecies,
                 strings = strings,
                 onSpeciesSelected = onSpeciesSelected
             )
@@ -466,6 +504,7 @@ private fun PhotoUploadCard(
 private fun SpeciesOptionCard(
     modifier: Modifier = Modifier,
     species: PetSpeciesUiModel,
+    label: String,
     selected: Boolean,
     onClick: () -> Unit
 ) {
@@ -485,11 +524,11 @@ private fun SpeciesOptionCard(
         ) {
             Icon(
                 imageVector = Icons.Default.Pets,
-                contentDescription = species.label,
+                contentDescription = label,
                 tint = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                text = species.label,
+                text = label,
                 fontWeight = FontWeight.Bold,
                 color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -519,7 +558,7 @@ private fun OtherSpeciesTrigger(
 @Composable
 private fun OtherSpeciesSection(
     species: List<PetSpeciesUiModel>,
-    selectedSpeciesCode: String?,
+    selectedSpecies: PetSpeciesUiModel?,
     strings: AddPetStrings,
     onSpeciesSelected: (PetSpeciesUiModel) -> Unit
 ) {
@@ -547,7 +586,8 @@ private fun OtherSpeciesSection(
                 SpeciesChip(
                     modifier = Modifier.weight(1f),
                     species = item,
-                    selected = selectedSpeciesCode == item.code,
+                    label = item.label(strings),
+                    selected = selectedSpecies == item,
                     onClick = { onSpeciesSelected(item) }
                 )
             }
@@ -561,7 +601,8 @@ private fun OtherSpeciesSection(
                 SpeciesChip(
                     modifier = Modifier.weight(1f),
                     species = item,
-                    selected = selectedSpeciesCode == item.code,
+                    label = item.label(strings),
+                    selected = selectedSpecies == item,
                     onClick = { onSpeciesSelected(item) }
                 )
             }
@@ -573,6 +614,7 @@ private fun OtherSpeciesSection(
 private fun SpeciesChip(
     modifier: Modifier = Modifier,
     species: PetSpeciesUiModel,
+    label: String,
     selected: Boolean,
     onClick: () -> Unit
 ) {
@@ -589,12 +631,23 @@ private fun SpeciesChip(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = species.label,
+                text = label,
                 style = MaterialTheme.typography.labelLarge,
                 color = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
+}
+
+private fun PetSpeciesUiModel.label(strings: AddPetStrings): String = when (petSpeciesDomainType) {
+    PetSpeciesDomainType.Dog -> strings.dogOption
+    PetSpeciesDomainType.Cat -> strings.catOption
+    PetSpeciesDomainType.Rabbit -> strings.rabbitOption
+    PetSpeciesDomainType.Hamster -> strings.hamsterOption
+    PetSpeciesDomainType.Bird -> strings.birdOption
+    PetSpeciesDomainType.Fish -> strings.fishOption
+    PetSpeciesDomainType.Turtle -> strings.turtleOption
+    PetSpeciesDomainType.Other -> strings.otherOption
 }
 
 @Composable
@@ -759,6 +812,7 @@ private fun PetsifyInput(
     onTextChange: (String) -> Unit,
     label: String,
     placeholder: String,
+    enabled: Boolean = true,
     singleLine: Boolean = true,
     minLines: Int = 1
 ) {
@@ -766,33 +820,11 @@ private fun PetsifyInput(
         modifier = modifier,
         value = text,
         onValueChange = onTextChange,
+        enabled = enabled,
         label = { Text(text = label) },
         placeholder = { Text(text = placeholder) },
         singleLine = singleLine,
         minLines = minLines,
         shape = RoundedCornerShape(20.dp)
     )
-}
-
-@Composable
-private fun CheckBoxRow(
-    isChecked: Boolean,
-    text: String,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onCheckedChange(!isChecked) },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Checkbox(
-            checked = isChecked,
-            onCheckedChange = { onCheckedChange(!isChecked) }
-        )
-        Text(
-            text = text,
-            style = TextRegularS
-        )
-    }
 }

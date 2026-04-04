@@ -1,5 +1,8 @@
 package pl.kosciukw.petsify.feature.addpet.presentation
 
+import pl.kosciukw.petsify.feature.addpet.model.ui.PetSexUiModel
+import pl.kosciukw.petsify.feature.addpet.model.ui.PetSpeciesUiModel
+import pl.kosciukw.petsify.feature.addpet.model.ui.PetTemperamentUiModel
 import pl.kosciukw.petsify.shared.presentation.components.view.ViewState
 
 data class AddPetState(
@@ -9,7 +12,7 @@ data class AddPetState(
     val selectedSpecies: PetSpeciesUiModel? = null,
     val isOtherSpeciesExpanded: Boolean = false,
     val customSpecies: String = "",
-    val knowsBirthDate: Boolean = false,
+    val knowsBirthDate: Boolean = true,
     val age: String = "",
     val birthDate: String = "",
     val weight: String = "",

@@ -1,10 +1,11 @@
 package pl.kosciukw.petsify.feature.addpet.presentation.ui
 
+import pl.kosciukw.petsify.feature.addpet.model.domain.PetSpeciesDomainType
+import pl.kosciukw.petsify.feature.addpet.model.ui.PetSpeciesUiModel
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetAction
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetEvent
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetState
-import pl.kosciukw.petsify.feature.addpet.presentation.PetSpeciesUiModel
-import pl.kosciukw.petsify.feature.addpet.presentation.PetSpeciesUiModelProvider
+import pl.kosciukw.petsify.feature.addpet.presentation.mapper.toUiModel
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.presentation.common.viewmodel.BaseViewModel
 
@@ -15,10 +16,19 @@ class AddPetViewModel(
 ) {
 
     override fun setInitialState(): AddPetState {
-        val speciesOptions = PetSpeciesUiModelProvider().getSpecies()
+        val speciesOptions = listOf(
+            PetSpeciesDomainType.Dog,
+            PetSpeciesDomainType.Cat,
+            PetSpeciesDomainType.Rabbit,
+            PetSpeciesDomainType.Hamster,
+            PetSpeciesDomainType.Bird,
+            PetSpeciesDomainType.Fish,
+            PetSpeciesDomainType.Turtle,
+            PetSpeciesDomainType.Other
+        ).map(PetSpeciesDomainType::toUiModel)
         return AddPetState(
             speciesOptions = speciesOptions,
-            selectedSpecies = speciesOptions.firstOrNull { it.code == PetSpeciesUiModelProvider.DOG_CODE }
+            selectedSpecies = speciesOptions.firstOrNull { it.petSpeciesDomainType == PetSpeciesDomainType.Dog }
         ).withSaveState()
     }
 
@@ -126,7 +136,7 @@ class AddPetViewModel(
 
     private fun AddPetState.currentSpeciesValue(): String = when {
         selectedSpecies?.requiresCustomValue == true -> customSpecies
-        else -> selectedSpecies?.code.orEmpty()
+        else -> selectedSpecies?.petSpeciesDomainType?.name.orEmpty()
     }
 
     private fun AddPetState.currentAgeOrBirthDateValue(): String = if (knowsBirthDate) {
