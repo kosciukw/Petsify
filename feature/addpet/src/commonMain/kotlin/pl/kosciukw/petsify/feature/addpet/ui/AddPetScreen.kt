@@ -36,6 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,7 +49,6 @@ import pl.kosciukw.petsify.feature.addpet.presentation.AddPetEvent
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetState
 import pl.kosciukw.petsify.feature.addpet.presentation.PetSexUiModel
 import pl.kosciukw.petsify.feature.addpet.presentation.PetSpeciesUiModel
-import pl.kosciukw.petsify.feature.addpet.presentation.PetSpeciesUiModelProvider
 import pl.kosciukw.petsify.feature.addpet.presentation.PetTemperamentUiModel
 import pl.kosciukw.petsify.shared.strings.AddPetStrings
 import pl.kosciukw.petsify.shared.strings.CommonScreenStrings
@@ -65,568 +65,734 @@ import pl.kosciukw.petsify.shared.ui.theme.paddingXXL
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPetScreen(
-  state: AddPetState,
-  events: (AddPetEvent) -> Unit,
-  action: Flow<AddPetAction>,
-  strings: AddPetStrings,
-  commonStrings: CommonScreenStrings,
-  onNavigateUp: () -> Unit
+    state: AddPetState,
+    events: (AddPetEvent) -> Unit,
+    action: Flow<AddPetAction>,
+    strings: AddPetStrings,
+    commonStrings: CommonScreenStrings,
+    onNavigateUp: () -> Unit
 ) {
-  LaunchedEffect(action) {
-    action.collect { currentAction ->
-      when (currentAction) {
-        AddPetAction.NavigateUp -> onNavigateUp()
-      }
-    }
-  }
-
-  val primarySpecies = state.speciesOptions.filter { it.isPrimary }
-  val otherSpecies = state.speciesOptions.filterNot { it.isPrimary }
-  val selectedSpecies = state.selectedSpecies
-
-  Scaffold(
-    modifier = Modifier.fillMaxSize(),
-    containerColor = MaterialTheme.colorScheme.background,
-    topBar = {
-      TopAppBar(
-        colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
-          containerColor = MaterialTheme.colorScheme.background
-        ),
-        title = {
-          Text(
-            text = strings.title,
-            style = MaterialTheme.typography.titleLarge
-          )
-        },
-        navigationIcon = {
-          IconButton(onClick = onNavigateUp) {
-            Icon(
-              imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-              contentDescription = commonStrings.navigateUpContentDescription
-            )
-          }
+    LaunchedEffect(action) {
+        action.collect { currentAction ->
+            when (currentAction) {
+                AddPetAction.NavigateUp -> onNavigateUp()
+            }
         }
-      )
-    },
-    bottomBar = {
-      Surface(
+    }
+
+    val primarySpecies = remember(state.speciesOptions) {
+        state.speciesOptions.filter { it.isPrimary }
+    }
+    val otherSpecies = remember(state.speciesOptions) {
+        state.speciesOptions.filterNot { it.isPrimary }
+    }
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            TopAppBar(
+                colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background
+                ),
+                title = {
+                    Text(
+                        text = strings.title,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateUp) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = commonStrings.navigateUpContentDescription
+                        )
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            AddPetBottomBar(
+                isSaveEnabled = state.isSaveEnabled,
+                strings = strings,
+                onSaveClick = { events(AddPetEvent.OnSaveClicked) }
+            )
+        }
+    ) { paddingValues ->
+        AddPetContent(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            strings = strings,
+            name = state.name,
+            knowsBirthDate = state.knowsBirthDate,
+            age = state.age,
+            birthDate = state.birthDate,
+            weight = state.weight,
+            primarySpecies = primarySpecies,
+            otherSpecies = otherSpecies,
+            selectedSpecies = state.selectedSpecies,
+            isOtherSpeciesExpanded = state.isOtherSpeciesExpanded,
+            customSpecies = state.customSpecies,
+            isMoreDetailsExpanded = state.isMoreDetailsExpanded,
+            breed = state.breed,
+            sex = state.sex,
+            temperaments = state.temperaments,
+            color = state.color,
+            notes = state.notes,
+            onNameChanged = { events(AddPetEvent.OnNameChanged(it)) },
+            onSpeciesSelected = { events(AddPetEvent.OnSpeciesSelected(it)) },
+            onOtherSpeciesToggled = { events(AddPetEvent.OnOtherSpeciesToggled) },
+            onCustomSpeciesChanged = { events(AddPetEvent.OnCustomSpeciesChanged(it)) },
+            onKnowsBirthDateChanged = { events(AddPetEvent.OnKnowsBirthDateChanged(it)) },
+            onAgeChanged = { events(AddPetEvent.OnAgeChanged(it)) },
+            onBirthDateChanged = { events(AddPetEvent.OnBirthDateChanged(it)) },
+            onWeightChanged = { events(AddPetEvent.OnWeightChanged(it)) },
+            onMoreDetailsToggled = { events(AddPetEvent.OnMoreDetailsToggled) },
+            onBreedChanged = { events(AddPetEvent.OnBreedChanged(it)) },
+            onSexSelected = { events(AddPetEvent.OnSexSelected(it)) },
+            onTemperamentToggled = { events(AddPetEvent.OnTemperamentToggled(it)) },
+            onColorChanged = { events(AddPetEvent.OnColorChanged(it)) },
+            onNotesChanged = { events(AddPetEvent.OnNotesChanged(it)) }
+        )
+    }
+}
+
+@Composable
+private fun AddPetBottomBar(
+    isSaveEnabled: Boolean,
+    strings: AddPetStrings,
+    onSaveClick: () -> Unit
+) {
+    Surface(
         color = MaterialTheme.colorScheme.background,
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
-      ) {
-        Column(
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = paddingXXL, vertical = paddingXL)
-        ) {
-          Text(
-            text = strings.saveSummary,
-            style = TextRegularS,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-          )
-          Button(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(top = paddingM)
-              .height(54.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = BlackLiquorice),
-            enabled = state.isSaveEnabled,
-            onClick = { events(AddPetEvent.OnSaveClicked) }
-          ) {
-            Text(
-              text = strings.saveButton,
-              style = TextBoldS,
-              color = PureWhite
-            )
-          }
-        }
-      }
-    }
-  ) { paddingValues ->
-    Column(
-      modifier = Modifier
-        .fillMaxSize()
-        .padding(paddingValues)
-        .verticalScroll(rememberScrollState())
-        .padding(horizontal = paddingXXL)
-        .padding(bottom = paddingGapM),
-      verticalArrangement = Arrangement.spacedBy(paddingXL)
     ) {
-      Text(
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = paddingXXL, vertical = paddingXL)
+        ) {
+            Text(
+                text = strings.saveSummary,
+                style = TextRegularS,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = paddingM)
+                    .height(54.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = BlackLiquorice),
+                enabled = isSaveEnabled,
+                onClick = onSaveClick
+            ) {
+                Text(
+                    text = strings.saveButton,
+                    style = TextBoldS,
+                    color = PureWhite
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AddPetContent(
+    modifier: Modifier = Modifier,
+    strings: AddPetStrings,
+    name: String,
+    knowsBirthDate: Boolean,
+    age: String,
+    birthDate: String,
+    weight: String,
+    primarySpecies: List<PetSpeciesUiModel>,
+    otherSpecies: List<PetSpeciesUiModel>,
+    selectedSpecies: PetSpeciesUiModel?,
+    isOtherSpeciesExpanded: Boolean,
+    customSpecies: String,
+    isMoreDetailsExpanded: Boolean,
+    breed: String,
+    sex: PetSexUiModel?,
+    temperaments: Set<PetTemperamentUiModel>,
+    color: String,
+    notes: String,
+    onNameChanged: (String) -> Unit,
+    onSpeciesSelected: (PetSpeciesUiModel) -> Unit,
+    onOtherSpeciesToggled: () -> Unit,
+    onCustomSpeciesChanged: (String) -> Unit,
+    onKnowsBirthDateChanged: (Boolean) -> Unit,
+    onAgeChanged: (String) -> Unit,
+    onBirthDateChanged: (String) -> Unit,
+    onWeightChanged: (String) -> Unit,
+    onMoreDetailsToggled: () -> Unit,
+    onBreedChanged: (String) -> Unit,
+    onSexSelected: (PetSexUiModel) -> Unit,
+    onTemperamentToggled: (PetTemperamentUiModel) -> Unit,
+    onColorChanged: (String) -> Unit,
+    onNotesChanged: (String) -> Unit
+) {
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = paddingXXL)
+            .padding(bottom = paddingGapM),
+        verticalArrangement = Arrangement.spacedBy(paddingXL)
+    ) {
+        AddPetIntro(strings = strings)
+
+        PhotoUploadCard(strings = strings)
+
+        BasicFieldsSection(
+            name = name,
+            knowsBirthDate = knowsBirthDate,
+            age = age,
+            birthDate = birthDate,
+            weight = weight,
+            strings = strings,
+            onNameChanged = onNameChanged,
+            onKnowsBirthDateChanged = onKnowsBirthDateChanged,
+            onAgeChanged = onAgeChanged,
+            onBirthDateChanged = onBirthDateChanged,
+            onWeightChanged = onWeightChanged
+        )
+
+        SpeciesSection(
+            strings = strings,
+            primarySpecies = primarySpecies,
+            otherSpecies = otherSpecies,
+            selectedSpecies = selectedSpecies,
+            isOtherSpeciesExpanded = isOtherSpeciesExpanded,
+            customSpecies = customSpecies,
+            onSpeciesSelected = onSpeciesSelected,
+            onOtherSpeciesToggled = onOtherSpeciesToggled,
+            onCustomSpeciesChanged = onCustomSpeciesChanged
+        )
+
+        MoreDetailsSection(
+            isExpanded = isMoreDetailsExpanded,
+            breed = breed,
+            sex = sex,
+            temperaments = temperaments,
+            color = color,
+            notes = notes,
+            strings = strings,
+            onMoreDetailsToggled = onMoreDetailsToggled,
+            onBreedChanged = onBreedChanged,
+            onSexSelected = onSexSelected,
+            onTemperamentToggled = onTemperamentToggled,
+            onColorChanged = onColorChanged,
+            onNotesChanged = onNotesChanged
+        )
+    }
+}
+
+@Composable
+private fun AddPetIntro(strings: AddPetStrings) {
+    Text(
         text = strings.intro,
         modifier = Modifier
-          .fillMaxWidth()
-          .padding(top = paddingM),
+            .fillMaxWidth()
+            .padding(top = paddingM),
         style = TextRegularS,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         textAlign = TextAlign.Center
-      )
+    )
+}
 
-      PhotoUploadCard(strings = strings)
-
-      PetsifyInput(
+@Composable
+private fun BasicFieldsSection(
+    name: String,
+    knowsBirthDate: Boolean,
+    age: String,
+    birthDate: String,
+    weight: String,
+    strings: AddPetStrings,
+    onNameChanged: (String) -> Unit,
+    onKnowsBirthDateChanged: (Boolean) -> Unit,
+    onAgeChanged: (String) -> Unit,
+    onBirthDateChanged: (String) -> Unit,
+    onWeightChanged: (String) -> Unit
+) {
+    PetsifyInput(
         modifier = Modifier.fillMaxWidth(),
-        text = state.name,
-        onTextChange = { events(AddPetEvent.OnNameChanged(it)) },
+        text = name,
+        onTextChange = onNameChanged,
         label = strings.nameLabel,
         placeholder = strings.namePlaceholder
-      )
+    )
 
-      Column(verticalArrangement = Arrangement.spacedBy(paddingL)) {
+    CheckBoxRow(
+        isChecked = knowsBirthDate,
+        text = strings.knowsBirthDateLabel,
+        onCheckedChange = onKnowsBirthDateChanged
+    )
+
+    if (knowsBirthDate) {
+        PetsifyInput(
+            modifier = Modifier.fillMaxWidth(),
+            text = birthDate,
+            onTextChange = onBirthDateChanged,
+            label = strings.birthDateLabel,
+            placeholder = strings.birthDatePlaceholder
+        )
+    } else {
+        PetsifyInput(
+            modifier = Modifier.fillMaxWidth(),
+            text = age,
+            onTextChange = onAgeChanged,
+            label = strings.ageLabel,
+            placeholder = strings.agePlaceholder
+        )
+    }
+
+    PetsifyInput(
+        modifier = Modifier.fillMaxWidth(),
+        text = weight,
+        onTextChange = onWeightChanged,
+        label = strings.weightLabel,
+        placeholder = strings.weightPlaceholder
+    )
+}
+
+@Composable
+private fun SpeciesSection(
+    strings: AddPetStrings,
+    primarySpecies: List<PetSpeciesUiModel>,
+    otherSpecies: List<PetSpeciesUiModel>,
+    selectedSpecies: PetSpeciesUiModel?,
+    isOtherSpeciesExpanded: Boolean,
+    customSpecies: String,
+    onSpeciesSelected: (PetSpeciesUiModel) -> Unit,
+    onOtherSpeciesToggled: () -> Unit,
+    onCustomSpeciesChanged: (String) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(paddingL)) {
         Text(
-          text = strings.speciesLabel,
-          style = MaterialTheme.typography.titleMedium
+            text = strings.speciesLabel,
+            style = MaterialTheme.typography.titleMedium
         )
 
         Row(
-          modifier = Modifier.fillMaxWidth(),
-          horizontalArrangement = Arrangement.spacedBy(paddingM),
-          verticalAlignment = Alignment.Top
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(paddingM),
+            verticalAlignment = Alignment.Top
         ) {
-          primarySpecies.forEach { species ->
-            SpeciesOptionCard(
-              modifier = Modifier.weight(1f),
-              species = species,
-              selected = selectedSpecies?.code == species.code,
-              onClick = { events(AddPetEvent.OnSpeciesSelected(species)) }
-            )
-          }
+            primarySpecies.forEach { species ->
+                SpeciesOptionCard(
+                    modifier = Modifier.weight(1f),
+                    species = species,
+                    selected = selectedSpecies?.code == species.code,
+                    onClick = { onSpeciesSelected(species) }
+                )
+            }
         }
 
         Row(
-          modifier = Modifier.fillMaxWidth(),
-          horizontalArrangement = Arrangement.End
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
         ) {
-          OtherSpeciesTrigger(
-            label = strings.differentSpeciesTrigger,
-            expanded = state.isOtherSpeciesExpanded,
-            onClick = { events(AddPetEvent.OnOtherSpeciesToggled) }
-          )
+            OtherSpeciesTrigger(
+                label = strings.differentSpeciesTrigger,
+                expanded = isOtherSpeciesExpanded,
+                onClick = onOtherSpeciesToggled
+            )
         }
 
-        if (state.isOtherSpeciesExpanded) {
-          OtherSpeciesSection(
-            species = otherSpecies,
-            selectedSpeciesCode = selectedSpecies?.code,
-            strings = strings,
-            onSpeciesSelected = { events(AddPetEvent.OnSpeciesSelected(it)) }
-          )
+        if (isOtherSpeciesExpanded) {
+            OtherSpeciesSection(
+                species = otherSpecies,
+                selectedSpeciesCode = selectedSpecies?.code,
+                strings = strings,
+                onSpeciesSelected = onSpeciesSelected
+            )
         }
 
         if (selectedSpecies?.requiresCustomValue == true) {
-          PetsifyInput(
-            modifier = Modifier.fillMaxWidth(),
-            text = state.customSpecies,
-            onTextChange = { events(AddPetEvent.OnCustomSpeciesChanged(it)) },
-            label = strings.customSpeciesLabel,
-            placeholder = strings.customSpeciesPlaceholder
-          )
+            PetsifyInput(
+                modifier = Modifier.fillMaxWidth(),
+                text = customSpecies,
+                onTextChange = onCustomSpeciesChanged,
+                label = strings.customSpeciesLabel,
+                placeholder = strings.customSpeciesPlaceholder
+            )
         }
-      }
-
-      CheckBoxRow(
-        isChecked = state.knowsBirthDate,
-        text = strings.knowsBirthDateLabel,
-        onCheckedChange = { events(AddPetEvent.OnKnowsBirthDateChanged(it)) }
-      )
-
-      if (state.knowsBirthDate) {
-        PetsifyInput(
-          modifier = Modifier.fillMaxWidth(),
-          text = state.birthDate,
-          onTextChange = { events(AddPetEvent.OnBirthDateChanged(it)) },
-          label = strings.birthDateLabel,
-          placeholder = strings.birthDatePlaceholder
-        )
-      } else {
-        PetsifyInput(
-          modifier = Modifier.fillMaxWidth(),
-          text = state.age,
-          onTextChange = { events(AddPetEvent.OnAgeChanged(it)) },
-          label = strings.ageLabel,
-          placeholder = strings.agePlaceholder
-        )
-      }
-
-      PetsifyInput(
-        modifier = Modifier.fillMaxWidth(),
-        text = state.weight,
-        onTextChange = { events(AddPetEvent.OnWeightChanged(it)) },
-        label = strings.weightLabel,
-        placeholder = strings.weightPlaceholder
-      )
-
-      MoreDetailsSection(
-        state = state,
-        strings = strings,
-        events = events
-      )
     }
-  }
 }
 
 @Composable
 private fun PhotoUploadCard(
-  strings: AddPetStrings
+    strings: AddPetStrings
 ) {
-  Box(
-    modifier = Modifier.fillMaxWidth(),
-    contentAlignment = Alignment.Center
-  ) {
-    Box(contentAlignment = Alignment.BottomEnd) {
-      Box(
-        modifier = Modifier
-          .size(124.dp)
-          .clip(RoundedCornerShape(28.dp))
-          .background(MaterialTheme.colorScheme.surfaceVariant),
+    Box(
+        modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
-      ) {
-        Icon(
-          imageVector = Icons.Default.Pets,
-          contentDescription = strings.photoCta,
-          tint = MaterialTheme.colorScheme.onSurfaceVariant,
-          modifier = Modifier.size(48.dp)
-        )
-      }
+    ) {
+        Box(contentAlignment = Alignment.BottomEnd) {
+            Box(
+                modifier = Modifier
+                    .size(124.dp)
+                    .clip(RoundedCornerShape(28.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Pets,
+                    contentDescription = strings.photoCta,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(48.dp)
+                )
+            }
 
-      Box(
-        modifier = Modifier
-          .size(42.dp)
-          .clip(CircleShape)
-          .background(MaterialTheme.colorScheme.primary),
-        contentAlignment = Alignment.Center
-      ) {
-        Icon(
-          imageVector = Icons.Default.AddAPhoto,
-          contentDescription = strings.photoCta,
-          tint = MaterialTheme.colorScheme.onPrimary
-        )
-      }
+            Box(
+                modifier = Modifier
+                    .size(42.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AddAPhoto,
+                    contentDescription = strings.photoCta,
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
     }
-  }
 }
 
 @Composable
 private fun SpeciesOptionCard(
-  modifier: Modifier = Modifier,
-  species: PetSpeciesUiModel,
-  selected: Boolean,
-  onClick: () -> Unit
+    modifier: Modifier = Modifier,
+    species: PetSpeciesUiModel,
+    selected: Boolean,
+    onClick: () -> Unit
 ) {
-  Surface(
-    modifier = modifier
-      .clip(RoundedCornerShape(24.dp))
-      .clickable(onClick = onClick),
-    color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
-    tonalElevation = if (selected) 2.dp else 0.dp
-  ) {
-    Column(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = paddingXL),
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.spacedBy(paddingM)
+    Surface(
+        modifier = modifier
+            .clip(RoundedCornerShape(24.dp))
+            .clickable(onClick = onClick),
+        color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+        tonalElevation = if (selected) 2.dp else 0.dp
     ) {
-      Icon(
-        imageVector = Icons.Default.Pets,
-        contentDescription = species.label,
-        tint = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
-      )
-      Text(
-        text = species.label,
-        fontWeight = FontWeight.Bold,
-        color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
-      )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = paddingXL),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(paddingM)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Pets,
+                contentDescription = species.label,
+                tint = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = species.label,
+                fontWeight = FontWeight.Bold,
+                color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
-  }
 }
 
 @Composable
 private fun OtherSpeciesTrigger(
-  label: String,
-  expanded: Boolean,
-  onClick: () -> Unit
+    label: String,
+    expanded: Boolean,
+    onClick: () -> Unit
 ) {
-  Box(
-    modifier = Modifier
-      .padding(top = 8.dp)
-      .clickable(onClick = onClick)
-  ) {
-    Text(
-      text = label,
-      style = MaterialTheme.typography.bodyMedium,
-      color = if (expanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-    )
-  }
+    Box(
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .clickable(onClick = onClick)
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = if (expanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
 }
 
 @Composable
 private fun OtherSpeciesSection(
-  species: List<PetSpeciesUiModel>,
-  selectedSpeciesCode: String?,
-  strings: AddPetStrings,
-  onSpeciesSelected: (PetSpeciesUiModel) -> Unit
+    species: List<PetSpeciesUiModel>,
+    selectedSpeciesCode: String?,
+    strings: AddPetStrings,
+    onSpeciesSelected: (PetSpeciesUiModel) -> Unit
 ) {
-  Column(
-    modifier = Modifier
-      .fillMaxWidth()
-      .background(
-        color = MaterialTheme.colorScheme.background,
-        shape = RoundedCornerShape(24.dp)
-      )
-      .padding(paddingL),
-    verticalArrangement = Arrangement.spacedBy(paddingM)
-  ) {
-    Text(
-      text = strings.otherSpeciesLabel,
-      style = MaterialTheme.typography.labelMedium,
-      color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.spacedBy(8.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = MaterialTheme.colorScheme.background,
+                shape = RoundedCornerShape(24.dp)
+            )
+            .padding(paddingL),
+        verticalArrangement = Arrangement.spacedBy(paddingM)
     ) {
-      species.take(3).forEach { item ->
-        SpeciesChip(
-          modifier = Modifier.weight(1f),
-          species = item,
-          selected = selectedSpeciesCode == item.code,
-          onClick = { onSpeciesSelected(item) }
+        Text(
+            text = strings.otherSpeciesLabel,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-      }
-    }
 
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-      species.drop(3).forEach { item ->
-        SpeciesChip(
-          modifier = Modifier.weight(1f),
-          species = item,
-          selected = selectedSpeciesCode == item.code,
-          onClick = { onSpeciesSelected(item) }
-        )
-      }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            species.take(3).forEach { item ->
+                SpeciesChip(
+                    modifier = Modifier.weight(1f),
+                    species = item,
+                    selected = selectedSpeciesCode == item.code,
+                    onClick = { onSpeciesSelected(item) }
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            species.drop(3).forEach { item ->
+                SpeciesChip(
+                    modifier = Modifier.weight(1f),
+                    species = item,
+                    selected = selectedSpeciesCode == item.code,
+                    onClick = { onSpeciesSelected(item) }
+                )
+            }
+        }
     }
-  }
 }
 
 @Composable
 private fun SpeciesChip(
-  modifier: Modifier = Modifier,
-  species: PetSpeciesUiModel,
-  selected: Boolean,
-  onClick: () -> Unit
+    modifier: Modifier = Modifier,
+    species: PetSpeciesUiModel,
+    selected: Boolean,
+    onClick: () -> Unit
 ) {
-  Surface(
-    modifier = modifier
-      .clip(RoundedCornerShape(999.dp))
-      .clickable(onClick = onClick),
-    color = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
-  ) {
-    Box(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 10.dp, horizontal = 12.dp),
-      contentAlignment = Alignment.Center
+    Surface(
+        modifier = modifier
+            .clip(RoundedCornerShape(999.dp))
+            .clickable(onClick = onClick),
+        color = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
     ) {
-      Text(
-        text = species.label,
-        style = MaterialTheme.typography.labelLarge,
-        color = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
-      )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp, horizontal = 12.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = species.label,
+                style = MaterialTheme.typography.labelLarge,
+                color = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
-  }
 }
 
 @Composable
 private fun MoreDetailsSection(
-  state: AddPetState,
-  strings: AddPetStrings,
-  events: (AddPetEvent) -> Unit
+    isExpanded: Boolean,
+    breed: String,
+    sex: PetSexUiModel?,
+    temperaments: Set<PetTemperamentUiModel>,
+    color: String,
+    notes: String,
+    strings: AddPetStrings,
+    onMoreDetailsToggled: () -> Unit,
+    onBreedChanged: (String) -> Unit,
+    onSexSelected: (PetSexUiModel) -> Unit,
+    onTemperamentToggled: (PetTemperamentUiModel) -> Unit,
+    onColorChanged: (String) -> Unit,
+    onNotesChanged: (String) -> Unit
 ) {
-  Column(verticalArrangement = Arrangement.spacedBy(paddingL)) {
-    Row(
-      modifier = Modifier
-        .fillMaxWidth()
-        .clickable { events(AddPetEvent.OnMoreDetailsToggled) },
-      horizontalArrangement = Arrangement.SpaceBetween,
-      verticalAlignment = Alignment.CenterVertically
-    ) {
-      Text(
-        text = strings.moreDetailsLabel,
-        style = MaterialTheme.typography.titleMedium
-      )
-      Text(
-        text = if (state.isMoreDetailsExpanded) "expand_less" else "expand_more",
-        style = MaterialTheme.typography.labelMedium,
-        color = MaterialTheme.colorScheme.primary
-      )
+    Column(verticalArrangement = Arrangement.spacedBy(paddingL)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onMoreDetailsToggled),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = strings.moreDetailsLabel,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = if (isExpanded) "expand_less" else "expand_more",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+
+        if (isExpanded) {
+            PetsifyInput(
+                modifier = Modifier.fillMaxWidth(),
+                text = breed,
+                onTextChange = onBreedChanged,
+                label = strings.breedLabel,
+                placeholder = strings.breedPlaceholder
+            )
+
+            Text(
+                text = strings.sexLabel,
+                style = MaterialTheme.typography.titleSmall
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(paddingM)) {
+                SelectableAssistChip(
+                    label = strings.maleOption,
+                    selected = sex == PetSexUiModel.Male,
+                    onClick = { onSexSelected(PetSexUiModel.Male) }
+                )
+                SelectableAssistChip(
+                    label = strings.femaleOption,
+                    selected = sex == PetSexUiModel.Female,
+                    onClick = { onSexSelected(PetSexUiModel.Female) }
+                )
+            }
+
+            Text(
+                text = strings.temperamentLabel,
+                style = MaterialTheme.typography.titleSmall
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(paddingM)
+            ) {
+                TemperamentChip(
+                    label = strings.calmTemperament,
+                    selected = PetTemperamentUiModel.Calm in temperaments,
+                    onClick = { onTemperamentToggled(PetTemperamentUiModel.Calm) }
+                )
+                TemperamentChip(
+                    label = strings.energeticTemperament,
+                    selected = PetTemperamentUiModel.Energetic in temperaments,
+                    onClick = { onTemperamentToggled(PetTemperamentUiModel.Energetic) }
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(paddingM)
+            ) {
+                TemperamentChip(
+                    label = strings.friendlyTemperament,
+                    selected = PetTemperamentUiModel.Friendly in temperaments,
+                    onClick = { onTemperamentToggled(PetTemperamentUiModel.Friendly) }
+                )
+                TemperamentChip(
+                    label = strings.shyTemperament,
+                    selected = PetTemperamentUiModel.Shy in temperaments,
+                    onClick = { onTemperamentToggled(PetTemperamentUiModel.Shy) }
+                )
+                TemperamentChip(
+                    label = strings.curiousTemperament,
+                    selected = PetTemperamentUiModel.Curious in temperaments,
+                    onClick = { onTemperamentToggled(PetTemperamentUiModel.Curious) }
+                )
+            }
+
+            PetsifyInput(
+                modifier = Modifier.fillMaxWidth(),
+                text = color,
+                onTextChange = onColorChanged,
+                label = strings.colorLabel,
+                placeholder = strings.colorPlaceholder
+            )
+
+            PetsifyInput(
+                modifier = Modifier.fillMaxWidth(),
+                text = notes,
+                onTextChange = onNotesChanged,
+                label = strings.notesLabel,
+                placeholder = strings.notesPlaceholder,
+                singleLine = false,
+                minLines = 3
+            )
+        }
     }
-
-    if (state.isMoreDetailsExpanded) {
-      PetsifyInput(
-        modifier = Modifier.fillMaxWidth(),
-        text = state.breed,
-        onTextChange = { events(AddPetEvent.OnBreedChanged(it)) },
-        label = strings.breedLabel,
-        placeholder = strings.breedPlaceholder
-      )
-
-      Text(
-        text = strings.sexLabel,
-        style = MaterialTheme.typography.titleSmall
-      )
-      Row(horizontalArrangement = Arrangement.spacedBy(paddingM)) {
-        SelectableAssistChip(
-          label = strings.maleOption,
-          selected = state.sex == PetSexUiModel.Male,
-          onClick = { events(AddPetEvent.OnSexSelected(PetSexUiModel.Male)) }
-        )
-        SelectableAssistChip(
-          label = strings.femaleOption,
-          selected = state.sex == PetSexUiModel.Female,
-          onClick = { events(AddPetEvent.OnSexSelected(PetSexUiModel.Female)) }
-        )
-      }
-
-      Text(
-        text = strings.temperamentLabel,
-        style = MaterialTheme.typography.titleSmall
-      )
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(paddingM)
-      ) {
-        TemperamentChip(
-          label = strings.calmTemperament,
-          selected = PetTemperamentUiModel.Calm in state.temperaments,
-          onClick = { events(AddPetEvent.OnTemperamentToggled(PetTemperamentUiModel.Calm)) }
-        )
-        TemperamentChip(
-          label = strings.energeticTemperament,
-          selected = PetTemperamentUiModel.Energetic in state.temperaments,
-          onClick = { events(AddPetEvent.OnTemperamentToggled(PetTemperamentUiModel.Energetic)) }
-        )
-      }
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(paddingM)
-      ) {
-        TemperamentChip(
-          label = strings.friendlyTemperament,
-          selected = PetTemperamentUiModel.Friendly in state.temperaments,
-          onClick = { events(AddPetEvent.OnTemperamentToggled(PetTemperamentUiModel.Friendly)) }
-        )
-        TemperamentChip(
-          label = strings.shyTemperament,
-          selected = PetTemperamentUiModel.Shy in state.temperaments,
-          onClick = { events(AddPetEvent.OnTemperamentToggled(PetTemperamentUiModel.Shy)) }
-        )
-        TemperamentChip(
-          label = strings.curiousTemperament,
-          selected = PetTemperamentUiModel.Curious in state.temperaments,
-          onClick = { events(AddPetEvent.OnTemperamentToggled(PetTemperamentUiModel.Curious)) }
-        )
-      }
-
-      PetsifyInput(
-        modifier = Modifier.fillMaxWidth(),
-        text = state.color,
-        onTextChange = { events(AddPetEvent.OnColorChanged(it)) },
-        label = strings.colorLabel,
-        placeholder = strings.colorPlaceholder
-      )
-
-      PetsifyInput(
-        modifier = Modifier.fillMaxWidth(),
-        text = state.notes,
-        onTextChange = { events(AddPetEvent.OnNotesChanged(it)) },
-        label = strings.notesLabel,
-        placeholder = strings.notesPlaceholder,
-        singleLine = false,
-        minLines = 3
-      )
-    }
-  }
 }
 
 @Composable
 private fun SelectableAssistChip(
-  label: String,
-  selected: Boolean,
-  onClick: () -> Unit
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit
 ) {
-  AssistChip(
-    onClick = onClick,
-    label = { Text(text = label) },
-    colors = if (selected) {
-      AssistChipDefaults.assistChipColors(
-        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-        labelColor = MaterialTheme.colorScheme.onSecondaryContainer
-      )
-    } else {
-      AssistChipDefaults.assistChipColors()
-    }
-  )
+    AssistChip(
+        onClick = onClick,
+        label = { Text(text = label) },
+        colors = if (selected) {
+            AssistChipDefaults.assistChipColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                labelColor = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        } else {
+            AssistChipDefaults.assistChipColors()
+        }
+    )
 }
 
 @Composable
 private fun TemperamentChip(
-  label: String,
-  selected: Boolean,
-  onClick: () -> Unit
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit
 ) {
-  FilterChip(
-    selected = selected,
-    onClick = onClick,
-    label = { Text(text = label) }
-  )
+    FilterChip(
+        selected = selected,
+        onClick = onClick,
+        label = { Text(text = label) }
+    )
 }
 
 @Composable
 private fun PetsifyInput(
-  modifier: Modifier = Modifier,
-  text: String,
-  onTextChange: (String) -> Unit,
-  label: String,
-  placeholder: String,
-  singleLine: Boolean = true,
-  minLines: Int = 1
+    modifier: Modifier = Modifier,
+    text: String,
+    onTextChange: (String) -> Unit,
+    label: String,
+    placeholder: String,
+    singleLine: Boolean = true,
+    minLines: Int = 1
 ) {
-  OutlinedTextField(
-    modifier = modifier,
-    value = text,
-    onValueChange = onTextChange,
-    label = { Text(text = label) },
-    placeholder = { Text(text = placeholder) },
-    singleLine = singleLine,
-    minLines = minLines,
-    shape = RoundedCornerShape(20.dp)
-  )
+    OutlinedTextField(
+        modifier = modifier,
+        value = text,
+        onValueChange = onTextChange,
+        label = { Text(text = label) },
+        placeholder = { Text(text = placeholder) },
+        singleLine = singleLine,
+        minLines = minLines,
+        shape = RoundedCornerShape(20.dp)
+    )
 }
 
 @Composable
 private fun CheckBoxRow(
-  isChecked: Boolean,
-  text: String,
-  onCheckedChange: (Boolean) -> Unit
+    isChecked: Boolean,
+    text: String,
+    onCheckedChange: (Boolean) -> Unit
 ) {
-  Row(
-    modifier = Modifier
-      .fillMaxWidth()
-      .clickable { onCheckedChange(!isChecked) },
-    verticalAlignment = Alignment.CenterVertically
-  ) {
-    Checkbox(
-      checked = isChecked,
-      onCheckedChange = { onCheckedChange(!isChecked) }
-    )
-    Text(
-      text = text,
-      style = TextRegularS
-    )
-  }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onCheckedChange(!isChecked) },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(
+            checked = isChecked,
+            onCheckedChange = { onCheckedChange(!isChecked) }
+        )
+        Text(
+            text = text,
+            style = TextRegularS
+        )
+    }
 }
