@@ -1,74 +1,47 @@
 package pl.kosciukw.petsify.feature.main
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import pl.kosciukw.petsify.feature.emails.EmailsListScreen
-import pl.kosciukw.petsify.feature.profile.ProfileScreen
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun MainScreen(
-  onOpenEmailDetails: (emailId: Int) -> Unit,
-  onComposeNewEmail: () -> Unit
+  onNavigateToAddPet: () -> Unit
 ) {
-  var selectedTab by remember { mutableStateOf(MainTab.Emails) }
   Scaffold(
-    modifier = Modifier.fillMaxSize(),
-    bottomBar = {
-      MainBottomBar(
-        selectedTab = selectedTab,
-        onNavigateToEmails = { selectedTab = MainTab.Emails },
-        onNavigateToProfile = { selectedTab = MainTab.Profile }
-      )
-    }
+    modifier = Modifier.fillMaxSize()
   ) { paddingValues ->
-    when (selectedTab) {
-      MainTab.Emails -> EmailsListScreen(
-        onOpenEmailDetails = onOpenEmailDetails,
-        onComposeNewEmail = onComposeNewEmail,
-        modifier = Modifier.padding(paddingValues)
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(paddingValues)
+        .padding(horizontal = 24.dp),
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.Center
+    ) {
+      Text(
+        text = "Welcome to Petsify",
+        style = MaterialTheme.typography.headlineMedium
       )
-
-      MainTab.Profile -> ProfileScreen(
-        modifier = Modifier.padding(paddingValues)
+      Text(
+        text = "Start by adding your first pet.",
+        modifier = Modifier.padding(top = 12.dp, bottom = 24.dp),
+        style = MaterialTheme.typography.bodyLarge
       )
+      Button(
+        onClick = onNavigateToAddPet
+      ) {
+        Text(text = "Add Pet")
+      }
     }
   }
-}
-
-@Composable
-private fun MainBottomBar(
-  selectedTab: MainTab,
-  onNavigateToEmails: () -> Unit,
-  onNavigateToProfile: () -> Unit
-) {
-  NavigationBar {
-    NavigationBarItem(
-      selected = selectedTab == MainTab.Emails,
-      icon = { Icon(imageVector = Icons.Default.Email, "emails") },
-      onClick = onNavigateToEmails
-    )
-    NavigationBarItem(
-      selected = selectedTab == MainTab.Profile,
-      icon = { Icon(imageVector = Icons.Default.Person, "profile") },
-      onClick = onNavigateToProfile
-    )
-  }
-}
-
-private enum class MainTab {
-  Emails,
-  Profile
 }

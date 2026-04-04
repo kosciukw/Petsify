@@ -9,6 +9,7 @@ import org.koin.core.context.startKoin
 import pl.kosciukw.petsify.di.authModule
 import pl.kosciukw.petsify.di.appModule
 import pl.kosciukw.petsify.feature.login.di.loginModule
+import pl.kosciukw.petsify.feature.main.di.mainModule
 import pl.kosciukw.petsify.feature.settings.di.settingsModule
 import pl.kosciukw.petsify.feature.signup.di.signUpModule
 import pl.kosciukw.petsify.feature.splash.di.splashModule
@@ -33,6 +34,7 @@ class MyApplication : Application() {
                 userModule,
                 appModule,
                 loginModule,
+                mainModule,
                 signUpModule,
                 settingsModule,
                 splashModule

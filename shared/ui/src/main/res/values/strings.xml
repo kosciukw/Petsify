@@ -35,6 +35,51 @@
     <string name="settings_screen_header">Settings</string>
     <string name="settings_screen_title">Settings</string>
 
+    <!-- Add Pet Screen -->
+    <string name="add_pet_screen_title">Add Pet</string>
+    <string name="add_pet_screen_intro">Create a profile for your furry friend</string>
+    <string name="add_pet_screen_photo_cta">Add photo</string>
+    <string name="add_pet_screen_name_label">Pet name</string>
+    <string name="add_pet_screen_species_label">Species</string>
+    <string name="add_pet_screen_species_dog">Dog</string>
+    <string name="add_pet_screen_species_cat">Cat</string>
+    <string name="add_pet_screen_species_different_trigger">Different species?</string>
+    <string name="add_pet_screen_species_other_label">Other species</string>
+    <string name="add_pet_screen_species_rabbit">Rabbit</string>
+    <string name="add_pet_screen_species_hamster">Hamster</string>
+    <string name="add_pet_screen_species_bird">Bird</string>
+    <string name="add_pet_screen_species_fish">Fish</string>
+    <string name="add_pet_screen_species_turtle">Turtle</string>
+    <string name="add_pet_screen_species_other">Other</string>
+    <string name="add_pet_screen_custom_species_label">Pet type</string>
+    <string name="add_pet_screen_age_label">Age</string>
+    <string name="add_pet_screen_birth_date_label">Birthday</string>
+    <string name="add_pet_screen_knows_birth_date_label">I know the birthday</string>
+    <string name="add_pet_screen_weight_label">Weight (kg)</string>
+    <string name="add_pet_screen_more_details_label">More details</string>
+    <string name="add_pet_screen_breed_label">Breed</string>
+    <string name="add_pet_screen_sex_label">Sex</string>
+    <string name="add_pet_screen_temperament_label">Temperament</string>
+    <string name="add_pet_screen_color_label">Color / coat</string>
+    <string name="add_pet_screen_notes_label">Notes</string>
+    <string name="add_pet_screen_save_button">Save Pet</string>
+    <string name="add_pet_screen_save_summary">You can add more details later</string>
+    <string name="add_pet_screen_name_placeholder">e.g. Luna</string>
+    <string name="add_pet_screen_custom_species_placeholder">e.g. Rabbit</string>
+    <string name="add_pet_screen_age_placeholder">e.g. 3 years</string>
+    <string name="add_pet_screen_birth_date_placeholder">YYYY-MM-DD</string>
+    <string name="add_pet_screen_weight_placeholder">e.g. 12.5</string>
+    <string name="add_pet_screen_breed_placeholder">Breed or type</string>
+    <string name="add_pet_screen_color_placeholder">e.g. Ginger</string>
+    <string name="add_pet_screen_notes_placeholder">Anything helpful to remember?</string>
+    <string name="add_pet_screen_male_option">Male</string>
+    <string name="add_pet_screen_female_option">Female</string>
+    <string name="add_pet_screen_temperament_calm">Calm</string>
+    <string name="add_pet_screen_temperament_energetic">Energetic</string>
+    <string name="add_pet_screen_temperament_friendly">Friendly</string>
+    <string name="add_pet_screen_temperament_shy">Shy</string>
+    <string name="add_pet_screen_temperament_curious">Curious</string>
+
     <!-- Error messages -->
     <string name="error_no_internet_connection">No internet connection</string>
     <string name="error_something_went_wrong">Oops… Something went wrong… Please try again</string>

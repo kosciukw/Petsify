@@ -19,6 +19,9 @@ sealed interface AppRoute {
     data object Main : AppRoute
 
     @Serializable
+    data object AddPet : AppRoute
+
+    @Serializable
     data class EmailDetails(val emailId: Int) : AppRoute
 
     @Serializable

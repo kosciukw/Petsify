@@ -6,4 +6,5 @@ interface FeatureStringsProvider {
     fun signUp(): SignUpStrings
     fun otp(): OtpStrings
     fun settings(): SettingsStrings
+    fun addPet(): AddPetStrings
 }

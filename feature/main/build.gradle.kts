@@ -19,8 +19,10 @@ kotlin {
       dependencies {
         implementation(projects.shared.core)
         implementation(projects.shared.design)
+        implementation(projects.shared.presentationCore)
         implementation(projects.feature.emails)
         implementation(projects.feature.profile)
+        implementation(libs.koin.core)
         implementation(compose.runtime)
         implementation(compose.foundation)
         implementation(compose.material3)
@@ -31,6 +33,7 @@ kotlin {
 
     androidMain.dependencies {
       implementation(libs.androidx.navigation)
+      implementation(libs.koin.androidx.compose)
     }
   }
 }
