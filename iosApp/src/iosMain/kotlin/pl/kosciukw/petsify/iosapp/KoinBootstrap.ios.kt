@@ -12,6 +12,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import org.koin.mp.KoinPlatform
+import pl.kosciukw.petsify.feature.addpet.di.addPetModule
 import pl.kosciukw.petsify.feature.login.di.loginModule
 import pl.kosciukw.petsify.feature.settings.di.settingsModule
 import pl.kosciukw.petsify.feature.signup.di.signUpModule
@@ -45,6 +46,7 @@ internal actual fun initIosKoin() {
             authSessionModule,
             userModule,
             loginModule,
+            addPetModule,
             signUpModule,
             settingsModule,
             splashModule

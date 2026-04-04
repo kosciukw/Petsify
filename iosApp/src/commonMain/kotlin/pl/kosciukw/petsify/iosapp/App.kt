@@ -4,6 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import pl.kosciukw.petsify.feature.addpet.navigation.IosAddPetRoute
 import pl.kosciukw.petsify.feature.composer.navigation.IosComposerRoute
 import pl.kosciukw.petsify.feature.emaildetails.navigation.IosEmailDetailsRoute
 import pl.kosciukw.petsify.feature.login.navigation.IosLoginRoute
@@ -48,10 +49,11 @@ fun IosApp() {
                 )
 
                 AppRoute.Main -> IosMainRoute(
-                    onOpenEmailDetails = { emailId ->
-                        routeController.navigateTo(AppRoute.EmailDetails(emailId))
-                    },
-                    onComposeNewEmail = { routeController.navigateTo(AppRoute.Composer) }
+                    onNavigateToAddPet = { routeController.navigateTo(AppRoute.AddPet) }
+                )
+
+                AppRoute.AddPet -> IosAddPetRoute(
+                    onNavigateUp = { routeController.navigateTo(AppRoute.Main) }
                 )
 
                 is AppRoute.EmailDetails -> IosEmailDetailsRoute(

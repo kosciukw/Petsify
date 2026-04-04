@@ -8,6 +8,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import pl.kosciukw.petsify.di.authModule
 import pl.kosciukw.petsify.di.appModule
+import pl.kosciukw.petsify.feature.addpet.di.addPetModule
 import pl.kosciukw.petsify.feature.login.di.loginModule
 import pl.kosciukw.petsify.feature.settings.di.settingsModule
 import pl.kosciukw.petsify.feature.signup.di.signUpModule
@@ -33,6 +34,7 @@ class MyApplication : Application() {
                 userModule,
                 appModule,
                 loginModule,
+                addPetModule,
                 signUpModule,
                 settingsModule,
                 splashModule

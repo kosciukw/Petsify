@@ -5,11 +5,9 @@ import pl.kosciukw.petsify.feature.main.MainScreen
 
 @Composable
 fun IosMainRoute(
-    onOpenEmailDetails: (Int) -> Unit,
-    onComposeNewEmail: () -> Unit
+    onNavigateToAddPet: () -> Unit
 ) {
     MainScreen(
-        onOpenEmailDetails = onOpenEmailDetails,
-        onComposeNewEmail = onComposeNewEmail
+        onNavigateToAddPet = onNavigateToAddPet
     )
 }

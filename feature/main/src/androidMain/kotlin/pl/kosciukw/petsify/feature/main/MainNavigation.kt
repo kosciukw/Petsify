@@ -6,13 +6,11 @@ import androidx.navigation.compose.composable
 import pl.kosciukw.petsify.shared.navigation.AppRoute
 
 fun NavGraphBuilder.mainScreen(
-  onOpenEmailDetails: (emailId: Int) -> Unit,
-  onComposeNewEmail: () -> Unit
+  onNavigateToAddPet: () -> Unit
 ) {
   composable<AppRoute.Main> {
     MainScreen(
-      onOpenEmailDetails = onOpenEmailDetails,
-      onComposeNewEmail = onComposeNewEmail
+      onNavigateToAddPet = onNavigateToAddPet
     )
   }
 }
@@ -23,4 +21,8 @@ fun NavController.navigateToMain() {
       inclusive = true
     }
   }
+}
+
+fun NavController.navigateToAddPet() {
+  navigate(AppRoute.AddPet)
 }

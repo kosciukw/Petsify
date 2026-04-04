@@ -30,6 +30,7 @@ kotlin {
       implementation(projects.feature.settings)
       implementation(projects.feature.splash)
       implementation(projects.feature.main)
+      implementation(projects.feature.addpet)
       implementation(projects.feature.emaildetails)
       implementation(projects.feature.composer)
       implementation(projects.shared.servicesApi)

@@ -19,23 +19,25 @@ kotlin {
       dependencies {
         implementation(projects.shared.core)
         implementation(projects.shared.design)
-        implementation(projects.feature.emails)
-        implementation(projects.feature.profile)
+        implementation(projects.shared.presentationCore)
+        implementation(libs.koin.core)
         implementation(compose.runtime)
         implementation(compose.foundation)
         implementation(compose.material3)
         implementation(compose.ui)
+        implementation(compose.materialIconsExtended)
       }
     }
 
     androidMain.dependencies {
       implementation(libs.androidx.navigation)
+      implementation(libs.koin.androidx.compose)
     }
   }
 }
 
 android {
-  namespace = "pl.kosciukw.petsify.feature.main"
+  namespace = "pl.kosciukw.petsify.feature.addpet"
   compileSdk = libs.versions.compileSdkVersion.get().toInt()
 
   defaultConfig {

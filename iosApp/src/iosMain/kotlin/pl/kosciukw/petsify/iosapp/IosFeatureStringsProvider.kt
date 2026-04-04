@@ -1,5 +1,6 @@
 package pl.kosciukw.petsify.iosapp
 
+import pl.kosciukw.petsify.shared.strings.AddPetStrings
 import pl.kosciukw.petsify.shared.strings.CommonScreenStrings
 import pl.kosciukw.petsify.shared.strings.FeatureStringsProvider
 import pl.kosciukw.petsify.shared.strings.LoginStrings
@@ -57,5 +58,51 @@ internal class IosFeatureStringsProvider : FeatureStringsProvider {
     override fun settings() = SettingsStrings(
         title = "Settings",
         body = "Settings"
+    )
+
+    override fun addPet() = AddPetStrings(
+        title = "Add Pet",
+        intro = "Create a profile for your furry friend",
+        photoCta = "Add photo",
+        nameLabel = "Pet name",
+        speciesLabel = "Species",
+        dogOption = "Dog",
+        catOption = "Cat",
+        differentSpeciesTrigger = "Different species?",
+        otherSpeciesLabel = "Other species",
+        rabbitOption = "Rabbit",
+        hamsterOption = "Hamster",
+        birdOption = "Bird",
+        fishOption = "Fish",
+        turtleOption = "Turtle",
+        otherOption = "Other",
+        customSpeciesLabel = "Pet type",
+        ageLabel = "Age",
+        birthDateLabel = "Birthday",
+        knowsBirthDateLabel = "I know the birthday",
+        weightLabel = "Weight (kg)",
+        moreDetailsLabel = "More details",
+        breedLabel = "Breed",
+        sexLabel = "Sex",
+        temperamentLabel = "Temperament",
+        colorLabel = "Color / coat",
+        notesLabel = "Notes",
+        saveButton = "Save Pet",
+        saveSummary = "You can add more details later",
+        namePlaceholder = "e.g. Luna",
+        customSpeciesPlaceholder = "e.g. Rabbit",
+        agePlaceholder = "e.g. 3 years",
+        birthDatePlaceholder = "YYYY-MM-DD",
+        weightPlaceholder = "e.g. 12.5",
+        breedPlaceholder = "Breed or type",
+        colorPlaceholder = "e.g. Ginger",
+        notesPlaceholder = "Anything helpful to remember?",
+        maleOption = "Male",
+        femaleOption = "Female",
+        calmTemperament = "Calm",
+        energeticTemperament = "Energetic",
+        friendlyTemperament = "Friendly",
+        shyTemperament = "Shy",
+        curiousTemperament = "Curious"
     )
 }
