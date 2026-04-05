@@ -10,15 +10,20 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -60,6 +65,7 @@ import pl.kosciukw.petsify.feature.addpet.presentation.AddPetState
 import pl.kosciukw.petsify.shared.strings.AddPetStrings
 import pl.kosciukw.petsify.shared.strings.CommonScreenStrings
 import pl.kosciukw.petsify.shared.ui.theme.BlackLiquorice
+import pl.kosciukw.petsify.shared.ui.theme.GoshawkGrey
 import pl.kosciukw.petsify.shared.ui.theme.PureWhite
 import pl.kosciukw.petsify.shared.ui.theme.TextBoldS
 import pl.kosciukw.petsify.shared.ui.theme.TextRegularS
@@ -105,7 +111,8 @@ fun AddPetScreen(
                 title = {
                     Text(
                         text = strings.title,
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.titleLarge,
+                        color = GoshawkGrey
                     )
                 },
                 navigationIcon = {
@@ -187,7 +194,7 @@ private fun AddPetBottomBar(
             Text(
                 text = strings.saveSummary,
                 style = TextRegularS,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = GoshawkGrey
             )
             Button(
                 modifier = Modifier
@@ -316,7 +323,7 @@ private fun AddPetIntro(strings: AddPetStrings) {
             .fillMaxWidth()
             .padding(top = paddingM),
         style = TextRegularS,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        color = GoshawkGrey,
         textAlign = TextAlign.Center
     )
 }
@@ -420,7 +427,7 @@ private fun BirthdayKnowledgeTrigger(
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = GoshawkGrey
         )
     }
 }
@@ -511,14 +518,14 @@ private fun PhotoUploadCard(
             Box(
                 modifier = Modifier
                     .size(124.dp)
-                    .clip(RoundedCornerShape(28.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                    .clip(RoundedCornerShape(36.dp))
+                    .background(MaterialTheme.colorScheme.tertiaryContainer),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.Pets,
                     contentDescription = strings.photoCta,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
                     modifier = Modifier.size(48.dp)
                 )
             }
@@ -527,13 +534,13 @@ private fun PhotoUploadCard(
                 modifier = Modifier
                     .size(42.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary),
+                    .background(MaterialTheme.colorScheme.secondaryContainer),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.AddAPhoto,
                     contentDescription = strings.photoCta,
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
         }
@@ -550,9 +557,13 @@ private fun SpeciesOptionCard(
 ) {
     Surface(
         modifier = modifier
-            .clip(RoundedCornerShape(24.dp))
+            .clip(RoundedCornerShape(32.dp))
             .clickable(onClick = onClick),
-        color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+        color = if (selected) {
+            MaterialTheme.colorScheme.secondaryContainer
+        } else {
+            MaterialTheme.colorScheme.tertiaryContainer
+        },
         tonalElevation = if (selected) 2.dp else 0.dp
     ) {
         Column(
@@ -565,12 +576,14 @@ private fun SpeciesOptionCard(
             Icon(
                 imageVector = Icons.Default.Pets,
                 contentDescription = label,
-                tint = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                tint = if (selected) MaterialTheme.colorScheme.onSecondaryContainer
+                else MaterialTheme.colorScheme.onTertiaryContainer
             )
             Text(
                 text = label,
                 fontWeight = FontWeight.Bold,
-                color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                color = if (selected) MaterialTheme.colorScheme.onSecondaryContainer
+                else MaterialTheme.colorScheme.onTertiaryContainer
             )
         }
     }
@@ -590,7 +603,7 @@ private fun OtherSpeciesTrigger(
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
-            color = if (expanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+            color = if (expanded) MaterialTheme.colorScheme.onTertiaryContainer else GoshawkGrey
         )
     }
 }
@@ -607,7 +620,7 @@ private fun OtherSpeciesSection(
             .fillMaxWidth()
             .background(
                 color = MaterialTheme.colorScheme.background,
-                shape = RoundedCornerShape(24.dp)
+                shape = RoundedCornerShape(32.dp)
             )
             .padding(paddingL),
         verticalArrangement = Arrangement.spacedBy(paddingM)
@@ -615,32 +628,61 @@ private fun OtherSpeciesSection(
         Text(
             text = strings.otherSpeciesLabel,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onTertiaryContainer
         )
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            species.take(3).forEach { item ->
+            species.forEach { item ->
                 SpeciesChip(
-                    modifier = Modifier.weight(1f),
-                    species = item,
                     label = item.label(strings),
                     selected = selectedSpecies == item,
                     onClick = { onSpeciesSelected(item) }
                 )
             }
         }
+    }
+}
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+@Suppress("unused")
+@Composable
+private fun OtherSpeciesSectionGrid(
+    species: List<PetSpeciesUiModel>,
+    selectedSpecies: PetSpeciesUiModel?,
+    strings: AddPetStrings,
+    onSpeciesSelected: (PetSpeciesUiModel) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = MaterialTheme.colorScheme.background,
+                shape = RoundedCornerShape(32.dp)
+            )
+            .padding(paddingL),
+        verticalArrangement = Arrangement.spacedBy(paddingM)
+    ) {
+        Text(
+            text = strings.otherSpeciesLabel,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onTertiaryContainer
+        )
+
+        LazyHorizontalGrid(
+            rows = GridCells.Fixed(2),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(96.dp)
+                .heightIn(max = 96.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            species.drop(3).forEach { item ->
+            items(species) { item ->
                 SpeciesChip(
-                    modifier = Modifier.weight(1f),
-                    species = item,
                     label = item.label(strings),
                     selected = selectedSpecies == item,
                     onClick = { onSpeciesSelected(item) }
@@ -653,7 +695,6 @@ private fun OtherSpeciesSection(
 @Composable
 private fun SpeciesChip(
     modifier: Modifier = Modifier,
-    species: PetSpeciesUiModel,
     label: String,
     selected: Boolean,
     onClick: () -> Unit
@@ -662,18 +703,18 @@ private fun SpeciesChip(
         modifier = modifier
             .clip(RoundedCornerShape(999.dp))
             .clickable(onClick = onClick),
-        color = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
+        color = if (selected) MaterialTheme.colorScheme.secondaryContainer
+        else MaterialTheme.colorScheme.surfaceContainer
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 10.dp, horizontal = 12.dp),
+                .padding(vertical = 12.dp, horizontal = 16.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelLarge,
-                color = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else GoshawkGrey
             )
         }
     }
@@ -690,10 +731,11 @@ private fun PetSpeciesUiModel.label(strings: AddPetStrings): String = when (petS
     PetSpeciesDomainType.Other -> strings.otherOption
 }
 
-private fun PetWeightUnitUiModel.label(strings: AddPetStrings): String = when (petWeightUnitDomainType) {
-    PetWeightUnitDomainType.Kilograms -> strings.kilogramsOption
-    PetWeightUnitDomainType.Pounds -> strings.poundsOption
-}
+private fun PetWeightUnitUiModel.label(strings: AddPetStrings): String =
+    when (petWeightUnitDomainType) {
+        PetWeightUnitDomainType.Kilograms -> strings.kilogramsOption
+        PetWeightUnitDomainType.Pounds -> strings.poundsOption
+    }
 
 @Composable
 private fun MoreDetailsSection(
@@ -736,88 +778,88 @@ private fun MoreDetailsSection(
             exit = shrinkVertically() + fadeOut()
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(paddingL)) {
-            PetsifyInput(
-                modifier = Modifier.fillMaxWidth(),
-                text = breed,
-                onTextChange = onBreedChanged,
-                label = strings.breedLabel,
-                placeholder = strings.breedPlaceholder
-            )
+                PetsifyInput(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = breed,
+                    onTextChange = onBreedChanged,
+                    label = strings.breedLabel,
+                    placeholder = strings.breedPlaceholder
+                )
 
-            Text(
-                text = strings.sexLabel,
-                style = MaterialTheme.typography.titleSmall
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(paddingM)) {
-                SelectableAssistChip(
-                    label = strings.maleOption,
-                    selected = sex == PetSexUiModel.Male,
-                    onClick = { onSexSelected(PetSexUiModel.Male) }
+                Text(
+                    text = strings.sexLabel,
+                    style = MaterialTheme.typography.titleSmall
                 )
-                SelectableAssistChip(
-                    label = strings.femaleOption,
-                    selected = sex == PetSexUiModel.Female,
-                    onClick = { onSexSelected(PetSexUiModel.Female) }
-                )
-            }
+                Row(horizontalArrangement = Arrangement.spacedBy(paddingM)) {
+                    SelectableAssistChip(
+                        label = strings.maleOption,
+                        selected = sex == PetSexUiModel.Male,
+                        onClick = { onSexSelected(PetSexUiModel.Male) }
+                    )
+                    SelectableAssistChip(
+                        label = strings.femaleOption,
+                        selected = sex == PetSexUiModel.Female,
+                        onClick = { onSexSelected(PetSexUiModel.Female) }
+                    )
+                }
 
-            Text(
-                text = strings.temperamentLabel,
-                style = MaterialTheme.typography.titleSmall
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(paddingM)
-            ) {
-                TemperamentChip(
-                    label = strings.calmTemperament,
-                    selected = PetTemperamentUiModel.Calm in temperaments,
-                    onClick = { onTemperamentToggled(PetTemperamentUiModel.Calm) }
+                Text(
+                    text = strings.temperamentLabel,
+                    style = MaterialTheme.typography.titleSmall
                 )
-                TemperamentChip(
-                    label = strings.energeticTemperament,
-                    selected = PetTemperamentUiModel.Energetic in temperaments,
-                    onClick = { onTemperamentToggled(PetTemperamentUiModel.Energetic) }
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(paddingM)
-            ) {
-                TemperamentChip(
-                    label = strings.friendlyTemperament,
-                    selected = PetTemperamentUiModel.Friendly in temperaments,
-                    onClick = { onTemperamentToggled(PetTemperamentUiModel.Friendly) }
-                )
-                TemperamentChip(
-                    label = strings.shyTemperament,
-                    selected = PetTemperamentUiModel.Shy in temperaments,
-                    onClick = { onTemperamentToggled(PetTemperamentUiModel.Shy) }
-                )
-                TemperamentChip(
-                    label = strings.curiousTemperament,
-                    selected = PetTemperamentUiModel.Curious in temperaments,
-                    onClick = { onTemperamentToggled(PetTemperamentUiModel.Curious) }
-                )
-            }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(paddingM)
+                ) {
+                    TemperamentChip(
+                        label = strings.calmTemperament,
+                        selected = PetTemperamentUiModel.Calm in temperaments,
+                        onClick = { onTemperamentToggled(PetTemperamentUiModel.Calm) }
+                    )
+                    TemperamentChip(
+                        label = strings.energeticTemperament,
+                        selected = PetTemperamentUiModel.Energetic in temperaments,
+                        onClick = { onTemperamentToggled(PetTemperamentUiModel.Energetic) }
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(paddingM)
+                ) {
+                    TemperamentChip(
+                        label = strings.friendlyTemperament,
+                        selected = PetTemperamentUiModel.Friendly in temperaments,
+                        onClick = { onTemperamentToggled(PetTemperamentUiModel.Friendly) }
+                    )
+                    TemperamentChip(
+                        label = strings.shyTemperament,
+                        selected = PetTemperamentUiModel.Shy in temperaments,
+                        onClick = { onTemperamentToggled(PetTemperamentUiModel.Shy) }
+                    )
+                    TemperamentChip(
+                        label = strings.curiousTemperament,
+                        selected = PetTemperamentUiModel.Curious in temperaments,
+                        onClick = { onTemperamentToggled(PetTemperamentUiModel.Curious) }
+                    )
+                }
 
-            PetsifyInput(
-                modifier = Modifier.fillMaxWidth(),
-                text = color,
-                onTextChange = onColorChanged,
-                label = strings.colorLabel,
-                placeholder = strings.colorPlaceholder
-            )
+                PetsifyInput(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = color,
+                    onTextChange = onColorChanged,
+                    label = strings.colorLabel,
+                    placeholder = strings.colorPlaceholder
+                )
 
-            PetsifyInput(
-                modifier = Modifier.fillMaxWidth(),
-                text = notes,
-                onTextChange = onNotesChanged,
-                label = strings.notesLabel,
-                placeholder = strings.notesPlaceholder,
-                singleLine = false,
-                minLines = 3
-            )
+                PetsifyInput(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = notes,
+                    onTextChange = onNotesChanged,
+                    label = strings.notesLabel,
+                    placeholder = strings.notesPlaceholder,
+                    singleLine = false,
+                    minLines = 3
+                )
             }
         }
     }
@@ -876,6 +918,6 @@ private fun PetsifyInput(
         placeholder = { Text(text = placeholder) },
         singleLine = singleLine,
         minLines = minLines,
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(28.dp)
     )
 }
