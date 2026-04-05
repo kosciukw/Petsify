@@ -2,12 +2,13 @@ package pl.kosciukw.petsify.feature.signup.presentation
 
 import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.presentation.components.view.ViewState
+import pl.kosciukw.petsify.shared.utils.empty
 
 data class SignUpState(
-    val inputName: String = "",
-    val inputEmail: String = "",
-    val inputPassword: String = "",
-    val inputConfirmPassword: String = "",
+    val inputName: String = String.empty(),
+    val inputEmail: String = String.empty(),
+    val inputPassword: String = String.empty(),
+    val inputConfirmPassword: String = String.empty(),
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
     val isTermsAccepted: Boolean = false,
     val isMarketingAccepted: Boolean = false,

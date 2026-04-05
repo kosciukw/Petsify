@@ -27,9 +27,14 @@ abstract class BaseViewModel<Event : ViewEvent, UiState : ViewState, SingleActio
     abstract fun setInitialState(): UiState
     abstract fun onTriggerEvent(event: Event)
 
+    // Tech debt:
+    // `setInitialState()` is still part of base state initialization. Even with lazy delegates,
+    // the first access to `state` / `_state` may invoke subclass logic before constructor-injected
+    // dependencies are safe to use there. ViewModels relying on injected objects in
+    // `setInitialState()` need extra care until initialization is redesigned.
     private val initialState: UiState by lazy { setInitialState() }
-    private val _state = MutableStateFlow(initialState)
-    val state = _state.asStateFlow()
+    private val _state by lazy { MutableStateFlow(initialState) }
+    val state by lazy { _state.asStateFlow() }
 
     private val _event = MutableSharedFlow<Event>()
 
@@ -65,12 +70,6 @@ abstract class BaseViewModel<Event : ViewEvent, UiState : ViewState, SingleActio
         coroutineScope.cancel()
     }
 
-    private fun setError(uiComponent: () -> UIComponent) {
-        coroutineScope.launch(Dispatchers.Main.immediate) {
-            _errors.emit(uiComponent())
-        }
-    }
-
     open fun onFailure(
         retry: () -> Unit = {},
         onErrorAcknowledged: () -> Unit = {},
@@ -88,6 +87,12 @@ abstract class BaseViewModel<Event : ViewEvent, UiState : ViewState, SingleActio
             else -> {
                 // no-op
             }
+        }
+    }
+
+    private fun setError(uiComponent: () -> UIComponent) {
+        coroutineScope.launch(Dispatchers.Main.immediate) {
+            _errors.emit(uiComponent())
         }
     }
 

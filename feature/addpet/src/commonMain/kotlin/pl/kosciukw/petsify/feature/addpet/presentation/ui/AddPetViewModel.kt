@@ -1,34 +1,40 @@
 package pl.kosciukw.petsify.feature.addpet.presentation.ui
 
 import pl.kosciukw.petsify.feature.addpet.model.domain.PetSpeciesDomainType
-import pl.kosciukw.petsify.feature.addpet.model.ui.PetSpeciesUiModel
+import pl.kosciukw.petsify.feature.addpet.model.domain.PetWeightUnitDomainType
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetAction
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetEvent
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetState
-import pl.kosciukw.petsify.feature.addpet.presentation.mapper.toUiModel
+import pl.kosciukw.petsify.feature.addpet.presentation.mapper.PetSpeciesDomainToUiModelMapper
+import pl.kosciukw.petsify.feature.addpet.presentation.mapper.PetWeightUnitDomainToUiModelMapper
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
 import pl.kosciukw.petsify.shared.presentation.common.viewmodel.BaseViewModel
+import pl.kosciukw.petsify.shared.utils.empty
+import kotlin.enums.enumEntries
 
 class AddPetViewModel(
-    integrationErrorMapper: IntegrationErrorMapper
+    integrationErrorMapper: IntegrationErrorMapper,
+    private val petSpeciesDomainToUiModelMapper: PetSpeciesDomainToUiModelMapper,
+    private val petWeightUnitDomainToUiModelMapper: PetWeightUnitDomainToUiModelMapper
 ) : BaseViewModel<AddPetEvent, AddPetState, AddPetAction>(
     integrationErrorMapper = integrationErrorMapper
 ) {
 
     override fun setInitialState(): AddPetState {
-        val speciesOptions = listOf(
-            PetSpeciesDomainType.Dog,
-            PetSpeciesDomainType.Cat,
-            PetSpeciesDomainType.Rabbit,
-            PetSpeciesDomainType.Hamster,
-            PetSpeciesDomainType.Bird,
-            PetSpeciesDomainType.Fish,
-            PetSpeciesDomainType.Turtle,
-            PetSpeciesDomainType.Other
-        ).map(PetSpeciesDomainType::toUiModel)
+
+        val speciesOptions = enumEntries<PetSpeciesDomainType>()
+            .map(petSpeciesDomainToUiModelMapper::map)
+
+        val weightUnits = enumEntries<PetWeightUnitDomainType>()
+            .map(petWeightUnitDomainToUiModelMapper::map)
+
         return AddPetState(
             speciesOptions = speciesOptions,
-            selectedSpecies = speciesOptions.firstOrNull { it.petSpeciesDomainType == PetSpeciesDomainType.Dog }
+            selectedSpecies = speciesOptions.firstOrNull { it.petSpeciesDomainType == PetSpeciesDomainType.Dog },
+            weightUnits = weightUnits,
+            selectedWeightUnit = weightUnits.firstOrNull {
+                it.petWeightUnitDomainType == PetWeightUnitDomainType.Kilograms
+            }
         ).withSaveState()
     }
 
@@ -43,8 +49,10 @@ class AddPetViewModel(
                 setState {
                     copy(
                         selectedSpecies = event.value,
-                        customSpecies = if (event.value.requiresCustomValue) customSpecies else "",
-                        isOtherSpeciesExpanded = if (event.value.isPrimary) false else isOtherSpeciesExpanded
+                        customSpecies = if (event.value.requiresCustomValue) customSpecies
+                        else String.empty(),
+                        isOtherSpeciesExpanded = if (event.value.isPrimary) false
+                        else isOtherSpeciesExpanded
                     )
                 }
                 updateSaveState()
@@ -63,8 +71,8 @@ class AddPetViewModel(
                 setState {
                     copy(
                         knowsBirthDate = event.value,
-                        age = if (event.value) "" else age,
-                        birthDate = if (event.value) birthDate else ""
+                        age = if (event.value) String.empty() else age,
+                        birthDate = if (event.value) birthDate else String.empty()
                     )
                 }
                 updateSaveState()
@@ -83,6 +91,10 @@ class AddPetViewModel(
             is AddPetEvent.OnWeightChanged -> {
                 setState { copy(weight = event.value) }
                 updateSaveState()
+            }
+
+            is AddPetEvent.OnWeightUnitSelected -> {
+                setState { copy(selectedWeightUnit = event.value) }
             }
 
             AddPetEvent.OnMoreDetailsToggled -> {
@@ -129,9 +141,9 @@ class AddPetViewModel(
 
     private fun AddPetState.withSaveState(): AddPetState = copy(
         isSaveEnabled = name.isNotBlank() &&
-            currentSpeciesValue().isNotBlank() &&
-            currentAgeOrBirthDateValue().isNotBlank() &&
-            weight.isNotBlank()
+                currentSpeciesValue().isNotBlank() &&
+                currentAgeOrBirthDateValue().isNotBlank() &&
+                weight.isNotBlank()
     )
 
     private fun AddPetState.currentSpeciesValue(): String = when {

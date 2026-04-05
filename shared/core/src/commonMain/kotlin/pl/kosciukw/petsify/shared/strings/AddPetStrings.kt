@@ -22,6 +22,8 @@ data class AddPetStrings(
     val birthdayUnknownTrigger: String,
     val birthdayKnownTrigger: String,
     val weightLabel: String,
+    val kilogramsOption: String,
+    val poundsOption: String,
     val moreDetailsLabel: String,
     val breedLabel: String,
     val sexLabel: String,

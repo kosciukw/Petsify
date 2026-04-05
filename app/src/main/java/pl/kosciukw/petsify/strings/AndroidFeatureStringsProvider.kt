@@ -86,6 +86,8 @@ class AndroidFeatureStringsProvider(
         birthdayUnknownTrigger = context.getString(R.string.add_pet_screen_birthday_unknown_trigger),
         birthdayKnownTrigger = context.getString(R.string.add_pet_screen_birthday_known_trigger),
         weightLabel = context.getString(R.string.add_pet_screen_weight_label),
+        kilogramsOption = context.getString(R.string.add_pet_screen_weight_kilograms_option),
+        poundsOption = context.getString(R.string.add_pet_screen_weight_pounds_option),
         moreDetailsLabel = context.getString(R.string.add_pet_screen_more_details_label),
         breedLabel = context.getString(R.string.add_pet_screen_breed_label),
         sexLabel = context.getString(R.string.add_pet_screen_sex_label),

@@ -1,5 +1,10 @@
 package pl.kosciukw.petsify.feature.addpet.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +28,6 @@ import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -45,9 +49,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.Flow
 import pl.kosciukw.petsify.feature.addpet.model.domain.PetSpeciesDomainType
+import pl.kosciukw.petsify.feature.addpet.model.domain.PetWeightUnitDomainType
 import pl.kosciukw.petsify.feature.addpet.model.ui.PetSexUiModel
 import pl.kosciukw.petsify.feature.addpet.model.ui.PetSpeciesUiModel
 import pl.kosciukw.petsify.feature.addpet.model.ui.PetTemperamentUiModel
+import pl.kosciukw.petsify.feature.addpet.model.ui.PetWeightUnitUiModel
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetAction
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetEvent
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetState
@@ -130,6 +136,8 @@ fun AddPetScreen(
             age = state.age,
             birthDate = state.birthDate,
             weight = state.weight,
+            weightUnits = state.weightUnits,
+            selectedWeightUnit = state.selectedWeightUnit,
             primarySpecies = primarySpecies,
             otherSpecies = otherSpecies,
             selectedSpecies = state.selectedSpecies,
@@ -149,6 +157,7 @@ fun AddPetScreen(
             onAgeChanged = { events(AddPetEvent.OnAgeChanged(it)) },
             onBirthDateChanged = { events(AddPetEvent.OnBirthDateChanged(it)) },
             onWeightChanged = { events(AddPetEvent.OnWeightChanged(it)) },
+            onWeightUnitSelected = { events(AddPetEvent.OnWeightUnitSelected(it)) },
             onMoreDetailsToggled = { events(AddPetEvent.OnMoreDetailsToggled) },
             onBreedChanged = { events(AddPetEvent.OnBreedChanged(it)) },
             onSexSelected = { events(AddPetEvent.OnSexSelected(it)) },
@@ -208,6 +217,8 @@ private fun AddPetContent(
     age: String,
     birthDate: String,
     weight: String,
+    weightUnits: List<PetWeightUnitUiModel>,
+    selectedWeightUnit: PetWeightUnitUiModel?,
     primarySpecies: List<PetSpeciesUiModel>,
     otherSpecies: List<PetSpeciesUiModel>,
     selectedSpecies: PetSpeciesUiModel?,
@@ -227,6 +238,7 @@ private fun AddPetContent(
     onAgeChanged: (String) -> Unit,
     onBirthDateChanged: (String) -> Unit,
     onWeightChanged: (String) -> Unit,
+    onWeightUnitSelected: (PetWeightUnitUiModel) -> Unit,
     onMoreDetailsToggled: () -> Unit,
     onBreedChanged: (String) -> Unit,
     onSexSelected: (PetSexUiModel) -> Unit,
@@ -268,11 +280,14 @@ private fun AddPetContent(
             age = age,
             birthDate = birthDate,
             weight = weight,
+            weightUnits = weightUnits,
+            selectedWeightUnit = selectedWeightUnit,
             strings = strings,
             onKnowsBirthDateChanged = onKnowsBirthDateChanged,
             onAgeChanged = onAgeChanged,
             onBirthDateChanged = onBirthDateChanged,
-            onWeightChanged = onWeightChanged
+            onWeightChanged = onWeightChanged,
+            onWeightUnitSelected = onWeightUnitSelected
         )
 
         MoreDetailsSection(
@@ -327,11 +342,14 @@ private fun AgeAndWeightSection(
     age: String,
     birthDate: String,
     weight: String,
+    weightUnits: List<PetWeightUnitUiModel>,
+    selectedWeightUnit: PetWeightUnitUiModel?,
     strings: AddPetStrings,
     onKnowsBirthDateChanged: (Boolean) -> Unit,
     onAgeChanged: (String) -> Unit,
     onBirthDateChanged: (String) -> Unit,
-    onWeightChanged: (String) -> Unit
+    onWeightChanged: (String) -> Unit,
+    onWeightUnitSelected: (PetWeightUnitUiModel) -> Unit
 ) {
     PetsifyInput(
         modifier = Modifier.fillMaxWidth(),
@@ -356,7 +374,11 @@ private fun AgeAndWeightSection(
         )
     }
 
-    if (!knowsBirthDate) {
+    AnimatedVisibility(
+        visible = !knowsBirthDate,
+        enter = expandVertically() + fadeIn(),
+        exit = shrinkVertically() + fadeOut()
+    ) {
         PetsifyInput(
             modifier = Modifier.fillMaxWidth(),
             text = age,
@@ -373,6 +395,16 @@ private fun AgeAndWeightSection(
         label = strings.weightLabel,
         placeholder = strings.weightPlaceholder
     )
+
+    Row(horizontalArrangement = Arrangement.spacedBy(paddingM)) {
+        weightUnits.forEach { weightUnit ->
+            SelectableAssistChip(
+                label = weightUnit.label(strings),
+                selected = selectedWeightUnit == weightUnit,
+                onClick = { onWeightUnitSelected(weightUnit) }
+            )
+        }
+    }
 }
 
 @Composable
@@ -438,7 +470,11 @@ private fun SpeciesSection(
             )
         }
 
-        if (isOtherSpeciesExpanded) {
+        AnimatedVisibility(
+            visible = isOtherSpeciesExpanded,
+            enter = expandVertically() + fadeIn(),
+            exit = shrinkVertically() + fadeOut()
+        ) {
             OtherSpeciesSection(
                 species = otherSpecies,
                 selectedSpecies = selectedSpecies,
@@ -447,7 +483,11 @@ private fun SpeciesSection(
             )
         }
 
-        if (selectedSpecies?.requiresCustomValue == true) {
+        AnimatedVisibility(
+            visible = selectedSpecies?.requiresCustomValue == true,
+            enter = expandVertically() + fadeIn(),
+            exit = shrinkVertically() + fadeOut()
+        ) {
             PetsifyInput(
                 modifier = Modifier.fillMaxWidth(),
                 text = customSpecies,
@@ -650,6 +690,11 @@ private fun PetSpeciesUiModel.label(strings: AddPetStrings): String = when (petS
     PetSpeciesDomainType.Other -> strings.otherOption
 }
 
+private fun PetWeightUnitUiModel.label(strings: AddPetStrings): String = when (petWeightUnitDomainType) {
+    PetWeightUnitDomainType.Kilograms -> strings.kilogramsOption
+    PetWeightUnitDomainType.Pounds -> strings.poundsOption
+}
+
 @Composable
 private fun MoreDetailsSection(
     isExpanded: Boolean,
@@ -685,7 +730,12 @@ private fun MoreDetailsSection(
             )
         }
 
-        if (isExpanded) {
+        AnimatedVisibility(
+            visible = isExpanded,
+            enter = expandVertically() + fadeIn(),
+            exit = shrinkVertically() + fadeOut()
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(paddingL)) {
             PetsifyInput(
                 modifier = Modifier.fillMaxWidth(),
                 text = breed,
@@ -768,6 +818,7 @@ private fun MoreDetailsSection(
                 singleLine = false,
                 minLines = 3
             )
+            }
         }
     }
 }

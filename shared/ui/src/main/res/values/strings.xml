@@ -56,7 +56,9 @@
     <string name="add_pet_screen_birth_date_label">Birthday</string>
     <string name="add_pet_screen_birthday_unknown_trigger">Don\'t know birthday?</string>
     <string name="add_pet_screen_birthday_known_trigger">Know the birthday?</string>
-    <string name="add_pet_screen_weight_label">Weight (kg)</string>
+    <string name="add_pet_screen_weight_label">Weight</string>
+    <string name="add_pet_screen_weight_kilograms_option">kg</string>
+    <string name="add_pet_screen_weight_pounds_option">lbs</string>
     <string name="add_pet_screen_more_details_label">More details</string>
     <string name="add_pet_screen_breed_label">Breed</string>
     <string name="add_pet_screen_sex_label">Sex</string>
