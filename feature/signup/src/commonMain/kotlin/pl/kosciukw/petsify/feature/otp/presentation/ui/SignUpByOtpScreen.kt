@@ -24,11 +24,11 @@ import pl.kosciukw.petsify.feature.components.OtpInput
 import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpAction
 import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpEvent
 import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpState
-import pl.kosciukw.petsify.feature.signup.presentation.ui.PetsifyScreenScaffold
-import pl.kosciukw.petsify.feature.signup.presentation.ui.VerticalSpacer
 import pl.kosciukw.petsify.shared.presentation.UIComponent
 import pl.kosciukw.petsify.shared.strings.CommonScreenStrings
 import pl.kosciukw.petsify.shared.strings.OtpStrings
+import pl.kosciukw.petsify.shared.ui.components.scaffold.ScreenScaffold
+import pl.kosciukw.petsify.shared.ui.components.spacer.VerticalSpacer
 import pl.kosciukw.petsify.shared.ui.theme.BlackLiquorice
 import pl.kosciukw.petsify.shared.ui.theme.PureWhite
 import pl.kosciukw.petsify.shared.ui.theme.TextBoldS
@@ -56,7 +56,7 @@ fun SignUpByOtpScreen(
         }
     }
 
-    PetsifyScreenScaffold(
+    ScreenScaffold(
         title = strings.title,
         onNavigateUp = onNavigateUp,
         errors = errors,

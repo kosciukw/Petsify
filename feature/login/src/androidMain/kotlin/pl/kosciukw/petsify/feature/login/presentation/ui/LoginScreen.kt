@@ -1,7 +1,6 @@
 package pl.kosciukw.petsify.feature.login.presentation.ui
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import kotlinx.coroutines.flow.Flow
 import pl.kosciukw.petsify.feature.login.presentation.LoginAction
@@ -33,8 +32,6 @@ internal fun LoginScreen(
         strings = strings,
         commonStrings = commonStrings,
         assets = rememberAndroidLoginScreenAssets(),
-        onGoogleLoginClick = {
-            Toast.makeText(context, "Login with google button clicked", Toast.LENGTH_SHORT).show()
-        }
+        onGoogleLoginClick = {}
     )
 }

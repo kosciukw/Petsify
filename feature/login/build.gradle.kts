@@ -20,6 +20,7 @@ kotlin {
       dependencies {
         implementation(projects.shared.core)
         implementation(projects.shared.design)
+        implementation(projects.shared.ui)
         implementation(projects.shared.presentationCore)
         implementation(projects.shared.servicesApi)
         implementation(libs.koin.core)

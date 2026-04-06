@@ -29,16 +29,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.Pets
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -64,6 +60,8 @@ import pl.kosciukw.petsify.feature.addpet.presentation.AddPetEvent
 import pl.kosciukw.petsify.feature.addpet.presentation.AddPetState
 import pl.kosciukw.petsify.shared.strings.AddPetStrings
 import pl.kosciukw.petsify.shared.strings.CommonScreenStrings
+import pl.kosciukw.petsify.shared.ui.components.selectable.SelectablePill
+import pl.kosciukw.petsify.shared.ui.components.input.OutlinedTextField
 import pl.kosciukw.petsify.shared.ui.theme.BlackLiquorice
 import pl.kosciukw.petsify.shared.ui.theme.GoshawkGrey
 import pl.kosciukw.petsify.shared.ui.theme.PureWhite
@@ -405,7 +403,7 @@ private fun AgeAndWeightSection(
 
     Row(horizontalArrangement = Arrangement.spacedBy(paddingM)) {
         weightUnits.forEach { weightUnit ->
-            SelectableAssistChip(
+            SelectablePill(
                 label = weightUnit.label(strings),
                 selected = selectedWeightUnit == weightUnit,
                 onClick = { onWeightUnitSelected(weightUnit) }
@@ -562,7 +560,7 @@ private fun SpeciesOptionCard(
         color = if (selected) {
             MaterialTheme.colorScheme.secondaryContainer
         } else {
-            MaterialTheme.colorScheme.tertiaryContainer
+            MaterialTheme.colorScheme.surfaceContainer
         },
         tonalElevation = if (selected) 2.dp else 0.dp
     ) {
@@ -577,13 +575,13 @@ private fun SpeciesOptionCard(
                 imageVector = Icons.Default.Pets,
                 contentDescription = label,
                 tint = if (selected) MaterialTheme.colorScheme.onSecondaryContainer
-                else MaterialTheme.colorScheme.onTertiaryContainer
+                else GoshawkGrey
             )
             Text(
                 text = label,
                 fontWeight = FontWeight.Bold,
                 color = if (selected) MaterialTheme.colorScheme.onSecondaryContainer
-                else MaterialTheme.colorScheme.onTertiaryContainer
+                else GoshawkGrey
             )
         }
     }
@@ -699,25 +697,12 @@ private fun SpeciesChip(
     selected: Boolean,
     onClick: () -> Unit
 ) {
-    Surface(
-        modifier = modifier
-            .clip(RoundedCornerShape(999.dp))
-            .clickable(onClick = onClick),
-        color = if (selected) MaterialTheme.colorScheme.secondaryContainer
-        else MaterialTheme.colorScheme.surfaceContainer
-    ) {
-        Box(
-            modifier = Modifier
-                .padding(vertical = 12.dp, horizontal = 16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodyMedium,
-                color = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else GoshawkGrey
-            )
-        }
-    }
+    SelectablePill(
+        modifier = modifier,
+        label = label,
+        selected = selected,
+        onClick = onClick
+    )
 }
 
 private fun PetSpeciesUiModel.label(strings: AddPetStrings): String = when (petSpeciesDomainType) {
@@ -791,12 +776,12 @@ private fun MoreDetailsSection(
                     style = MaterialTheme.typography.titleSmall
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(paddingM)) {
-                    SelectableAssistChip(
+                    SelectablePill(
                         label = strings.maleOption,
                         selected = sex == PetSexUiModel.Male,
                         onClick = { onSexSelected(PetSexUiModel.Male) }
                     )
-                    SelectableAssistChip(
+                    SelectablePill(
                         label = strings.femaleOption,
                         selected = sex == PetSexUiModel.Female,
                         onClick = { onSexSelected(PetSexUiModel.Female) }
@@ -807,9 +792,10 @@ private fun MoreDetailsSection(
                     text = strings.temperamentLabel,
                     style = MaterialTheme.typography.titleSmall
                 )
-                Row(
+                FlowRow(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(paddingM)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     TemperamentChip(
                         label = strings.calmTemperament,
@@ -821,11 +807,6 @@ private fun MoreDetailsSection(
                         selected = PetTemperamentUiModel.Energetic in temperaments,
                         onClick = { onTemperamentToggled(PetTemperamentUiModel.Energetic) }
                     )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(paddingM)
-                ) {
                     TemperamentChip(
                         label = strings.friendlyTemperament,
                         selected = PetTemperamentUiModel.Friendly in temperaments,
@@ -866,35 +847,15 @@ private fun MoreDetailsSection(
 }
 
 @Composable
-private fun SelectableAssistChip(
-    label: String,
-    selected: Boolean,
-    onClick: () -> Unit
-) {
-    AssistChip(
-        onClick = onClick,
-        label = { Text(text = label) },
-        colors = if (selected) {
-            AssistChipDefaults.assistChipColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                labelColor = MaterialTheme.colorScheme.onSecondaryContainer
-            )
-        } else {
-            AssistChipDefaults.assistChipColors()
-        }
-    )
-}
-
-@Composable
 private fun TemperamentChip(
     label: String,
     selected: Boolean,
     onClick: () -> Unit
 ) {
-    FilterChip(
+    SelectablePill(
+        label = label,
         selected = selected,
-        onClick = onClick,
-        label = { Text(text = label) }
+        onClick = onClick
     )
 }
 
@@ -914,8 +875,8 @@ private fun PetsifyInput(
         value = text,
         onValueChange = onTextChange,
         enabled = enabled,
-        label = { Text(text = label) },
-        placeholder = { Text(text = placeholder) },
+        label = label,
+        placeholder = placeholder,
         singleLine = singleLine,
         minLines = minLines,
         shape = RoundedCornerShape(28.dp)

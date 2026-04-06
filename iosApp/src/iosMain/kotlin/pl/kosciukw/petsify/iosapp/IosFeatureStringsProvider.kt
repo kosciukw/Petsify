@@ -27,6 +27,7 @@ internal class IosFeatureStringsProvider : FeatureStringsProvider {
         signUp = "Sign up",
         orLabel = "or",
         googleButton = "Continue with Google",
+        googleLoginFeedback = "Google login is not available yet",
         appName = "Petsify"
     )
 

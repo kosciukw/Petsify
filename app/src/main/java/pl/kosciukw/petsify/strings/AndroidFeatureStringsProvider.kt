@@ -31,6 +31,7 @@ class AndroidFeatureStringsProvider(
         signUp = context.getString(R.string.login_screen_signup),
         orLabel = context.getString(R.string.login_screen_or),
         googleButton = context.getString(R.string.login_screen_google_login_button),
+        googleLoginFeedback = context.getString(R.string.login_screen_google_login_feedback),
         appName = context.getString(R.string.app_name)
     )
 

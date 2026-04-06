@@ -21,6 +21,7 @@ kotlin {
         implementation(projects.shared.core)
         implementation(projects.shared.design)
         implementation(projects.shared.presentationCore)
+        implementation(projects.shared.ui)
         implementation(libs.koin.core)
         implementation(compose.runtime)
         implementation(compose.foundation)

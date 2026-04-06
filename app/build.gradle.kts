@@ -48,6 +48,9 @@ android {
 }
 
 dependencies {
+  implementation(projects.shared.core)
+  implementation(projects.shared.design)
+  implementation(projects.shared.presentation)
   implementation(projects.shared.servicesApi)
   implementation(projects.shared.ui)
   implementation(projects.feature.splash)
@@ -59,6 +62,7 @@ dependencies {
   implementation(projects.feature.emaildetails)
   implementation(projects.feature.composer)
   implementation(libs.bundles.androidx)
+  implementation(libs.androidx.navigation)
   implementation(libs.koin.android)
   implementation(libs.koin.androidx.compose)
   implementation(libs.androidx.datastore.core.android)

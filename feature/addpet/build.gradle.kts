@@ -19,6 +19,7 @@ kotlin {
       dependencies {
         implementation(projects.shared.core)
         implementation(projects.shared.design)
+        implementation(projects.shared.ui)
         implementation(projects.shared.presentationCore)
         implementation(libs.koin.core)
         implementation(compose.runtime)

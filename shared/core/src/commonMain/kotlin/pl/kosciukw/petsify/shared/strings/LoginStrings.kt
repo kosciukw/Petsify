@@ -12,5 +12,6 @@ data class LoginStrings(
     val signUp: String,
     val orLabel: String,
     val googleButton: String,
+    val googleLoginFeedback: String,
     val appName: String
 )

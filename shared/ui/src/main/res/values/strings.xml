@@ -12,6 +12,7 @@
     <string name="login_screen_signup">Sign up</string>
     <string name="login_screen_or">or</string>
     <string name="login_screen_google_login_button">Continue with Google</string>
+    <string name="login_screen_google_login_feedback">Google login is not available yet</string>
     <string name="login_screen_forgot_password">Forgot password?</string>
 
     <!-- Sign up Screen -->

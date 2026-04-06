@@ -1,61 +1,47 @@
-package pl.kosciukw.petsify.feature.settings.presentation.ui
+package pl.kosciukw.petsify.shared.ui.components.scaffold
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.Flow
-import pl.kosciukw.petsify.feature.settings.presentation.SettingsAction
-import pl.kosciukw.petsify.feature.settings.presentation.SettingsEvent
-import pl.kosciukw.petsify.feature.settings.presentation.SettingsState
 import pl.kosciukw.petsify.shared.presentation.UIComponent
 import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
 import pl.kosciukw.petsify.shared.strings.CommonScreenStrings
-import pl.kosciukw.petsify.shared.strings.SettingsStrings
 import pl.kosciukw.petsify.shared.ui.components.snackbar.AppSnackbar
 import pl.kosciukw.petsify.shared.ui.theme.BlackLiquorice
 import pl.kosciukw.petsify.shared.ui.theme.GoshawkGrey
-import pl.kosciukw.petsify.shared.ui.theme.TextRegularS
-import pl.kosciukw.petsify.shared.ui.theme.paddingXXL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SettingsScreen(
-    state: SettingsState,
+fun ScreenScaffold(
+    title: String,
     errors: Flow<UIComponent>,
-    events: (SettingsEvent) -> Unit,
-    action: Flow<SettingsAction>,
-    strings: SettingsStrings,
-    commonStrings: CommonScreenStrings
+    progressBarState: ProgressBarState,
+    commonStrings: CommonScreenStrings,
+    modifier: Modifier = Modifier,
+    onNavigateUp: (() -> Unit)? = null,
+    content: @Composable () -> Unit
 ) {
-    LaunchedEffect(Unit) {
-        events(SettingsEvent.OnStart)
-    }
-
-    LaunchedEffect(action) {
-        action.collect {
-            // no-op
-        }
-    }
-
     val errorQueue = remember { mutableStateListOf<UIComponent>() }
 
     LaunchedEffect(errors) {
@@ -63,12 +49,28 @@ internal fun SettingsScreen(
     }
 
     Scaffold(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text(strings.title) }
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onBackground
+                ),
+                title = { Text(title) },
+                navigationIcon = {
+                    if (onNavigateUp != null) {
+                        IconButton(onClick = onNavigateUp) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = commonStrings.navigateUpContentDescription
+                            )
+                        }
+                    }
+                }
             )
         }
     ) { paddingValues ->
@@ -77,22 +79,9 @@ internal fun SettingsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingXXL)
-                    .background(MaterialTheme.colorScheme.background)
-            ) {
-                Box(modifier = Modifier.size(1.dp, 96.dp))
+            content()
 
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = strings.body,
-                    style = TextRegularS
-                )
-            }
-
-            if (state.progressBarState != ProgressBarState.Idle) {
+            if (progressBarState != ProgressBarState.Idle) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
