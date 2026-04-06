@@ -1,8 +1,37 @@
 plugins {
   alias(libs.plugins.android.library)
-  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.compose.multiplatform)
+  alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.kotlin.serialization)
+}
+
+kotlin {
+  androidTarget()
+  iosX64()
+  iosArm64()
+  iosSimulatorArm64()
+
+  jvmToolchain(libs.versions.javaVersion.get().toInt())
+
+  sourceSets {
+    commonMain {
+      dependencies {
+        implementation(projects.shared.core)
+        implementation(projects.shared.design)
+        implementation(projects.feature.emails)
+        implementation(projects.feature.profile)
+        implementation(compose.runtime)
+        implementation(compose.foundation)
+        implementation(compose.material3)
+        implementation(compose.ui)
+      }
+    }
+
+    androidMain.dependencies {
+      implementation(libs.androidx.navigation)
+    }
+  }
 }
 
 android {
@@ -28,17 +57,9 @@ android {
     sourceCompatibility = JavaVersion.toVersion(javaVersion)
     targetCompatibility = JavaVersion.toVersion(javaVersion)
   }
-
-  kotlinOptions {
-    jvmTarget = libs.versions.javaVersion.get()
-  }
 }
 
 dependencies {
-  implementation(projects.shared.ui)
-  implementation(projects.feature.emails)
-  implementation(projects.feature.profile)
-
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
 

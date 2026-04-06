@@ -45,10 +45,14 @@ android {
 }
 
 dependencies {
+  api(projects.shared.presentationCore)
   implementation(projects.shared.core)
   implementation(platform(libs.androidx.compose.bom))
   implementation(libs.androidx.ui)
+  implementation(libs.androidx.navigation)
   implementation(libs.androidx.lifecycle.viewmodel.ktx)
+  implementation(libs.kotlinx.serialization)
+  implementation(libs.koin.android)
 
   testImplementation(libs.bundles.junit5)
   testImplementation(libs.mockk)

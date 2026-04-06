@@ -1,7 +1,30 @@
 plugins {
   alias(libs.plugins.android.library)
-  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.compose.multiplatform)
+  alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.kotlin.compose)
+}
+
+kotlin {
+  androidTarget()
+  iosX64()
+  iosArm64()
+  iosSimulatorArm64()
+
+  jvmToolchain(libs.versions.javaVersion.get().toInt())
+
+  sourceSets {
+    commonMain.dependencies {
+      implementation(projects.shared.design)
+      implementation(projects.shared.core)
+      implementation(projects.shared.presentationCore)
+      implementation(compose.runtime)
+      implementation(compose.foundation)
+      implementation(compose.material3)
+      implementation(compose.ui)
+      implementation(compose.materialIconsExtended)
+    }
+  }
 }
 
 android {
@@ -10,16 +33,7 @@ android {
 
   defaultConfig {
     minSdk = libs.versions.minSdkVersion.get().toInt()
-
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
-  }
-
-  buildTypes {
-    release {
-      isMinifyEnabled = false
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
   }
 
   compileOptions {
@@ -27,28 +41,9 @@ android {
     sourceCompatibility = JavaVersion.toVersion(javaVersion)
     targetCompatibility = JavaVersion.toVersion(javaVersion)
   }
-
-  kotlinOptions {
-    jvmTarget = libs.versions.javaVersion.get()
-  }
-  testOptions {
-    unitTests.isIncludeAndroidResources = true
-    unitTests.all {
-      it.useJUnitPlatform()
-    }
-  }
 }
 
 dependencies {
-  api(rootProject.project(":shared:core"))
-  api(rootProject.project(":shared:presentation"))
-  api(platform(libs.androidx.compose.bom))
-  api(libs.bundles.compose)
-  api(libs.androidx.material3)
-
-  debugImplementation(libs.bundles.compose.debug)
-
-  testImplementation(libs.bundles.junit5)
-  testImplementation(libs.mockk)
-  testImplementation(libs.kotlinxCoroutinesTest)
+  androidTestImplementation(libs.androidx.junit)
+  androidTestImplementation(libs.androidx.espresso.core)
 }

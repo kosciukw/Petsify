@@ -3,8 +3,6 @@ plugins {
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.kotlin.serialization)
-  alias(libs.plugins.hilt.android.gradle.plugin)
-  kotlin("kapt")
 }
 
 android {
@@ -50,21 +48,28 @@ android {
 }
 
 dependencies {
+  implementation(projects.shared.core)
+  implementation(projects.shared.design)
+  implementation(projects.shared.presentation)
+  implementation(projects.shared.servicesApi)
   implementation(projects.shared.ui)
   implementation(projects.feature.splash)
   implementation(projects.feature.login)
   implementation(projects.feature.signup)
   implementation(projects.feature.settings)
   implementation(projects.feature.main)
+  implementation(projects.feature.addpet)
   implementation(projects.feature.emaildetails)
   implementation(projects.feature.composer)
   implementation(libs.bundles.androidx)
+  implementation(libs.androidx.navigation)
+  implementation(libs.koin.android)
+  implementation(libs.koin.androidx.compose)
+  implementation(libs.androidx.datastore.core.android)
+  implementation(libs.androidx.datastore.preferences)
 
   implementation(libs.kotlinx.metadata.jvm)
-  implementation(libs.hilt.android)
   implementation(project(":services"))
-  kapt(libs.hilt.compiler)
-  implementation(libs.androidx.hilt.navigation.compose)
 
   debugImplementation(libs.bundles.compose.debug)
 
