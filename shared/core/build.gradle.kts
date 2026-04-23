@@ -1,9 +1,32 @@
 plugins {
+  alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.android.library)
-  alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.serialization)
-  alias(libs.plugins.hilt.android.gradle.plugin)
-  kotlin("kapt")
+}
+
+kotlin {
+  androidTarget()
+  iosX64()
+  iosArm64()
+  iosSimulatorArm64()
+
+  jvmToolchain(libs.versions.javaVersion.get().toInt())
+
+  sourceSets {
+    commonMain.dependencies {
+      implementation(libs.kotlinx.serialization)
+      implementation(libs.kotlinxCoroutinesCore)
+      implementation(libs.kotlin.reflect)
+    }
+
+    androidUnitTest.dependencies {
+      implementation(libs.bundles.junit5)
+      implementation(libs.mockk)
+      implementation(libs.kotlinxCoroutinesTest)
+      implementation(libs.androidx.junit)
+      implementation(libs.androidx.espresso.core)
+    }
+  }
 }
 
 android {
@@ -30,31 +53,16 @@ android {
     targetCompatibility = JavaVersion.toVersion(javaVersion)
   }
 
-  kotlinOptions {
-    jvmTarget = libs.versions.javaVersion.get()
-  }
-
   testOptions {
     unitTests.isIncludeAndroidResources = true
     unitTests.all {
       it.useJUnitPlatform()
     }
   }
-}
 
-dependencies {
-  implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
-
-  implementation(libs.androidx.core.ktx)
-  implementation(libs.androidx.navigation)
-  implementation(libs.kotlinx.serialization)
-  implementation(libs.kotlin.reflect)
-
-  testImplementation(libs.bundles.junit5)
-  testImplementation(libs.mockk)
-  testImplementation(libs.kotlinxCoroutinesTest)
-
-  androidTestImplementation(libs.androidx.junit)
-  androidTestImplementation(libs.androidx.espresso.core)
+  packaging {
+    resources {
+      excludes += "/META-INF/{AL2.0,LGPL2.1}"
+    }
+  }
 }

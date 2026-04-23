@@ -19,11 +19,11 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import pl.kosciukw.petsify.feature.otp.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpAction
 import pl.kosciukw.petsify.feature.otp.presentation.SignUpByOtpEvent
 import pl.kosciukw.petsify.feature.otp.usecase.FinalizeOtpRegistrationUseCase
 import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
+import pl.kosciukw.petsify.shared.navigation.SignUpByOtpNavArgs
 import pl.kosciukw.petsify.shared.result.ResultOrFailure
 import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
 

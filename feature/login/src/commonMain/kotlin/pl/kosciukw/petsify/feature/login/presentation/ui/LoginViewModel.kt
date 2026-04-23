@@ -1,0 +1,133 @@
+package pl.kosciukw.petsify.feature.login.presentation.ui
+
+import pl.kosciukw.petsify.shared.validator.email.EmailIdentifierValidator
+import pl.kosciukw.petsify.feature.login.presentation.LoginAction
+import pl.kosciukw.petsify.feature.login.presentation.LoginEvent
+import pl.kosciukw.petsify.feature.login.presentation.LoginState
+import pl.kosciukw.petsify.feature.login.usecase.LoginDeviceUseCase
+import pl.kosciukw.petsify.shared.data.network.NetworkState
+import pl.kosciukw.petsify.shared.error.mapper.IntegrationErrorMapper
+import pl.kosciukw.petsify.shared.result.ResultOrFailure
+import pl.kosciukw.petsify.shared.presentation.components.progress.ProgressBarState
+import pl.kosciukw.petsify.shared.presentation.common.viewmodel.BaseViewModel
+import pl.kosciukw.petsify.shared.utils.clear
+import pl.kosciukw.petsify.shared.validator.EmailIdentifier
+import pl.kosciukw.petsify.shared.validator.IdentifierState
+import pl.kosciukw.petsify.shared.validator.notempty.NotEmptyValidator
+
+class LoginViewModel(
+    private val loginDeviceUseCase: LoginDeviceUseCase,
+    private val emailIdentifierValidator: EmailIdentifierValidator,
+    private val notEmptyValidator: NotEmptyValidator<CharArray>,
+    integrationErrorMapper: IntegrationErrorMapper
+) : BaseViewModel<LoginEvent, LoginState, LoginAction>(
+    integrationErrorMapper = integrationErrorMapper
+) {
+
+    override fun setInitialState() = LoginState()
+    private var identifierState: IdentifierState = IdentifierState.Invalid
+    private var isPasswordValid: Boolean = false
+    private var isEmailValid: Boolean = false
+
+    override fun onTriggerEvent(event: LoginEvent) {
+
+        when (event) {
+            is LoginEvent.Login -> {
+                val email = event.email
+                val password = event.password
+                login(email, password)
+            }
+
+            is LoginEvent.OnEmailTextChanged -> {
+                onEmailTextChanged(event.value.toCharArray())
+            }
+
+            is LoginEvent.OnPasswordTextChanged -> {
+                onPasswordTextChanged(event.value.toCharArray())
+            }
+
+            is LoginEvent.OnNavigateToSignUpClicked -> {
+                setAction {
+                    LoginAction.Navigation.NavigateToSignup
+                }
+            }
+
+            else -> {
+                //no-op
+            }
+        }
+    }
+
+    private fun login(
+        email: String,
+        password: String
+    ) {
+        launch {
+            loginDeviceUseCase.action(
+                LoginDeviceUseCase.Params(
+                    email,
+                    password
+                )
+            ).collect { result ->
+                when (result) {
+                    is ResultOrFailure.Loading -> {
+                        setState { copy(progressBarState = ProgressBarState.ScreenLoading) }
+                    }
+
+                    is ResultOrFailure.Success -> {
+                        setState { copy(progressBarState = ProgressBarState.Idle) }
+
+                        setAction {
+                            LoginAction.Navigation.NavigateToMain
+                        }
+                    }
+
+                    is ResultOrFailure.Failure -> {
+                        onFailure(error = result.error)
+
+                        setState { copy(progressBarState = ProgressBarState.Idle) }
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun onPasswordTextChanged(password: CharArray) {
+        isPasswordValid = notEmptyValidator.isValid(password)
+        setState {
+            copy(
+                inputPassword = password.concatToString(),
+                isPasswordValidationErrorEnabled = !isPasswordValid
+            )
+        }
+
+        password.clear()
+        handleButtonState()
+    }
+
+    private fun onEmailTextChanged(email: CharArray) {
+        EmailIdentifier(email = email).also { identifier ->
+            identifierState = emailIdentifierValidator.isValid(identifier = identifier)
+        }
+
+        isEmailValid = identifierState is IdentifierState.Valid
+        setState {
+            copy(
+                inputEmail = email.concatToString(),
+                isEmailValidationErrorEnabled = !isEmailValid
+            )
+        }
+        handleButtonState()
+    }
+
+    private fun handleButtonState() {
+        setState { copy(isLoginButtonEnabled = isPasswordValid && isEmailValid) }
+    }
+
+    private fun onRetryNetwork() {}
+
+    private fun onUpdateNetworkState(networkState: NetworkState) {
+        setState { copy(networkState = networkState) }
+    }
+}

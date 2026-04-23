@@ -1,10 +1,56 @@
 plugins {
   alias(libs.plugins.android.library)
-  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.compose.multiplatform)
+  alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.kotlin.serialization)
-  id("kotlin-parcelize")
-  kotlin("kapt")
+}
+
+kotlin {
+  androidTarget()
+  iosX64()
+  iosArm64()
+  iosSimulatorArm64()
+
+  jvmToolchain(libs.versions.javaVersion.get().toInt())
+
+  sourceSets {
+    commonMain {
+      kotlin.srcDir("src/commonMain/kotlin")
+      dependencies {
+        implementation(projects.shared.core)
+        implementation(projects.shared.design)
+        implementation(projects.shared.presentationCore)
+        implementation(projects.shared.servicesApi)
+        implementation(libs.koin.core)
+        implementation(compose.runtime)
+        implementation(compose.foundation)
+        implementation(compose.material3)
+        implementation(compose.ui)
+        implementation(compose.materialIconsExtended)
+      }
+    }
+
+    androidMain {
+      kotlin.srcDir("src/androidMain/kotlin")
+      dependencies {
+        implementation(projects.shared.presentation)
+        implementation(libs.androidx.navigation)
+        implementation(libs.koin.androidx.compose)
+      }
+    }
+
+    androidUnitTest {
+      kotlin.srcDir("src/test/java")
+      dependencies {
+        implementation(libs.bundles.junit5)
+        implementation(libs.mockk)
+        implementation(libs.kotlinxCoroutinesTest)
+        implementation(libs.androidx.junit)
+        implementation(libs.androidx.espresso.core)
+      }
+    }
+  }
 }
 
 android {
@@ -31,23 +77,16 @@ android {
     targetCompatibility = JavaVersion.toVersion(javaVersion)
   }
 
-  kotlinOptions {
-    jvmTarget = libs.versions.javaVersion.get()
+  testOptions {
+    unitTests.isIncludeAndroidResources = true
+    unitTests.all {
+      it.useJUnitPlatform()
+    }
   }
 }
 
 dependencies {
-  implementation(projects.shared.ui)
-  implementation(projects.services)
-
-  implementation(libs.hilt.android)
-  implementation(libs.androidx.hilt.navigation.compose)
-  kapt(libs.hilt.compiler)
-
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
-
-  testImplementation(libs.bundles.junit5)
-  testImplementation(libs.mockk)
-  testImplementation(libs.kotlinxCoroutinesTest)
+  testImplementation(libs.junit)
 }

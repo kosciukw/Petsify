@@ -40,11 +40,14 @@ android {
 }
 
 dependencies {
+  api(projects.shared.design)
   api(rootProject.project(":shared:core"))
   api(rootProject.project(":shared:presentation"))
   api(platform(libs.androidx.compose.bom))
   api(libs.bundles.compose)
   api(libs.androidx.material3)
+  api(libs.androidx.material.icons.extended)
+  api(libs.koin.androidx.compose)
 
   debugImplementation(libs.bundles.compose.debug)
 
